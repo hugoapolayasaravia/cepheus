@@ -1,0 +1,44 @@
+﻿using Cepheus.Application.Administracion.Features.Permissions.Common;
+using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Domain.Administracion;
+using MediatR;
+
+namespace Cepheus.Application.Administracion.Features.Permissions.CreatePermission
+{
+    public class CreatePermissionCommandHandler : IRequestHandler<CreatePermissionCommand, PermissionResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public CreatePermissionCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<PermissionResponse> Handle(CreatePermissionCommand request, CancellationToken cancellationToken)
+        {
+            var permission = new Permission
+            {
+                ProgramaId = request.ProgramaId,
+                Code = request.Code.Trim().ToUpperInvariant(),
+                Name = request.Name.Trim(),
+                IsActive = true
+            };
+
+            await _uow.Permissions.AddAsync(permission, cancellationToken);
+            await _uow.SaveChangesAsync(cancellationToken);
+
+            return new PermissionResponse
+            {
+                Id = permission.Id,
+                ProgramaId = permission.ProgramaId,
+                Code = permission.Code,
+                Name = permission.Name,
+                IsActive = permission.IsActive,
+                CreatedAt = permission.CreatedAt,
+                UpdatedAt = permission.UpdatedAt,
+                RowVersion = permission.RowVersion
+            };
+        }
+    }
+
+}
