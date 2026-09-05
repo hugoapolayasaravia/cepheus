@@ -17,8 +17,8 @@ const string AuthRateLimiterPolicyName = "AuthRateLimiter";
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly));
+//builder.Services.AddMediatR(cfg =>
+//    cfg.RegisterServicesFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly));
 
 builder.Services.AddValidatorsFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly);
 
