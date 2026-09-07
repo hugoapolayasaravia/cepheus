@@ -81,7 +81,7 @@ namespace Cepheus.Infrastructure.Persistence.Seed
                 Name = ModuloName,
                 Icon = "shield",
                 Tooltip = "Administración del sistema",
-                DisplayOrder = 0,
+                DisplayOrder = 1,
                 IsActive = true
             };
 
@@ -135,7 +135,10 @@ namespace Cepheus.Infrastructure.Persistence.Seed
                 SubmoduloId = submoduloId,
                 Code = code,
                 Name = name,
-                DisplayOrder = 0,
+                Icon = "list",
+                Tooltip = "Ver listado de " + name,
+                Route = "/route/ruta",
+                DisplayOrder = 1,
                 IsActive = true
             };
 

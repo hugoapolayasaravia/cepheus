@@ -1,8 +1,8 @@
-﻿using Cepheus.Application.Administracion.Features.Programas.CreatePrograma;
-using Cepheus.Application.Administracion.Features.Programas.GetProgramaById;
-using Cepheus.Application.Administracion.Features.Programas.GetProgramasPaginated;
-using Cepheus.Application.Administracion.Features.Programas.ToggleProgramaStatus;
-using Cepheus.Application.Administracion.Features.Programas.UpdatePrograma;
+﻿using Cepheus.Application.Features.Administracion.Programas.CreatePrograma;
+using Cepheus.Application.Features.Administracion.Programas.GetProgramaById;
+using Cepheus.Application.Features.Administracion.Programas.GetProgramasPaginated;
+using Cepheus.Application.Features.Administracion.Programas.ToggleProgramaStatus;
+using Cepheus.Application.Features.Administracion.Programas.UpdatePrograma;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion

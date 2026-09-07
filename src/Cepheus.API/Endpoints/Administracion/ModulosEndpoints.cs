@@ -1,8 +1,8 @@
-﻿using Cepheus.Application.Administracion.Features.Modulos.CreateModulo;
-using Cepheus.Application.Administracion.Features.Modulos.GetModuloById;
-using Cepheus.Application.Administracion.Features.Modulos.GetModulosPaginated;
-using Cepheus.Application.Administracion.Features.Modulos.ToggleModuloStatus;
-using Cepheus.Application.Administracion.Features.Modulos.UpdateModulo;
+﻿using Cepheus.Application.Features.Administracion.Modulos.CreateModulo;
+using Cepheus.Application.Features.Administracion.Modulos.GetModuloById;
+using Cepheus.Application.Features.Administracion.Modulos.GetModulosPaginated;
+using Cepheus.Application.Features.Administracion.Modulos.ToggleModuloStatus;
+using Cepheus.Application.Features.Administracion.Modulos.UpdateModulo;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion

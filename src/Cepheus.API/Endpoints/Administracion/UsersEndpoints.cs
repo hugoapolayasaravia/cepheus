@@ -1,11 +1,11 @@
-﻿using Cepheus.Application.Administracion.Features.Users.AssignUserRoles;
-using Cepheus.Application.Administracion.Features.Users.ChangePassword;
-using Cepheus.Application.Administracion.Features.Users.CreateUser;
-using Cepheus.Application.Administracion.Features.Users.GetUserById;
-using Cepheus.Application.Administracion.Features.Users.GetUserRoles;
-using Cepheus.Application.Administracion.Features.Users.GetUsersPaginated;
-using Cepheus.Application.Administracion.Features.Users.ToggleUserStatus;
-using Cepheus.Application.Administracion.Features.Users.UpdateUser;
+﻿using Cepheus.Application.Features.Administracion.Users.AssignUserRoles;
+using Cepheus.Application.Features.Administracion.Users.ChangePassword;
+using Cepheus.Application.Features.Administracion.Users.CreateUser;
+using Cepheus.Application.Features.Administracion.Users.GetUserById;
+using Cepheus.Application.Features.Administracion.Users.GetUserRoles;
+using Cepheus.Application.Features.Administracion.Users.GetUsersPaginated;
+using Cepheus.Application.Features.Administracion.Users.ToggleUserStatus;
+using Cepheus.Application.Features.Administracion.Users.UpdateUser;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion

@@ -1,0 +1,31 @@
+﻿using Cepheus.Application.Comun.Interfaces;
+using MediatR;
+
+namespace Cepheus.Application.Features.Comunes.Plantas.TogglePlantaStatus
+{
+    public class TogglePlantaStatusCommandHandler : IRequestHandler<TogglePlantaStatusCommand, bool>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public TogglePlantaStatusCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<bool> Handle(TogglePlantaStatusCommand request, CancellationToken cancellationToken)
+        {
+            var planta = await _uow.Plantas.GetByIdAsync(request.Id, cancellationToken);
+
+            if (planta is null)
+            {
+                throw new KeyNotFoundException($"Planta {request.Id} no encontrada.");
+            }
+
+            planta.IsActive = !planta.IsActive;
+
+            await _uow.SaveChangesAsync(cancellationToken);
+
+            return planta.IsActive;
+        }
+    }
+}

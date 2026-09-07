@@ -1,8 +1,8 @@
-﻿using Cepheus.Application.Administracion.Features.Permissions.CreatePermission;
-using Cepheus.Application.Administracion.Features.Permissions.GetPermissionById;
-using Cepheus.Application.Administracion.Features.Permissions.GetPermissionsPaginated;
-using Cepheus.Application.Administracion.Features.Permissions.TogglePermissionStatus;
-using Cepheus.Application.Administracion.Features.Permissions.UpdatePermission;
+﻿using Cepheus.Application.Features.Administracion.Permissions.CreatePermission;
+using Cepheus.Application.Features.Administracion.Permissions.GetPermissionById;
+using Cepheus.Application.Features.Administracion.Permissions.GetPermissionsPaginated;
+using Cepheus.Application.Features.Administracion.Permissions.TogglePermissionStatus;
+using Cepheus.Application.Features.Administracion.Permissions.UpdatePermission;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion

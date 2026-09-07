@@ -1,9 +1,11 @@
 using Cepheus.API.Endpoints.Administracion;
+using Cepheus.API.Endpoints.Comunes;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
 using Cepheus.Infrastructure.Persistence;
 using Cepheus.Infrastructure.Persistence.Seed;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
@@ -17,13 +19,13 @@ const string AuthRateLimiterPolicyName = "AuthRateLimiter";
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-//builder.Services.AddMediatR(cfg =>
-//    cfg.RegisterServicesFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly));
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly));
 
 builder.Services.AddValidatorsFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly);
 
 builder.Services.AddTransient(
-    typeof(MediatR.IPipelineBehavior<,>),
+    typeof(IPipelineBehavior<,>),
     typeof(Cepheus.Application.Comun.Behaviors.ValidationBehavior<,>));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -150,6 +152,7 @@ app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Administracion
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapRolesEndpoints();
@@ -157,6 +160,16 @@ app.MapModulosEndpoints();
 app.MapSubmodulosEndpoints();
 app.MapProgramasEndpoints();
 app.MapPermissionsEndpoints();
+
+// Comunes
+app.MapPlantasEndpoints();
+app.MapMonedasEndpoints();
+app.MapTiposDocumentoEndpoints();
+app.MapComprobantesPagoEndpoints();
+app.MapUbigeosEndpoints();
+app.MapTiposCambioEndpoints();
+app.MapControlesVentasEndpoints();
+app.MapMotivosDevolucionEndpoints();
 
 app.Run();
 

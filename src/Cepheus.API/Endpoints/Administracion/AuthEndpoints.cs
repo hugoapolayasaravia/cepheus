@@ -1,8 +1,8 @@
-﻿using Cepheus.Application.Administracion.Features.Users.Authenticate;
-using Cepheus.Application.Administracion.Features.Users.Logout;
-using Cepheus.Application.Administracion.Features.Users.Me;
-using Cepheus.Application.Administracion.Features.Users.Refresh;
-using Cepheus.Application.Administracion.Features.Users.Register;
+﻿using Cepheus.Application.Features.Administracion.Users.Authenticate;
+using Cepheus.Application.Features.Administracion.Users.Logout;
+using Cepheus.Application.Features.Administracion.Users.Me;
+using Cepheus.Application.Features.Administracion.Users.Refresh;
+using Cepheus.Application.Features.Administracion.Users.Register;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion;

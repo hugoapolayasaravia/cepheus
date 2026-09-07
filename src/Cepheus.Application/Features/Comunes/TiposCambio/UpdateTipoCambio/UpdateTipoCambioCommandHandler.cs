@@ -1,0 +1,66 @@
+﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
+using Cepheus.Domain.Comunes;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace Cepheus.Application.Features.Comunes.TiposCambio.UpdateTipoCambio
+{
+    public class UpdateTipoCambioCommandHandler : IRequestHandler<UpdateTipoCambioCommand, TipoCambioResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public UpdateTipoCambioCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<TipoCambioResponse> Handle(UpdateTipoCambioCommand request, CancellationToken cancellationToken)
+        {
+            var current = await _uow.TiposCambio.Query()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+            if (current is null)
+            {
+                throw new KeyNotFoundException($"Tipo de cambio {request.Id} no encontrado.");
+            }
+
+            var tipoCambio = new TipoCambio
+            {
+                Id = request.Id,
+                Date = request.Date,
+                SellRate = request.SellRate,
+                BuyRate = request.BuyRate,
+
+                CreatedAt = current.CreatedAt,
+                CreatedBy = current.CreatedBy,
+
+                RowVersion = request.RowVersion
+            };
+
+            _uow.TiposCambio.Update(tipoCambio);
+
+            try
+            {
+                await _uow.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException(
+                    "El tipo de cambio fue modificado por otro proceso. Recargue los datos e intente nuevamente.");
+            }
+
+            return new TipoCambioResponse
+            {
+                Id = tipoCambio.Id,
+                Date = tipoCambio.Date,
+                SellRate = tipoCambio.SellRate,
+                BuyRate = tipoCambio.BuyRate,
+                CreatedAt = tipoCambio.CreatedAt,
+                UpdatedAt = tipoCambio.UpdatedAt,
+                RowVersion = tipoCambio.RowVersion
+            };
+        }
+    }
+}

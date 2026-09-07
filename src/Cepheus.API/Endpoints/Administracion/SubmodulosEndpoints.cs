@@ -1,8 +1,8 @@
-﻿using Cepheus.Application.Administracion.Features.Submodulos.CreateSubmodulo;
-using Cepheus.Application.Administracion.Features.Submodulos.GetSubmoduloById;
-using Cepheus.Application.Administracion.Features.Submodulos.GetSubmodulosPaginated;
-using Cepheus.Application.Administracion.Features.Submodulos.ToggleSubmoduloStatus;
-using Cepheus.Application.Administracion.Features.Submodulos.UpdateSubmodulo;
+﻿using Cepheus.Application.Features.Administracion.Submodulos.CreateSubmodulo;
+using Cepheus.Application.Features.Administracion.Submodulos.GetSubmoduloById;
+using Cepheus.Application.Features.Administracion.Submodulos.GetSubmodulosPaginated;
+using Cepheus.Application.Features.Administracion.Submodulos.ToggleSubmoduloStatus;
+using Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion

@@ -1,6 +1,7 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Domain.Administracion;
 using Cepheus.Domain.Comun;
+using Cepheus.Domain.Comunes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -30,6 +31,15 @@ namespace Cepheus.Infrastructure.Persistence
         public DbSet<Permission> Permissions => Set<Permission>();
         public DbSet<PermissionRole> PermissionRoles => Set<PermissionRole>();
 
+        // Comunes
+        public DbSet<Planta> Plantas => Set<Planta>();
+        public DbSet<Moneda> Monedas => Set<Moneda>();
+        public DbSet<TipoDocumento> TiposDocumento => Set<TipoDocumento>();
+        public DbSet<ComprobantePago> ComprobantesPago => Set<ComprobantePago>();
+        public DbSet<Ubigeo> Ubigeos => Set<Ubigeo>();
+        public DbSet<TipoCambio> TiposCambio => Set<TipoCambio>();
+        public DbSet<ControlVentas> ControlesVentas => Set<ControlVentas>();
+        public DbSet<MotivoDevolucion> MotivosDevolucion => Set<MotivoDevolucion>();
         DatabaseFacade IApplicationDbContext.Database => base.Database;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

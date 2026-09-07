@@ -1,10 +1,11 @@
-﻿using Cepheus.Application.Administracion.Features.Permissions.GetRolePermissions;
-using Cepheus.Application.Administracion.Features.Roles.AssignRolePermissions;
-using Cepheus.Application.Administracion.Features.Roles.CreateRole;
-using Cepheus.Application.Administracion.Features.Roles.GetRoleById;
-using Cepheus.Application.Administracion.Features.Roles.GetRolesPaginated;
-using Cepheus.Application.Administracion.Features.Roles.ToggleRoleStatus;
-using Cepheus.Application.Administracion.Features.Roles.UpdateRole;
+﻿using Cepheus.Application.Features.Administracion.Permissions.GetRolePermissions;
+using Cepheus.Application.Features.Administracion.Roles.AddRolePermissions;
+using Cepheus.Application.Features.Administracion.Roles.AssignRolePermissions;
+using Cepheus.Application.Features.Administracion.Roles.CreateRole;
+using Cepheus.Application.Features.Administracion.Roles.GetRoleById;
+using Cepheus.Application.Features.Administracion.Roles.GetRolesPaginated;
+using Cepheus.Application.Features.Administracion.Roles.ToggleRoleStatus;
+using Cepheus.Application.Features.Administracion.Roles.UpdateRole;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion
@@ -102,6 +103,21 @@ namespace Cepheus.API.Endpoints.Administracion
                 return Results.Ok(result);
             })
             .WithName("AssignRolePermissions")
+            .RequireAuthorization("ROLES.UPDATE");
+
+
+            group.MapPost("/{id:int}/permissions", async (
+                int id, AddRolePermissionsCommand command, ISender sender) =>
+                {
+                    if (id != command.RoleId)
+                    {
+                        return Results.BadRequest("El Id de la ruta no coincide con el roleId del cuerpo.");
+                    }
+
+                    var result = await sender.Send(command);
+                    return Results.Ok(result);
+                })
+            .WithName("AddRolePermissions")
             .RequireAuthorization("ROLES.UPDATE");
         }
     }

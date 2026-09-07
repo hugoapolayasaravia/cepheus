@@ -1,4 +1,5 @@
 ﻿using Cepheus.Domain.Administracion;
+using Cepheus.Domain.Comunes;
 using System.Security;
 
 namespace Cepheus.Application.Comun.Interfaces
@@ -21,6 +22,17 @@ namespace Cepheus.Application.Comun.Interfaces
         IRepository<Programa> Programas { get; }
         IRepository<Permission> Permissions { get; }
         IRepository<PermissionRole> PermissionRoles { get; }
+
+
+        //Comunes
+        IRepository<Planta> Plantas { get; }
+        IRepository<Moneda> Monedas { get; }
+        IRepository<TipoDocumento> TiposDocumento { get; }
+        IRepository<ComprobantePago> ComprobantesPago { get; }
+        IRepository<Ubigeo> Ubigeos { get; }
+        IRepository<TipoCambio> TiposCambio { get; }
+        IRepository<ControlVentas> ControlesVentas { get; }
+        IRepository<MotivoDevolucion> MotivosDevolucion { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

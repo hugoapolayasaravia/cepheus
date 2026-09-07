@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="Administracion\Features\Users\NewFolder1\**" />
-    <EmbeddedResource Remove="Administracion\Features\Users\NewFolder1\**" />
-    <None Remove="Administracion\Features\Users\NewFolder1\**" />
+    <Compile Remove="Features\Administracion\Users\NewFolder1\**" />
+    <EmbeddedResource Remove="Features\Administracion\Users\NewFolder1\**" />
+    <None Remove="Features\Administracion\Users\NewFolder1\**" />
   </ItemGroup>
 
   <ItemGroup>

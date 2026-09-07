@@ -1,0 +1,42 @@
+﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTipoCambioById
+{
+    public class GetTipoCambioByIdQueryHandler : IRequestHandler<GetTipoCambioByIdQuery, TipoCambioResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public GetTipoCambioByIdQueryHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<TipoCambioResponse> Handle(GetTipoCambioByIdQuery request, CancellationToken cancellationToken)
+        {
+            var tipoCambio = await _uow.TiposCambio.Query()
+                .AsNoTracking()
+                .Where(t => t.Id == request.Id)
+                .Select(t => new TipoCambioResponse
+                {
+                    Id = t.Id,
+                    Date = t.Date,
+                    SellRate = t.SellRate,
+                    BuyRate = t.BuyRate,
+                    CreatedAt = t.CreatedAt,
+                    UpdatedAt = t.UpdatedAt,
+                    RowVersion = t.RowVersion
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (tipoCambio is null)
+            {
+                throw new KeyNotFoundException($"Tipo de cambio {request.Id} no encontrado.");
+            }
+
+            return tipoCambio;
+        }
+    }
+}
