@@ -1,6 +1,7 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Domain.Administracion;
 using Cepheus.Domain.Comunes;
+using Cepheus.Domain.Logistica.Catalogos;
 using Cepheus.Infrastructure.Persistence.Repositories;
 using System.Security;
 
@@ -10,6 +11,7 @@ namespace Cepheus.Infrastructure.Persistence
     {
         private readonly ApplicationDbContext _context;
 
+        // Administracion
         private IRepository<User>? _users;
         private IRepository<Role>? _roles;
         private IRepository<RoleUser>? _roleUsers;
@@ -30,6 +32,18 @@ namespace Cepheus.Infrastructure.Persistence
         private IRepository<ControlVentas>? _controlesVentas;
         private IRepository<MotivoDevolucion>? _motivosDevolucion;
 
+
+        // Logistica - Catalogos
+        private IRepository<Familia>? _familias;
+        private IRepository<SubFamilia>? _subFamilias;
+        private IRepository<UnidadMedida>? _unidadesMedida;
+        private IRepository<TipoCompra>? _tiposCompra;
+        private IRepository<NotaCompra>? _notasCompra;
+        private IRepository<LugarEnvio>? _lugaresEnvio;
+        private IRepository<Comprador>? _compradores;
+        private IRepository<Tramite>? _tramites;
+        private IRepository<TipoPedido>? _tiposPedido;
+        private IRepository<UnidadNegocio>? _unidadesNegocio;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -56,6 +70,20 @@ namespace Cepheus.Infrastructure.Persistence
         public IRepository<TipoCambio> TiposCambio => _tiposCambio ??= new Repository<TipoCambio>(_context);
         public IRepository<ControlVentas> ControlesVentas => _controlesVentas ??= new Repository<ControlVentas>(_context);
         public IRepository<MotivoDevolucion> MotivosDevolucion => _motivosDevolucion ??= new Repository<MotivoDevolucion>(_context);
+
+
+        // Logistica - Catalogos
+        public IRepository<Familia> Familias => _familias ??= new Repository<Familia>(_context);
+        public IRepository<SubFamilia> SubFamilias => _subFamilias ??= new Repository<SubFamilia>(_context);
+        public IRepository<UnidadMedida> UnidadesMedida => _unidadesMedida ??= new Repository<UnidadMedida>(_context);
+        public IRepository<TipoCompra> TiposCompra => _tiposCompra ??= new Repository<TipoCompra>(_context);
+        public IRepository<NotaCompra> NotasCompra => _notasCompra ??= new Repository<NotaCompra>(_context);
+        public IRepository<LugarEnvio> LugaresEnvio => _lugaresEnvio ??= new Repository<LugarEnvio>(_context);
+        public IRepository<Comprador> Compradores => _compradores ??= new Repository<Comprador>(_context);
+        public IRepository<Tramite> Tramites => _tramites ??= new Repository<Tramite>(_context);
+        public IRepository<TipoPedido> TiposPedido => _tiposPedido ??= new Repository<TipoPedido>(_context);
+        public IRepository<UnidadNegocio> UnidadesNegocio => _unidadesNegocio ??= new Repository<UnidadNegocio>(_context);
+        
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
             => _context.SaveChangesAsync(cancellationToken);
     }

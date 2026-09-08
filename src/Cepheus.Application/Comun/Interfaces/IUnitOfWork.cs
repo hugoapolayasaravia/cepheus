@@ -1,5 +1,6 @@
 ﻿using Cepheus.Domain.Administracion;
 using Cepheus.Domain.Comunes;
+using Cepheus.Domain.Logistica.Catalogos;
 using System.Security;
 
 namespace Cepheus.Application.Comun.Interfaces
@@ -33,6 +34,19 @@ namespace Cepheus.Application.Comun.Interfaces
         IRepository<TipoCambio> TiposCambio { get; }
         IRepository<ControlVentas> ControlesVentas { get; }
         IRepository<MotivoDevolucion> MotivosDevolucion { get; }
+
+
+        // Logistica - Catalogos
+        IRepository<Familia> Familias { get; }
+        IRepository<SubFamilia> SubFamilias { get; }
+        IRepository<UnidadMedida> UnidadesMedida { get; }
+        IRepository<TipoCompra> TiposCompra { get; }
+        IRepository<NotaCompra> NotasCompra { get; }
+        IRepository<LugarEnvio> LugaresEnvio { get; }
+        IRepository<Comprador> Compradores { get; }
+        IRepository<Tramite> Tramites { get; }
+        IRepository<TipoPedido> TiposPedido { get; }
+        IRepository<UnidadNegocio> UnidadesNegocio { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Cepheus.Infrastructure\Cepheus.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\Logistica\" />
-  </ItemGroup>
-
 </Project>

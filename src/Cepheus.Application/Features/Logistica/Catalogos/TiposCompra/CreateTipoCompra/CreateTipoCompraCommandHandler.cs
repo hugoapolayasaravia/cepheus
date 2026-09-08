@@ -1,0 +1,42 @@
+﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Features.Logistica.Catalogos.TiposCompra.Common;
+using Cepheus.Domain.Logistica.Catalogos;
+using MediatR;
+
+namespace Cepheus.Application.Features.Logistica.Catalogos.TiposCompra.CreateTipoCompra
+{
+    public class CreateTipoCompraCommandHandler : IRequestHandler<CreateTipoCompraCommand, TipoCompraResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public CreateTipoCompraCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<TipoCompraResponse> Handle(CreateTipoCompraCommand request, CancellationToken cancellationToken)
+        {
+            var tipoCompra = new TipoCompra
+            {
+                Code = request.Code.Trim().ToUpperInvariant(),
+                Name = request.Name.Trim(),
+                IsActive = true
+            };
+
+            await _uow.TiposCompra.AddAsync(tipoCompra, cancellationToken);
+            await _uow.SaveChangesAsync(cancellationToken);
+
+            return Map(tipoCompra);
+        }
+
+        internal static TipoCompraResponse Map(TipoCompra tipoCompra) => new()
+        {
+            Code = tipoCompra.Code,
+            Name = tipoCompra.Name,
+            IsActive = tipoCompra.IsActive,
+            CreatedAt = tipoCompra.CreatedAt,
+            UpdatedAt = tipoCompra.UpdatedAt,
+            RowVersion = tipoCompra.RowVersion
+        };
+    }
+}

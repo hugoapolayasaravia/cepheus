@@ -1,0 +1,44 @@
+﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.Common;
+using Cepheus.Domain.Logistica.Catalogos;
+using MediatR;
+
+namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSubFamilia
+{
+    public class CreateSubFamiliaCommandHandler : IRequestHandler<CreateSubFamiliaCommand, SubFamiliaResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public CreateSubFamiliaCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<SubFamiliaResponse> Handle(CreateSubFamiliaCommand request, CancellationToken cancellationToken)
+        {
+            var subFamilia = new SubFamilia
+            {
+                Code = request.Code.Trim().ToUpperInvariant(),
+                FamiliaCode = request.FamiliaCode.Trim().ToUpperInvariant(),
+                Name = request.Name.Trim(),
+                IsActive = true
+            };
+
+            await _uow.SubFamilias.AddAsync(subFamilia, cancellationToken);
+            await _uow.SaveChangesAsync(cancellationToken);
+
+            return Map(subFamilia);
+        }
+
+        internal static SubFamiliaResponse Map(SubFamilia subFamilia) => new()
+        {
+            Code = subFamilia.Code,
+            FamiliaCode = subFamilia.FamiliaCode,
+            Name = subFamilia.Name,
+            IsActive = subFamilia.IsActive,
+            CreatedAt = subFamilia.CreatedAt,
+            UpdatedAt = subFamilia.UpdatedAt,
+            RowVersion = subFamilia.RowVersion
+        };
+    }
+}

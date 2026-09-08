@@ -1,5 +1,6 @@
 using Cepheus.API.Endpoints.Administracion;
 using Cepheus.API.Endpoints.Comunes;
+using Cepheus.API.Endpoints.Logistica.Catalogos;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
 using Cepheus.Infrastructure.Persistence;
@@ -170,6 +171,18 @@ app.MapUbigeosEndpoints();
 app.MapTiposCambioEndpoints();
 app.MapControlesVentasEndpoints();
 app.MapMotivosDevolucionEndpoints();
+
+// Logistica - Catalogos
+app.MapFamiliasEndpoints();
+app.MapSubFamiliasEndpoints();
+app.MapUnidadesMedidaEndpoints();
+app.MapTiposCompraEndpoints();
+app.MapNotasCompraEndpoints();
+app.MapLugaresEnvioEndpoints();
+app.MapCompradoresEndpoints();
+app.MapTramitesEndpoints();
+app.MapTiposPedidoEndpoints();
+app.MapUnidadesNegocioEndpoints();
 
 app.Run();
 
