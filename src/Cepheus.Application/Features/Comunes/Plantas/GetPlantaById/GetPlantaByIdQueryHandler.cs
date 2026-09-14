@@ -18,10 +18,10 @@ namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantaById
         {
             var planta = await _uow.Plantas.Query()
                 .AsNoTracking()
-                .Where(p => p.Id == request.Id)
+                .Where(p => p.Code == request.Code)
                 .Select(p => new PlantaResponse
                 {
-                    Id = p.Id,
+
                     Code = p.Code,
                     Name = p.Name,
                     LegalName = p.LegalName,
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantaById
 
             if (planta is null)
             {
-                throw new KeyNotFoundException($"Planta {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Planta {request.Code} no encontrada.");
             }
 
             return planta;

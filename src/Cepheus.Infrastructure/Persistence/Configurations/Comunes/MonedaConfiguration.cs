@@ -10,7 +10,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
         {
             builder.ToTable("Monedas", schema: "comun");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Code);
 
             builder.Property(x => x.Code)
                 .IsRequired()
@@ -25,8 +25,10 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
             builder.Property(x => x.Symbol)
                 .HasMaxLength(5);
 
+
             builder.Property(x => x.NumericCode)
                 .HasMaxLength(3);
+
 
             builder.HasIndex(x => x.NumericCode).IsUnique();
 

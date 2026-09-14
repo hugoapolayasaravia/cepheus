@@ -18,10 +18,9 @@ namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedaById
         {
             var moneda = await _uow.Monedas.Query()
                 .AsNoTracking()
-                .Where(m => m.Id == request.Id)
+                .Where(m => m.Code == request.Code)
                 .Select(m => new MonedaResponse
                 {
-                    Id = m.Id,
                     Code = m.Code,
                     Name = m.Name,
                     Symbol = m.Symbol,
@@ -36,7 +35,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedaById
 
             if (moneda is null)
             {
-                throw new KeyNotFoundException($"Moneda {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Moneda {request.Code} no encontrada.");
             }
 
             return moneda;

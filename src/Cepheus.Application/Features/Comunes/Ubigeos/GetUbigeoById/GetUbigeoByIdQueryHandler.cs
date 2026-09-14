@@ -18,10 +18,9 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeoById
         {
             var ubigeo = await _uow.Ubigeos.Query()
                 .AsNoTracking()
-                .Where(u => u.Id == request.Id)
+                .Where(u => u.Code == request.Code)
                 .Select(u => new UbigeoResponse
                 {
-                    Id = u.Id,
                     Code = u.Code,
                     Department = u.Department,
                     Province = u.Province,
@@ -36,7 +35,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeoById
 
             if (ubigeo is null)
             {
-                throw new KeyNotFoundException($"Ubigeo {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Ubigeo {request.Code} no encontrado.");
             }
 
             return ubigeo;

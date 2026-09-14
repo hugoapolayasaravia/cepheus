@@ -3,6 +3,7 @@ using Cepheus.Domain.Administracion;
 using Cepheus.Domain.Comun;
 using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Logistica.Catalogos;
+using Cepheus.Domain.Logistica.Maestros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -41,6 +42,7 @@ namespace Cepheus.Infrastructure.Persistence
         public DbSet<TipoCambio> TiposCambio => Set<TipoCambio>();
         public DbSet<ControlVentas> ControlesVentas => Set<ControlVentas>();
         public DbSet<MotivoDevolucion> MotivosDevolucion => Set<MotivoDevolucion>();
+        public DbSet<Banco> Bancos => Set<Banco>();
 
 
         // Logistica.Catalogos
@@ -54,6 +56,27 @@ namespace Cepheus.Infrastructure.Persistence
         public DbSet<Tramite> Tramites => Set<Tramite>();
         public DbSet<TipoPedido> TiposPedido => Set<TipoPedido>();
         public DbSet<UnidadNegocio> UnidadesNegocio => Set<UnidadNegocio>();
+        public DbSet<TipoVale> TiposVale => Set<TipoVale>();
+        public DbSet<TipoArticulo> TiposArticulo => Set<TipoArticulo>();
+        public DbSet<PlanArticulo> PlanesArticulo => Set<PlanArticulo>();
+        public DbSet<FormaPago> FormasPago => Set<FormaPago>();
+
+        // Logistica.Maestros
+        public DbSet<Proveedor> Proveedores => Set<Proveedor>();
+        public DbSet<ProveedorDireccion> ProveedorDirecciones => Set<ProveedorDireccion>();
+        public DbSet<ProveedorContacto> ProveedorContactos => Set<ProveedorContacto>();
+        public DbSet<ProveedorCuenta> ProveedorCuentas => Set<ProveedorCuenta>();
+        public DbSet<ProveedorCondicion> ProveedorCondiciones => Set<ProveedorCondicion>();
+        public DbSet<Articulo> Articulos => Set<Articulo>();
+        public DbSet<ArticuloProveedor> ArticuloProveedores => Set<ArticuloProveedor>();
+        public DbSet<ArticuloStock> StockArticulos => Set<ArticuloStock>();
+        public DbSet<CentroCosto> CentrosCosto => Set<CentroCosto>();
+        public DbSet<SubCentroCosto> SubCentrosCosto => Set<SubCentroCosto>();
+        public DbSet<Transportista> Transportistas => Set<Transportista>();
+        public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
+        public DbSet<Conductor> Conductores => Set<Conductor>();
+        public DbSet<ControlCierre> ControlCierres => Set<ControlCierre>();
+
 
         DatabaseFacade IApplicationDbContext.Database => base.Database;
 

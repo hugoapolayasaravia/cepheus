@@ -12,12 +12,6 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código de la subfamilia es obligatorio.")
-                .Length(4).WithMessage("El código debe tener 4 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe una subfamilia con ese código.");
-
             RuleFor(x => x.FamiliaCode)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("La familia es obligatoria.")
@@ -27,15 +21,16 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre de la subfamilia es obligatorio.")
-                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.");
+                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe una subfamilia con ese nombre.");
         }
-
-        private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.SubFamilias.Query()
-                .AnyAsync(s => s.Code == code.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> FamiliaExists(string familiaCode, CancellationToken cancellationToken)
             => await _uow.Familias.Query()
                 .AnyAsync(f => f.Code == familiaCode.Trim().ToUpper(), cancellationToken);
+
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
+            => !await _uow.SubFamilias.Query()
+                .AnyAsync(s => s.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

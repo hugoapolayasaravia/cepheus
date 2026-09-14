@@ -42,7 +42,6 @@ namespace Cepheus.Application.Features.Comunes.Plantas.CreatePlanta
 
         internal static PlantaResponse Map(Planta planta) => new()
         {
-            Id = planta.Id,
             Code = planta.Code,
             Name = planta.Name,
             LegalName = planta.LegalName,

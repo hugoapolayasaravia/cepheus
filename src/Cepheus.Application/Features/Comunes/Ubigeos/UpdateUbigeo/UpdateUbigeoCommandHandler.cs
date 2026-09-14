@@ -19,16 +19,15 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
         {
             var current = await _uow.Ubigeos.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Ubigeo {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Ubigeo {request.Code} no encontrado.");
             }
 
             var ubigeo = new Ubigeo
             {
-                Id = request.Id,
                 Code = request.Code.Trim(),
                 Department = request.Department.Trim(),
                 Province = request.Province.Trim(),
@@ -55,7 +54,6 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
 
             return new UbigeoResponse
             {
-                Id = ubigeo.Id,
                 Code = ubigeo.Code,
                 Department = ubigeo.Department,
                 Province = ubigeo.Province,

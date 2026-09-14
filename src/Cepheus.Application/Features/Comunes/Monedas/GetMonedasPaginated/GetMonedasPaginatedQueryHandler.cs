@@ -45,7 +45,6 @@ namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedasPaginated
 
             var projected = sortedQuery.Select(m => new MonedaResponse
             {
-                Id = m.Id,
                 Code = m.Code,
                 Name = m.Name,
                 Symbol = m.Symbol,

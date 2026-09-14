@@ -12,9 +12,6 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
         {
             _uow = uow;
 
-            RuleFor(x => x.Id)
-                .GreaterThan(0);
-
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código de ubigeo es obligatorio.")
@@ -40,6 +37,6 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
 
         private async Task<bool> BeUniqueCode(UpdateUbigeoCommand command, string code, CancellationToken cancellationToken)
             => !await _uow.Ubigeos.Query()
-                .AnyAsync(u => u.Code == code.Trim() && u.Id != command.Id, cancellationToken);
+                .AnyAsync(u => u.Code == code.Trim() && u.Code != command.Code, cancellationToken);
     }
 }

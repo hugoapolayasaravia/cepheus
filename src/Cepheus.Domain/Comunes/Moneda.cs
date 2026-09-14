@@ -11,25 +11,27 @@ namespace Cepheus.Domain.Comunes
     ///   codigo               -> Code            (ISO 4217 alfabético, ej. "PEN", "USD")
     ///   nombre               -> Name
     ///   simbolo              -> Symbol
-    ///   codigo_numerico      -> NumericCode      (ISO 4217 numérico, ej. "604" para PEN)
+    ///   codigo_numerico      -> NumericCode
     ///   decimales            -> DecimalPlaces
     ///   estado               -> IsActive
-    ///   fecha_creacion       -> CreatedAt (vía IAuditableEntity, seteado automáticamente
-    ///                                       en ApplicationDbContext.SaveChangesAsync)
-    ///   fecha_actualizacion  -> UpdatedAt (ídem)
+    ///   fecha_creacion       -> CreatedAt
+    ///   fecha_actualizacion   -> UpdatedAt
     /// </summary>
     public class Moneda : IAuditableEntity
     {
-        public int Id { get; set; }
-
+        /// <summary>
+        /// Código ISO 4217 alfabético. Ejemplo: PEN, USD, EUR.
+        /// Es la clave primaria de la entidad.
+        /// </summary>
         public string Code { get; set; } = default!;
+
         public string Name { get; set; } = default!;
         public string? Symbol { get; set; }
         public string? NumericCode { get; set; }
         public int DecimalPlaces { get; set; } = 2;
         public bool IsActive { get; set; } = true;
 
-        // Auditoría (IAuditableEntity)
+        // Auditoría
         public DateTime CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

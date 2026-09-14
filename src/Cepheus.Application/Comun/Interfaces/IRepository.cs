@@ -16,6 +16,8 @@
 
         Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
+        Task<T?> GetByCodeAsync(string code, CancellationToken cancellationToken = default);
+
         Task AddAsync(T entity, CancellationToken cancellationToken = default);
 
         void Update(T entity);

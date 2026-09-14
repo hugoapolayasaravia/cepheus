@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
 {
     public record UpdateMonedaCommand(
-        int Id,
         string Code,
         string Name,
         string? Symbol,

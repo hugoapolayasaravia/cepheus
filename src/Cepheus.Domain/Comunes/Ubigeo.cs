@@ -33,8 +33,6 @@ namespace Cepheus.Domain.Comunes
     /// </summary>
     public class Ubigeo : IAuditableEntity
     {
-        public int Id { get; set; }
-
         public string Code { get; set; } = default!;
         public string Department { get; set; } = default!;
         public string Province { get; set; } = default!;

@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.CreateTramite
 {
     public record CreateTramiteCommand(
-        string Code,
         string Name
     ) : IRequest<TramiteResponse>;
 }

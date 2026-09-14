@@ -33,7 +33,6 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.CreateUbigeo
 
         internal static UbigeoResponse Map(Ubigeo ubigeo) => new()
         {
-            Id = ubigeo.Id,
             Code = ubigeo.Code,
             Department = ubigeo.Department,
             Province = ubigeo.Province,

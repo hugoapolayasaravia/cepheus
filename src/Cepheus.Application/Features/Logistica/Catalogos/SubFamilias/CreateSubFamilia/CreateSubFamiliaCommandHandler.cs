@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -16,10 +17,19 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
 
         public async Task<SubFamiliaResponse> Handle(CreateSubFamiliaCommand request, CancellationToken cancellationToken)
         {
+            var familiaCode = request.FamiliaCode.Trim().ToUpperInvariant();
+
+            var code = await SequentialCodeGenerator.NextChildAsync(
+                _uow.SubFamilias.Query().Select(s => s.Code),
+                prefix: familiaCode,
+                suffixLength: 2,
+                entityLabel: "SubFamilias",
+                cancellationToken);
+
             var subFamilia = new SubFamilia
             {
-                Code = request.Code.Trim().ToUpperInvariant(),
-                FamiliaCode = request.FamiliaCode.Trim().ToUpperInvariant(),
+                Code = code,
+                FamiliaCode = familiaCode,
                 Name = request.Name.Trim(),
                 IsActive = true
             };

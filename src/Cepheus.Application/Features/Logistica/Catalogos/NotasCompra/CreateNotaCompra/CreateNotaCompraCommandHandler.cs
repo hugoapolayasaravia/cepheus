@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common.Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Domain.Logistica.Catalogos;
@@ -17,9 +18,12 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.CreateNot
 
         public async Task<NotaCompraResponse> Handle(CreateNotaCompraCommand request, CancellationToken cancellationToken)
         {
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.NotasCompra.Query().Select(f => f.Code), length: 3, entityLabel: "Familias", cancellationToken);
+
             var nota = new NotaCompra
             {
-                Code = request.Code.Trim().ToUpperInvariant(),
+                Code = code,
                 Name = request.Name.Trim(),
                 IsActive = true
             };

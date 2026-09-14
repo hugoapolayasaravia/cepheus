@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposCompra.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -16,9 +17,13 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposCompra.CreateTip
 
         public async Task<TipoCompraResponse> Handle(CreateTipoCompraCommand request, CancellationToken cancellationToken)
         {
+
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.TiposCompra.Query().Select(f => f.Code), length: 1, entityLabel: "Tipos de Compra", cancellationToken);
+
             var tipoCompra = new TipoCompra
             {
-                Code = request.Code.Trim().ToUpperInvariant(),
+                Code = code,
                 Name = request.Name.Trim(),
                 IsActive = true
             };

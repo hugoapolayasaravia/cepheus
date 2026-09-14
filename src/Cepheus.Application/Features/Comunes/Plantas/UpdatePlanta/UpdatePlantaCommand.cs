@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
 {
     public record UpdatePlantaCommand(
-        int Id,
         string Code,
         string Name,
         string? LegalName,

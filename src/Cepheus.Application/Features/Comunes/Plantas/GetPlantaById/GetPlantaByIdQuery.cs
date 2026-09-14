@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantaById
 {
-    public record GetPlantaByIdQuery(int Id) : IRequest<PlantaResponse>;
+    public record GetPlantaByIdQuery(string Code) : IRequest<PlantaResponse>;
 }

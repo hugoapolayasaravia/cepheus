@@ -14,11 +14,11 @@ namespace Cepheus.Application.Features.Comunes.Plantas.TogglePlantaStatus
 
         public async Task<bool> Handle(TogglePlantaStatusCommand request, CancellationToken cancellationToken)
         {
-            var planta = await _uow.Plantas.GetByIdAsync(request.Id, cancellationToken);
+            var planta = await _uow.Plantas.GetByCodeAsync(request.Code, cancellationToken);
 
             if (planta is null)
             {
-                throw new KeyNotFoundException($"Planta {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Planta {request.Code} no encontrada.");
             }
 
             planta.IsActive = !planta.IsActive;

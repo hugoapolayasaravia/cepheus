@@ -14,11 +14,11 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.ToggleUbigeoStatus
 
         public async Task<bool> Handle(ToggleUbigeoStatusCommand request, CancellationToken cancellationToken)
         {
-            var ubigeo = await _uow.Ubigeos.GetByIdAsync(request.Id, cancellationToken);
+            var ubigeo = await _uow.Ubigeos.GetByCodeAsync(request.Code, cancellationToken);
 
             if (ubigeo is null)
             {
-                throw new KeyNotFoundException($"Ubigeo {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Ubigeo {request.Code} no encontrado.");
             }
 
             ubigeo.IsActive = !ubigeo.IsActive;

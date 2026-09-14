@@ -1,5 +1,6 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Comunes.Monedas.ToggleMonedaStatus
 {
@@ -14,11 +15,13 @@ namespace Cepheus.Application.Features.Comunes.Monedas.ToggleMonedaStatus
 
         public async Task<bool> Handle(ToggleMonedaStatusCommand request, CancellationToken cancellationToken)
         {
-            var moneda = await _uow.Monedas.GetByIdAsync(request.Id, cancellationToken);
+
+            var moneda = await _uow.Monedas.Query()
+                    .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
             if (moneda is null)
             {
-                throw new KeyNotFoundException($"Moneda {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Moneda {request.Code} no encontrada.");
             }
 
             moneda.IsActive = !moneda.IsActive;

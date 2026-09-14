@@ -2,7 +2,6 @@
 {
     public class UbigeoResponse
     {
-        public int Id { get; set; }
         public string Code { get; set; } = default!;
         public string Department { get; set; } = default!;
         public string Province { get; set; } = default!;

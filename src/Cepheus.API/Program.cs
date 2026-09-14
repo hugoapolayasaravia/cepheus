@@ -1,6 +1,7 @@
 using Cepheus.API.Endpoints.Administracion;
 using Cepheus.API.Endpoints.Comunes;
 using Cepheus.API.Endpoints.Logistica.Catalogos;
+using Cepheus.API.Endpoints.Logistica.Maestros;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
 using Cepheus.Infrastructure.Persistence;
@@ -171,6 +172,7 @@ app.MapUbigeosEndpoints();
 app.MapTiposCambioEndpoints();
 app.MapControlesVentasEndpoints();
 app.MapMotivosDevolucionEndpoints();
+app.MapBancosEndpoints();
 
 // Logistica - Catalogos
 app.MapFamiliasEndpoints();
@@ -183,6 +185,26 @@ app.MapCompradoresEndpoints();
 app.MapTramitesEndpoints();
 app.MapTiposPedidoEndpoints();
 app.MapUnidadesNegocioEndpoints();
+app.MapTiposValeEndpoints();
+app.MapTiposArticuloEndpoints();
+app.MapPlanesArticuloEndpoints();
+app.MapFormasPagoEndpoints();
+
+// Logistica - Maestros
+app.MapProveedoresEndpoints();
+app.MapProveedorDireccionesEndpoints();
+app.MapProveedorContactosEndpoints();
+app.MapProveedorCuentasEndpoints();
+app.MapProveedorCondicionesEndpoints();
+app.MapArticulosEndpoints();
+app.MapArticuloProveedoresEndpoints();
+app.MapStockArticulosEndpoints();
+app.MapCentrosCostoEndpoints();
+app.MapSubCentrosCostoEndpoints();
+app.MapTransportistasEndpoints();
+app.MapVehiculosEndpoints();
+app.MapConductoresEndpoints();
+app.MapControlCierresEndpoints();
 
 app.Run();
 

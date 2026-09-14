@@ -19,16 +19,15 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
         {
             var current = await _uow.Plantas.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(p => p.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Planta {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Planta {request.Code} no encontrada.");
             }
 
             var planta = new Planta
             {
-                Id = request.Id,
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 LegalName = string.IsNullOrWhiteSpace(request.LegalName) ? null : request.LegalName.Trim(),
@@ -64,7 +63,6 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
 
             return new PlantaResponse
             {
-                Id = planta.Id,
                 Code = planta.Code,
                 Name = planta.Name,
                 LegalName = planta.LegalName,

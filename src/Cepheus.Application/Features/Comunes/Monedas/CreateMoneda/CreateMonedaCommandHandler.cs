@@ -34,7 +34,6 @@ namespace Cepheus.Application.Features.Comunes.Monedas.CreateMoneda
 
         internal static MonedaResponse Map(Moneda moneda) => new()
         {
-            Id = moneda.Id,
             Code = moneda.Code,
             Name = moneda.Name,
             Symbol = moneda.Symbol,

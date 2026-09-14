@@ -12,20 +12,16 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.CreateCom
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código del comprador es obligatorio.")
-                .Length(3).WithMessage("El código debe tener 3 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe un comprador con ese código.");
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre del comprador es obligatorio.")
-                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.");
+                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe una Comprador con ese nombre.");
         }
 
-        private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
             => !await _uow.Compradores.Query()
-                .AnyAsync(c => c.Code == code.Trim().ToUpper(), cancellationToken);
+                .AnyAsync(f => f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Features.Logistica.Catalogos.Familias.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -16,9 +17,12 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.CreateFamili
 
         public async Task<FamiliaResponse> Handle(CreateFamiliaCommand request, CancellationToken cancellationToken)
         {
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.Familias.Query().Select(f => f.Code), length: 2, entityLabel: "Familias", cancellationToken);
+
             var familia = new Familia
             {
-                Code = request.Code.Trim().ToUpperInvariant(),
+                Code = code,
                 Name = request.Name.Trim(),
                 IsActive = true
             };

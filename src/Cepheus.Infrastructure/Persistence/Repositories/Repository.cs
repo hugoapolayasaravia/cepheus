@@ -19,6 +19,9 @@ namespace Cepheus.Infrastructure.Persistence.Repositories
         public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
             => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
+        public async Task<T?> GetByCodeAsync(string code, CancellationToken cancellationToken = default)
+            => await _dbSet.FindAsync(new object[] { code }, cancellationToken);
+
         public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
             => await _dbSet.AddAsync(entity, cancellationToken);
 

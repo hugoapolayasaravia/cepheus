@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeoById
 {
-    public record GetUbigeoByIdQuery(int Id) : IRequest<UbigeoResponse>;
+    public record GetUbigeoByIdQuery(string Code) : IRequest<UbigeoResponse>;
 }

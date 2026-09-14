@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSubFamilia
 {
     public record CreateSubFamiliaCommand(
-        string Code,
         string FamiliaCode,
         string Name
     ) : IRequest<SubFamiliaResponse>;

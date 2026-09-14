@@ -10,7 +10,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
         {
             builder.ToTable("Ubigeos", schema: "comun");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Code);
 
             builder.Property(x => x.Code)
                 .IsRequired()

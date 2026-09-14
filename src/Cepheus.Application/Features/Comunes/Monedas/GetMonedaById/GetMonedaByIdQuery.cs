@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedaById
 {
-    public record GetMonedaByIdQuery(int Id) : IRequest<MonedaResponse>;
+    public record GetMonedaByIdQuery(string Code) : IRequest<MonedaResponse>;
 }

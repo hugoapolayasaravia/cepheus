@@ -1,6 +1,7 @@
 ﻿using Cepheus.Domain.Administracion;
 using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Logistica.Catalogos;
+using Cepheus.Domain.Logistica.Maestros;
 using System.Security;
 
 namespace Cepheus.Application.Comun.Interfaces
@@ -34,6 +35,7 @@ namespace Cepheus.Application.Comun.Interfaces
         IRepository<TipoCambio> TiposCambio { get; }
         IRepository<ControlVentas> ControlesVentas { get; }
         IRepository<MotivoDevolucion> MotivosDevolucion { get; }
+        IRepository<Banco> Bancos { get; }
 
 
         // Logistica - Catalogos
@@ -47,6 +49,27 @@ namespace Cepheus.Application.Comun.Interfaces
         IRepository<Tramite> Tramites { get; }
         IRepository<TipoPedido> TiposPedido { get; }
         IRepository<UnidadNegocio> UnidadesNegocio { get; }
+        IRepository<TipoVale> TiposVale { get; }
+        IRepository<TipoArticulo> TiposArticulo { get; }
+        IRepository<PlanArticulo> PlanesArticulo { get; }
+        IRepository<FormaPago> FormasPago { get; }
+
+        // Logistica - Maestros
+        IRepository<Proveedor> Proveedores { get; }
+        IRepository<ProveedorDireccion> ProveedorDirecciones { get; }
+        IRepository<ProveedorContacto> ProveedorContactos { get; }
+        IRepository<ProveedorCuenta> ProveedorCuentas { get; }
+        IRepository<ProveedorCondicion> ProveedorCondiciones { get; }
+        IRepository<Articulo> Articulos { get; }
+        IRepository<ArticuloProveedor> ArticuloProveedores { get; }
+        IRepository<ArticuloStock> StockArticulos { get; }
+        IRepository<CentroCosto> CentrosCosto { get; }
+        IRepository<SubCentroCosto> SubCentrosCosto { get; }
+        IRepository<Transportista> Transportistas { get; }
+        IRepository<Vehiculo> Vehiculos { get; }
+        IRepository<Conductor> Conductores { get; }
+        IRepository<ControlCierre> ControlCierres { get; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

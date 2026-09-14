@@ -12,20 +12,15 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.CreateFamili
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código de la familia es obligatorio.")
-                .Length(2).WithMessage("El código debe tener 2 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe una familia con ese código.");
-
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre de la familia es obligatorio.")
-                .MaximumLength(60).WithMessage("El nombre no puede exceder los 60 caracteres.");
+                .MaximumLength(60).WithMessage("El nombre no puede exceder los 60 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe una familia con ese nombre.");
         }
 
-        private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
             => !await _uow.Familias.Query()
-                .AnyAsync(f => f.Code == code.Trim().ToUpper(), cancellationToken);
+                .AnyAsync(f => f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

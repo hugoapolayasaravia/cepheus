@@ -12,9 +12,6 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
         {
             _uow = uow;
 
-            RuleFor(x => x.Id)
-                .GreaterThan(0);
-
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código de la planta es obligatorio.")
@@ -38,6 +35,6 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
 
         private async Task<bool> BeUniqueCode(UpdatePlantaCommand command, string code, CancellationToken cancellationToken)
             => !await _uow.Plantas.Query()
-                .AnyAsync(p => p.Code == code.Trim().ToUpper() && p.Id != command.Id, cancellationToken);
+                .AnyAsync(p => p.Code == code.Trim().ToUpper() && p.Code != command.Code, cancellationToken);
     }
 }

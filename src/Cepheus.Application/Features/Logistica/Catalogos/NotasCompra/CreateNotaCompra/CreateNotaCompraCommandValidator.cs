@@ -12,20 +12,15 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.CreateNot
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código de la nota es obligatorio.")
-                .Length(3).WithMessage("El código debe tener 3 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe una nota con ese código.");
-
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El texto de la nota es obligatorio.")
-                .MaximumLength(200).WithMessage("El texto no puede exceder los 200 caracteres.");
+                .MaximumLength(200).WithMessage("El texto no puede exceder los 200 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe una nota con ese nombre.");
         }
 
-        private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
             => !await _uow.NotasCompra.Query()
-                .AnyAsync(n => n.Code == code.Trim().ToUpper(), cancellationToken);
+                .AnyAsync(n => n.Name == name.Trim().ToUpper(), cancellationToken);
     }
 }

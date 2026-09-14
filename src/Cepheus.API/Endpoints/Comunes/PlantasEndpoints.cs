@@ -18,7 +18,7 @@ namespace Cepheus.API.Endpoints.Comunes
             group.MapPost("/", async (CreatePlantaCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
-                return Results.Created($"/api/comunes/plantas/{result.Id}", result);
+                return Results.Created($"/api/comunes/plantas/{result.Code}", result);
             })
             .WithName("CreatePlanta")
             .RequireAuthorization("PLANTAS.CREATE");
@@ -30,7 +30,7 @@ namespace Cepheus.API.Endpoints.Comunes
                 var result = await sender.Send(query);
                 return Results.Ok(result);
             })
-            .WithName("GetPlantasPagedQueryString")
+            .WithName("GetPlantasPagedQueryString") 
             .RequireAuthorization("PLANTAS.VIEW");
 
             group.MapPost("/paged/body", async (
@@ -43,19 +43,23 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("GetPlantasPagedBody")
             .RequireAuthorization("PLANTAS.VIEW");
 
-            group.MapGet("/{id:int}", async (int id, ISender sender) =>
+            group.MapGet("/{code}", async (string code, ISender sender) =>
             {
-                var result = await sender.Send(new GetPlantaByIdQuery(id));
+                var result = await sender.Send(new GetPlantaByIdQuery(code));
                 return Results.Ok(result);
             })
             .WithName("GetPlantaById")
             .RequireAuthorization("PLANTAS.VIEW");
 
-            group.MapPut("/{id:int}", async (int id, UpdatePlantaCommand command, ISender sender) =>
+            group.MapPut("/{code}", async (string code, UpdatePlantaCommand command, ISender sender) =>
             {
-                if (id != command.Id)
+                if (!string.Equals(
+                    code,
+                    command.Code,
+                    StringComparison.OrdinalIgnoreCase))
                 {
-                    return Results.BadRequest("El Id de la ruta no coincide con el del cuerpo.");
+                    return Results.BadRequest(
+                        "El código de la ruta no coincide con el código del cuerpo.");
                 }
 
                 var result = await sender.Send(command);
@@ -64,9 +68,9 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("UpdatePlanta")
             .RequireAuthorization("PLANTAS.UPDATE");
 
-            group.MapPatch("/{id:int}/toggle-status", async (int id, ISender sender) =>
+            group.MapPatch("/{code}/toggle-status", async (string code, ISender sender) =>
             {
-                var isActive = await sender.Send(new TogglePlantaStatusCommand(id));
+                var isActive = await sender.Send(new TogglePlantaStatusCommand(code));
                 return Results.Ok(new { IsActive = isActive });
             })
             .WithName("TogglePlantaStatus")

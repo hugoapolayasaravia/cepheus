@@ -19,16 +19,15 @@ namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
         {
             var current = await _uow.Monedas.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(m => m.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Moneda {request.Id} no encontrada.");
+                throw new KeyNotFoundException($"Moneda {request.Code} no encontrada.");
             }
 
             var moneda = new Moneda
             {
-                Id = request.Id,
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 Symbol = string.IsNullOrWhiteSpace(request.Symbol) ? null : request.Symbol.Trim(),
@@ -56,7 +55,6 @@ namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
 
             return new MonedaResponse
             {
-                Id = moneda.Id,
                 Code = moneda.Code,
                 Name = moneda.Name,
                 Symbol = moneda.Symbol,

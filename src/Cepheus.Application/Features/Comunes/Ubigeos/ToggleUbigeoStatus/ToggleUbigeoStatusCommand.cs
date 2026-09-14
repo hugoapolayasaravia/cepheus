@@ -2,5 +2,5 @@
 
 namespace Cepheus.Application.Features.Comunes.Ubigeos.ToggleUbigeoStatus
 {
-    public record ToggleUbigeoStatusCommand(int Id) : IRequest<bool>;
+    public record ToggleUbigeoStatusCommand(string Code) : IRequest<bool>;
 }

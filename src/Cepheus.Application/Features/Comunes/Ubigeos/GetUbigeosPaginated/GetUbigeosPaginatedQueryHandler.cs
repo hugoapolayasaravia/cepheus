@@ -59,7 +59,6 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeosPaginated
 
             var projected = sortedQuery.Select(u => new UbigeoResponse
             {
-                Id = u.Id,
                 Code = u.Code,
                 Department = u.Department,
                 Province = u.Province,

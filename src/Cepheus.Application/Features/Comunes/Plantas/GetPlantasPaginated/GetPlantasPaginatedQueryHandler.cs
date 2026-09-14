@@ -50,7 +50,6 @@ namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantasPaginated
 
             var projected = sortedQuery.Select(p => new PlantaResponse
             {
-                Id = p.Id,
                 Code = p.Code,
                 Name = p.Name,
                 LegalName = p.LegalName,

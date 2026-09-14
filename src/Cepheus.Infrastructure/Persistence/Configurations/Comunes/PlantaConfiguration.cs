@@ -10,11 +10,11 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
         {
             builder.ToTable("Plantas", schema: "comun");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Code);
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(2);
 
             builder.HasIndex(x => x.Code).IsUnique();
 
