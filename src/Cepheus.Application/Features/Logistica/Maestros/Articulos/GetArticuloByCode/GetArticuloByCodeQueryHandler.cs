@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Articulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.GetArticuloB
 
         public async Task<ArticuloResponse> Handle(GetArticuloByCodeQuery request, CancellationToken cancellationToken)
         {
-            var articulo = await _uow.Articulos.Query()
+            var articulo = await _uow.Logistica.Maestros.Articulos.Query()
                 .AsNoTracking()
                 .Where(a => a.Code == request.Code)
                 .Select(a => new ArticuloResponse

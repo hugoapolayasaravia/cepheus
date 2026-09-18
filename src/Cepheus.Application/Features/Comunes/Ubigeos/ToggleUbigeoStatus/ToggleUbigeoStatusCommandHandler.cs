@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.Ubigeos.ToggleUbigeoStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.ToggleUbigeoStatus
 
         public async Task<bool> Handle(ToggleUbigeoStatusCommand request, CancellationToken cancellationToken)
         {
-            var ubigeo = await _uow.Ubigeos.GetByCodeAsync(request.Code, cancellationToken);
+            var ubigeo = await _uow.Comunes.Ubigeos.GetByCodeAsync(request.Code, cancellationToken);
 
             if (ubigeo is null)
             {

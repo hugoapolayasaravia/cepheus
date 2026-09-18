@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Ge
         {
             var articuloCode = request.ArticuloCode.Trim().ToUpperInvariant();
 
-            return await _uow.ArticuloProveedores.Query()
+            return await _uow.Logistica.Maestros.ArticuloProveedores.Query()
                 .AsNoTracking()
                 .Where(x => x.ArticuloCode == articuloCode)
                 .Select(x => new ArticuloProveedorResponse

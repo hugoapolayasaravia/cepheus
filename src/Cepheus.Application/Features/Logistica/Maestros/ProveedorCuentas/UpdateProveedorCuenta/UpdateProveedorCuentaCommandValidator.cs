@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,11 +34,11 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Updat
         }
 
         private async Task<bool> BancoExists(string bancoCode, CancellationToken cancellationToken)
-            => await _uow.Bancos.Query()
+            => await _uow.Comunes.Bancos.Query()
                 .AnyAsync(b => b.Code == bancoCode.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> MonedaExists(string monedaCode, CancellationToken cancellationToken)
-            => await _uow.Monedas.Query()
+            => await _uow.Comunes.  Monedas.Query()
                 .AnyAsync(m => m.Code == monedaCode.Trim().ToUpper(), cancellationToken);
     }
 }

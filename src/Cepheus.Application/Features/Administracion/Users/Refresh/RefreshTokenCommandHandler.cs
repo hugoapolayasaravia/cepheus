@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Refresh
 
         public async Task<AuthenticateResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var storedToken = await _uow.RefreshTokens.Query()
+            var storedToken = await _uow.Administracion.RefreshTokens.Query()
                 .Include(rt => rt.User)
                     .ThenInclude(u => u.UserRoles)
                         .ThenInclude(ur => ur.Role)
@@ -52,7 +53,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Refresh
                 ExpiresAt = DateTime.UtcNow.AddDays(_jwtTokenService.RefreshTokenExpirationDays)
             };
 
-            await _uow.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
+            await _uow.Administracion.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new AuthenticateResponse

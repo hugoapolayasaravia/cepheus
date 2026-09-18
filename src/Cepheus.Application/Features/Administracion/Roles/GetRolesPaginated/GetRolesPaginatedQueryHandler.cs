@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.GetRolesPaginated
         public async Task<PagedResult<RoleResponse>> Handle(
             GetRolesPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Roles.Query().AsNoTracking();
+            var query = _uow.Administracion.Roles.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

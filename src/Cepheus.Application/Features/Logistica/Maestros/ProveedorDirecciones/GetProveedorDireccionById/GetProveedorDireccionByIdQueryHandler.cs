@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.G
 
         public async Task<ProveedorDireccionResponse> Handle(GetProveedorDireccionByIdQuery request, CancellationToken cancellationToken)
         {
-            var direccion = await _uow.ProveedorDirecciones.Query()
+            var direccion = await _uow.Logistica.Maestros.ProveedorDirecciones.Query()
                 .AsNoTracking()
                 .Where(d => d.Id == request.Id)
                 .Select(d => new ProveedorDireccionResponse

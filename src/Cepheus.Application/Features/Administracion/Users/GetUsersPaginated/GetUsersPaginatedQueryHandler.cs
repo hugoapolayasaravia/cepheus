@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using MediatR;
@@ -21,7 +21,7 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUsersPaginated
         public async Task<PagedResult<UserResponse>> Handle(
             GetUsersPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Users.Query().AsNoTracking();
+            var query = _uow.Administracion.Users.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.UpdateA
 
         public async Task<ArticuloStockResponse> Handle(UpdateArticuloStockThresholdsCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.StockArticulos.Query()
+            var current = await _uow.Logistica.Maestros.StockArticulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.PlantaCode == request.PlantaCode && s.ArticuloCode == request.ArticuloCode, cancellationToken);
 
@@ -47,7 +47,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.UpdateA
                 RowVersion = request.RowVersion
             };
 
-            _uow.StockArticulos.Update(stock);
+            _uow.Logistica.Maestros.StockArticulos.Update(stock);
 
             try
             {

@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocumento
 {
     public record UpdateTipoDocumentoCommand(
-        int Id,
         string Code,
         string Name,
         string? ShortName,

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ComprobantesPago.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantePa
 
         public async Task<ComprobantePagoResponse> Handle(GetComprobantePagoByIdQuery request, CancellationToken cancellationToken)
         {
-            var comprobante = await _uow.ComprobantesPago.Query()
+            var comprobante = await _uow.Comunes.ComprobantesPago.Query()
                 .AsNoTracking()
                 .Where(c => c.Id == request.Id)
                 .Select(c => new ComprobantePagoResponse

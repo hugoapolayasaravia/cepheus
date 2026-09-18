@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,11 +37,11 @@ namespace Cepheus.Application.Features.Administracion.Modulos.UpdateModulo
         }
 
         private async Task<bool> BeUniqueCode(UpdateModuloCommand command, string code, CancellationToken cancellationToken)
-            => !await _uow.Modulos.Query()
+            => !await _uow.Administracion.Modulos.Query()
                 .AnyAsync(m => m.Code == code.Trim().ToUpper() && m.Id != command.Id, cancellationToken);
 
         private async Task<bool> BeUniqueName(UpdateModuloCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.Modulos.Query()
+            => !await _uow.Administracion.Modulos.Query()
                 .AnyAsync(m => m.Name == name.Trim() && m.Id != command.Id, cancellationToken);
     }
 

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Articulos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
 
         public async Task<ArticuloResponse> Handle(UpdateArticuloCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Articulos.Query()
+            var current = await _uow.Logistica.Maestros.Articulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Code == request.Code, cancellationToken);
 
@@ -55,7 +55,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
                 RowVersion = request.RowVersion
             };
 
-            _uow.Articulos.Update(articulo);
+            _uow.Logistica.Maestros.Articulos.Update(articulo);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ControlCierres.GetCont
         {
             var plantaCode = request.PlantaCode.Trim().ToUpperInvariant();
 
-            return await _uow.ControlCierres.Query()
+            return await _uow.Logistica.Maestros.ControlCierres.Query()
                 .AsNoTracking()
                 .Where(c => c.PlantaCode == plantaCode)
                 .OrderByDescending(c => c.PeriodCode)

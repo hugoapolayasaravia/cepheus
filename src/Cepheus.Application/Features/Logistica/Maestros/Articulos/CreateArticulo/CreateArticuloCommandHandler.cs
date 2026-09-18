@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Articulos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,8 +17,14 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
 
         public async Task<ArticuloResponse> Handle(CreateArticuloCommand request, CancellationToken cancellationToken)
         {
-            var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Articulos.Query().Select(a => a.Code), length: 7, entityLabel: "Artículos", cancellationToken);
+            var subFamiliaCode = request.SubFamiliaCode.Trim().ToUpperInvariant();
+
+            var code = await SequentialCodeGenerator.NextChildAsync(
+                _uow.Logistica.Maestros.Articulos.Query().Select(a => a.Code),
+                prefix: subFamiliaCode,
+                suffixLength: 3,
+                entityLabel: "Artículos",
+                cancellationToken);
 
             var articulo = new Articulo
             {
@@ -44,7 +50,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
                 IsActive = true
             };
 
-            await _uow.Articulos.AddAsync(articulo, cancellationToken);
+            await _uow.Logistica.Maestros.Articulos.AddAsync(articulo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(articulo);

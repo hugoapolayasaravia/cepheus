@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.Vehiculos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.GetVehiculos
         public async Task<PagedResult<VehiculoResponse>> Handle(
             GetVehiculosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Vehiculos.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.Vehiculos.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

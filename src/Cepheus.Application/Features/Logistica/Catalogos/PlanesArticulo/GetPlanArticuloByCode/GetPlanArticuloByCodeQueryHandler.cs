@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.GetPla
 
         public async Task<PlanArticuloResponse> Handle(GetPlanArticuloByCodeQuery request, CancellationToken cancellationToken)
         {
-            var plan = await _uow.PlanesArticulo.Query()
+            var plan = await _uow.Logistica.Catalogos.PlanesArticulo.Query()
                 .AsNoTracking()
                 .Where(p => p.Code == request.Code)
                 .Select(p => new PlanArticuloResponse

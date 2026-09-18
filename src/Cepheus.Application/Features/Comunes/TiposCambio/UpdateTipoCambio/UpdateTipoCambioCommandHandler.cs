@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.UpdateTipoCambio
 
         public async Task<TipoCambioResponse> Handle(UpdateTipoCambioCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.TiposCambio.Query()
+            var current = await _uow.Comunes.TiposCambio.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.UpdateTipoCambio
                 RowVersion = request.RowVersion
             };
 
-            _uow.TiposCambio.Update(tipoCambio);
+            _uow.Comunes.TiposCambio.Update(tipoCambio);
 
             try
             {

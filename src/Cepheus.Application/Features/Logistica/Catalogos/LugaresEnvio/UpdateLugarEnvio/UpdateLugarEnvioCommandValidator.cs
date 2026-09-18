@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Familias.UpdateFamilia;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +31,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.UpdateLu
         }
 
         private async Task<bool> BeUniqueName(UpdateLugarEnvioCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.LugaresEnvio.Query()
+            => !await _uow.Logistica.Catalogos.LugaresEnvio.Query()
                 .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

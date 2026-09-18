@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.ToggleVehicu
 
         public async Task<bool> Handle(ToggleVehiculoStatusCommand request, CancellationToken cancellationToken)
         {
-            var vehiculo = await _uow.Vehiculos.Query()
+            var vehiculo = await _uow.Logistica.Maestros.Vehiculos.Query()
                 .FirstOrDefaultAsync(v => v.Code == request.Code, cancellationToken);
 
             if (vehiculo is null)

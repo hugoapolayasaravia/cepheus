@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Infrastructure.Persistence.Repositories

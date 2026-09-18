@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,13 +12,10 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocument
         {
             _uow = uow;
 
-            RuleFor(x => x.Id)
-                .GreaterThan(0);
-
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código del tipo de documento es obligatorio.")
-                .MaximumLength(2)
+                .MaximumLength(3)
                 .MustAsync(BeUniqueCode).WithMessage("Ya existe un tipo de documento con ese código.");
 
             RuleFor(x => x.Name)
@@ -34,7 +31,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocument
         }
 
         private async Task<bool> BeUniqueCode(UpdateTipoDocumentoCommand command, string code, CancellationToken cancellationToken)
-            => !await _uow.TiposDocumento.Query()
-                .AnyAsync(t => t.Code == code.Trim().ToUpper() && t.Id != command.Id, cancellationToken);
+            => !await _uow.Comunes.TiposDocumento.Query()
+                .AnyAsync(t => t.Code == code.Trim().ToUpper() && t.Code != command.Code, cancellationToken);
     }
 }

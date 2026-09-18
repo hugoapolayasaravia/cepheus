@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.MotivosDevolucion.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivoDevolu
 
         public async Task<MotivoDevolucionResponse> Handle(GetMotivoDevolucionByIdQuery request, CancellationToken cancellationToken)
         {
-            var motivo = await _uow.MotivosDevolucion.Query()
+            var motivo = await _uow.Comunes.MotivosDevolucion.Query()
                 .AsNoTracking()
                 .Where(m => m.Id == request.Id)
                 .Select(m => new MotivoDevolucionResponse

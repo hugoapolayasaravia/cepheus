@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Bancos.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.UpdateBanco
 
         public async Task<BancoResponse> Handle(UpdateBancoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Bancos.Query()
+            var current = await _uow.Comunes.Bancos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Code == request.Code, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.UpdateBanco
                 RowVersion = request.RowVersion
             };
 
-            _uow.Bancos.Update(banco);
+            _uow.Comunes.Bancos.Update(banco);
 
             try
             {

@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.GetSub
         public async Task<PagedResult<SubCentroCostoResponse>> Handle(
             GetSubCentrosCostoPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.SubCentrosCosto.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.SubCentrosCosto.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

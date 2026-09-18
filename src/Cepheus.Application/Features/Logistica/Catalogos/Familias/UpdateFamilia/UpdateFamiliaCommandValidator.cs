@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.UpdateFamili
         }
 
         private async Task<bool> BeUniqueName(UpdateFamiliaCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.Familias.Query()
+            => !await _uow.Logistica.Catalogos.Familias.Query()
                 .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

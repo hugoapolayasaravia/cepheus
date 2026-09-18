@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.CreateLu
         public async Task<LugarEnvioResponse> Handle(CreateLugarEnvioCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.LugaresEnvio.Query().Select(f => f.Code), length: 3, entityLabel: "Lugares de Envío", cancellationToken);
+                _uow.Logistica.Catalogos.LugaresEnvio.Query().Select(f => f.Code), length: 3, entityLabel: "Lugares de Envío", cancellationToken);
 
             var lugar = new LugarEnvio
             {
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.CreateLu
                 IsActive = true
             };
 
-            await _uow.LugaresEnvio.AddAsync(lugar, cancellationToken);
+            await _uow.Logistica.Catalogos.LugaresEnvio.AddAsync(lugar, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(lugar);

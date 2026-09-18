@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Bancos.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.CreateBanco
         public async Task<BancoResponse> Handle(CreateBancoCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Bancos.Query().Select(b => b.Code), length: 3, entityLabel: "Bancos", cancellationToken);
+                _uow.Comunes.Bancos.Query().Select(b => b.Code), length: 3, entityLabel: "Bancos", cancellationToken);
 
             var banco = new Banco
             {
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.CreateBanco
                 IsActive = true
             };
 
-            await _uow.Bancos.AddAsync(banco, cancellationToken);
+            await _uow.Comunes.Bancos.AddAsync(banco, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(banco);

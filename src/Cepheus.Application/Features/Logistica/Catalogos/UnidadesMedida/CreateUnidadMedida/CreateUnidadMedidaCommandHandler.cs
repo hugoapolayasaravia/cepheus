@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Create
                 IsActive = true
             };
 
-            await _uow.UnidadesMedida.AddAsync(unidad, cancellationToken);
+            await _uow.Logistica.Catalogos.UnidadesMedida.AddAsync(unidad, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(unidad);

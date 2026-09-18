@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.TiposDocumento.GetTipoDocumentoById
 {
-    public record GetTipoDocumentoByIdQuery(int Id) : IRequest<TipoDocumentoResponse>;
+    public record GetTipoDocumentoByIdQuery(string Code) : IRequest<TipoDocumentoResponse>;
 }

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.UpdateSub
 
         public async Task<SubFamiliaResponse> Handle(UpdateSubFamiliaCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.SubFamilias.Query()
+            var current = await _uow.Logistica.Catalogos.SubFamilias.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Code == request.Code, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.UpdateSub
                 RowVersion = request.RowVersion
             };
 
-            _uow.SubFamilias.Update(subFamilia);
+            _uow.Logistica.Catalogos.SubFamilias.Update(subFamilia);
 
             try
             {

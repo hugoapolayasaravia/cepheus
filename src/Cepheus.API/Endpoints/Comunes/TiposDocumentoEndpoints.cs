@@ -18,7 +18,7 @@ namespace Cepheus.API.Endpoints.Comunes
             group.MapPost("/", async (CreateTipoDocumentoCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
-                return Results.Created($"/api/comunes/tipos-documento/{result.Id}", result);
+                return Results.Created($"/api/comunes/tipos-documento/{result.Code}", result);
             })
             .WithName("CreateTipoDocumento")
             .RequireAuthorization("TIPOSDOCUMENTO.CREATE");
@@ -43,19 +43,23 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("GetTiposDocumentoPagedBody")
             .RequireAuthorization("TIPOSDOCUMENTO.VIEW");
 
-            group.MapGet("/{id:int}", async (int id, ISender sender) =>
+            group.MapGet("/{code}", async (string code, ISender sender) =>
             {
-                var result = await sender.Send(new GetTipoDocumentoByIdQuery(id));
+                var result = await sender.Send(new GetTipoDocumentoByIdQuery(code));
                 return Results.Ok(result);
             })
             .WithName("GetTipoDocumentoById")
             .RequireAuthorization("TIPOSDOCUMENTO.VIEW");
 
-            group.MapPut("/{id:int}", async (int id, UpdateTipoDocumentoCommand command, ISender sender) =>
+            group.MapPut("/{code}", async (string code, UpdateTipoDocumentoCommand command, ISender sender) =>
             {
-                if (id != command.Id)
+                if (!string.Equals(
+                    code,
+                    command.Code,
+                    StringComparison.OrdinalIgnoreCase))
                 {
-                    return Results.BadRequest("El Id de la ruta no coincide con el del cuerpo.");
+                    return Results.BadRequest(
+                        "El código de la ruta no coincide con el código del cuerpo.");
                 }
 
                 var result = await sender.Send(command);
@@ -64,9 +68,9 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("UpdateTipoDocumento")
             .RequireAuthorization("TIPOSDOCUMENTO.UPDATE");
 
-            group.MapPatch("/{id:int}/toggle-status", async (int id, ISender sender) =>
+            group.MapPatch("/{code}/toggle-status", async (string code, ISender sender) =>
             {
-                var isActive = await sender.Send(new ToggleTipoDocumentoStatusCommand(id));
+                var isActive = await sender.Send(new ToggleTipoDocumentoStatusCommand(code));
                 return Results.Ok(new { IsActive = isActive });
             })
             .WithName("ToggleTipoDocumentoStatus")

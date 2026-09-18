@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Me
                 throw new UnauthorizedAccessException("No hay un usuario autenticado.");
             }
 
-            var response = await _uow.Users.Query()
+            var response = await _uow.Administracion.Users.Query()
                 .AsNoTracking()
                 .Where(u => u.Id == _currentUserService.UserId.Value)
                 .Select(u => new MeResponse

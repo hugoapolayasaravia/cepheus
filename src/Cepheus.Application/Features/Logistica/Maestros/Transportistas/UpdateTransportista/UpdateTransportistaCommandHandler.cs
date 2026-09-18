@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Transportistas.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.UpdateT
 
         public async Task<TransportistaResponse> Handle(UpdateTransportistaCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Transportistas.Query()
+            var current = await _uow.Logistica.Maestros.Transportistas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
@@ -48,7 +48,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.UpdateT
                 RowVersion = request.RowVersion
             };
 
-            _uow.Transportistas.Update(transportista);
+            _uow.Logistica.Maestros.Transportistas.Update(transportista);
 
             try
             {

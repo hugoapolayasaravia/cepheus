@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.ToggleCond
 
         public async Task<bool> Handle(ToggleConductorStatusCommand request, CancellationToken cancellationToken)
         {
-            var conductor = await _uow.Conductores.Query()
+            var conductor = await _uow.Logistica.Maestros.Conductores.Query()
                 .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
             if (conductor is null)

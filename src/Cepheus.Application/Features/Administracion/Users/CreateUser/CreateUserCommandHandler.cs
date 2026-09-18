@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -30,7 +31,7 @@ namespace Cepheus.Application.Features.Administracion.Users.CreateUser
                 IsActive = true
             };
 
-            await _uow.Users.AddAsync(user, cancellationToken);
+            await _uow.Administracion.Users.AddAsync(user, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new UserResponse

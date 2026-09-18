@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Plantas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -34,7 +34,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.CreatePlanta
                 IsActive = true
             };
 
-            await _uow.Plantas.AddAsync(planta, cancellationToken);
+            await _uow.Comunes.Plantas.AddAsync(planta, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(planta);

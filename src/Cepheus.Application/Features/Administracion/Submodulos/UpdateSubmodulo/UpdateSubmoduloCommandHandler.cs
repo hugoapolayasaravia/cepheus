@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Submodulos.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
 
         public async Task<SubmoduloResponse> Handle(UpdateSubmoduloCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Submodulos.Query()
+            var current = await _uow.Administracion.Submodulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == request.Id, cancellationToken);
 
@@ -43,7 +43,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
                 RowVersion = request.RowVersion
             };
 
-            _uow.Submodulos.Update(submodulo);
+            _uow.Administracion.Submodulos.Update(submodulo);
 
             try
             {

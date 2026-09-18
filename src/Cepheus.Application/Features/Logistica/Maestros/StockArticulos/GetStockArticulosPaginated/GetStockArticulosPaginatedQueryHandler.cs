@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.GetStoc
         public async Task<PagedResult<ArticuloStockResponse>> Handle(
             GetStockArticulosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.StockArticulos.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.StockArticulos.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.PlantaCode))
             {

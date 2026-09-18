@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,10 +32,10 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ControlCierres.CreateC
         }
 
         private async Task<bool> PlantaExists(string code, CancellationToken ct)
-            => await _uow.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniquePeriod(CreateControlCierreCommand command, CancellationToken ct)
-            => !await _uow.ControlCierres.Query()
+            => !await _uow.Logistica.Maestros.ControlCierres.Query()
                 .AnyAsync(c =>
                     c.PlantaCode == command.PlantaCode.Trim().ToUpper() &&
                     c.PeriodCode == command.PeriodCode.Trim(), ct);

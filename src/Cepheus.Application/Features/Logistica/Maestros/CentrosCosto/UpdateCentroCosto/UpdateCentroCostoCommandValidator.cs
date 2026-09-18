@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,10 +32,10 @@ namespace Cepheus.Application.Features.Logistica.Maestros.CentrosCosto.UpdateCen
         }
 
         private async Task<bool> BeUniqueName(UpdateCentroCostoCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.CentrosCosto.Query()
+            => !await _uow.Logistica.Maestros.CentrosCosto.Query()
                 .AnyAsync(c => c.Code != command.Code && c.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
 
         private async Task<bool> PlantaExists(string code, CancellationToken cancellationToken)
-            => await _uow.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), cancellationToken);
+            => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), cancellationToken);
     }
 }

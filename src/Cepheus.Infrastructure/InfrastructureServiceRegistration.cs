@@ -1,7 +1,9 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Infrastructure.Authorization;
 using Cepheus.Infrastructure.Identity;
-using Cepheus.Infrastructure.Persistence;
+using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks;
 using Cepheus.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;

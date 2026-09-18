@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.FormasPago.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.GetFormasP
         public async Task<PagedResult<FormaPagoResponse>> Handle(
             GetFormasPagoPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.FormasPago.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.FormasPago.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

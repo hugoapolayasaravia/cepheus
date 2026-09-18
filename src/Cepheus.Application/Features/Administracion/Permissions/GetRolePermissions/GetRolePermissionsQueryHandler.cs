@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Permissions.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.GetRolePermiss
 
         public async Task<List<PermissionResponse>> Handle(GetRolePermissionsQuery request, CancellationToken cancellationToken)
         {
-            var roleExists = await _uow.Roles.Query()
+            var roleExists = await _uow.Administracion.Roles.Query()
                 .AnyAsync(r => r.Id == request.RoleId, cancellationToken);
 
             if (!roleExists)
@@ -24,7 +24,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.GetRolePermiss
                 throw new KeyNotFoundException($"Rol {request.RoleId} no encontrado.");
             }
 
-            return await _uow.PermissionRoles.Query()
+            return await _uow.Administracion.PermissionRoles.Query()
                 .Where(pr => pr.RoleId == request.RoleId)
                 .Select(pr => new PermissionResponse
                 {

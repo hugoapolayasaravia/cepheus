@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.Proveedores.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.GetProveed
         public async Task<PagedResult<ProveedorResponse>> Handle(
             GetProveedoresPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Proveedores.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.Proveedores.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

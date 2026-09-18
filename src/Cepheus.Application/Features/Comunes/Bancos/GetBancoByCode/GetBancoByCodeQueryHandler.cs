@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Bancos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.GetBancoByCode
 
         public async Task<BancoResponse> Handle(GetBancoByCodeQuery request, CancellationToken cancellationToken)
         {
-            var banco = await _uow.Bancos.Query()
+            var banco = await _uow.Comunes.Bancos.Query()
                 .AsNoTracking()
                 .Where(b => b.Code == request.Code)
                 .Select(b => new BancoResponse

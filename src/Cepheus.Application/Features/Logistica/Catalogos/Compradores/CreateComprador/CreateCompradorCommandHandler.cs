@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Compradores.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.CreateCom
         public async Task<CompradorResponse> Handle(CreateCompradorCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Compradores.Query().Select(f => f.Code), length: 3, entityLabel: "Compradores", cancellationToken);
+                _uow.Logistica.Catalogos.Compradores.Query().Select(f => f.Code), length: 3, entityLabel: "Compradores", cancellationToken);
 
 
             var comprador = new Comprador
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.CreateCom
                 IsActive = true
             };
 
-            await _uow.Compradores.AddAsync(comprador, cancellationToken);
+            await _uow.Logistica.Catalogos.Compradores.AddAsync(comprador, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(comprador);

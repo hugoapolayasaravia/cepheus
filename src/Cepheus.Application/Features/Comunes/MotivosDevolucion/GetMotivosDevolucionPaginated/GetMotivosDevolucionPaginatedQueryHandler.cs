@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.MotivosDevolucion.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivosDevol
         public async Task<PagedResult<MotivoDevolucionResponse>> Handle(
             GetMotivosDevolucionPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.MotivosDevolucion.Query().AsNoTracking();
+            var query = _uow.Comunes.MotivosDevolucion.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

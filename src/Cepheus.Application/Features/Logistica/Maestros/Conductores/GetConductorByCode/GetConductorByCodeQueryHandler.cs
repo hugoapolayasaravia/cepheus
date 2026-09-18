@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Conductores.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.GetConduct
 
         public async Task<ConductorResponse> Handle(GetConductorByCodeQuery request, CancellationToken cancellationToken)
         {
-            var conductor = await _uow.Conductores.Query()
+            var conductor = await _uow.Logistica.Maestros.Conductores.Query()
                 .AsNoTracking()
                 .Where(c => c.Code == request.Code)
                 .Select(c => new ConductorResponse

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Tramites.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.UpdateTramit
 
         public async Task<TramiteResponse> Handle(UpdateTramiteCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Tramites.Query()
+            var current = await _uow.Logistica.Catalogos.Tramites.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.UpdateTramit
                 RowVersion = request.RowVersion
             };
 
-            _uow.Tramites.Update(tramite);
+            _uow.Logistica.Catalogos.Tramites.Update(tramite);
 
             try
             {

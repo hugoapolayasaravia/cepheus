@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposVale.UpdateTipoV
         }
 
         private async Task<bool> BeUniqueName(UpdateTipoValeCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.TiposVale.Query()
+            => !await _uow.Logistica.Catalogos.TiposVale.Query()
                 .AnyAsync(t => t.Code != command.Code && t.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

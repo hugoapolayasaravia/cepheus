@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.UpdateNot
         }
 
         private async Task<bool> BeUniqueName(UpdateNotaCompraCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.NotasCompra.Query()
+            => !await _uow.Logistica.Catalogos.NotasCompra.Query()
                 .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

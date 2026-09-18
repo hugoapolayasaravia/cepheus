@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Monedas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.CreateMoneda
                 IsActive = true
             };
 
-            await _uow.Monedas.AddAsync(moneda, cancellationToken);
+            await _uow.Comunes.Monedas.AddAsync(moneda, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(moneda);

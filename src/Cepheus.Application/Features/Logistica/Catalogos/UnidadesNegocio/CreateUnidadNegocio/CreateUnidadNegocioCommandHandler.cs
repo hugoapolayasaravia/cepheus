@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Creat
         public async Task<UnidadNegocioResponse> Handle(CreateUnidadNegocioCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.UnidadesNegocio.Query().Select(u => u.Code), length: 6, entityLabel: "Unidades de Negocio", cancellationToken);
+                _uow.Logistica.Catalogos.UnidadesNegocio.Query().Select(u => u.Code), length: 6, entityLabel: "Unidades de Negocio", cancellationToken);
 
             var unidad = new UnidadNegocio
             {
@@ -30,7 +30,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Creat
                 IsActive = true
             };
 
-            await _uow.UnidadesNegocio.AddAsync(unidad, cancellationToken);
+            await _uow.Logistica.Catalogos.UnidadesNegocio.AddAsync(unidad, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(unidad);

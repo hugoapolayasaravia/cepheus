@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.CreateRole
                 IsActive = true
             };
 
-            await _uow.Roles.AddAsync(role, cancellationToken);
+            await _uow.Administracion.Roles.AddAsync(role, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new RoleResponse

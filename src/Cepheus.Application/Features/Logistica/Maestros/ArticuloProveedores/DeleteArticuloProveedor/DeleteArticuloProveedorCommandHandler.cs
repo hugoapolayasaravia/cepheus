@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.De
 
         public async Task Handle(DeleteArticuloProveedorCommand request, CancellationToken cancellationToken)
         {
-            var relacion = await _uow.ArticuloProveedores.Query()
+            var relacion = await _uow.Logistica.Maestros.ArticuloProveedores.Query()
                 .FirstOrDefaultAsync(x =>
                     x.PlantaCode == request.PlantaCode &&
                     x.ArticuloCode == request.ArticuloCode &&
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.De
                     $"No existe relación para planta {request.PlantaCode}, artículo {request.ArticuloCode}, proveedor {request.ProveedorCode}.");
             }
 
-            _uow.ArticuloProveedores.Remove(relacion);
+            _uow.Logistica.Maestros.ArticuloProveedores.Remove(relacion);
             await _uow.SaveChangesAsync(cancellationToken);
         }
     }

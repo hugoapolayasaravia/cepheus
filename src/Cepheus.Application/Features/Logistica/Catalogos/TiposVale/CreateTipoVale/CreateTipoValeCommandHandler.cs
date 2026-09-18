@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposVale.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposVale.CreateTipoV
         public async Task<TipoValeResponse> Handle(CreateTipoValeCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.TiposVale.Query().Select(t => t.Code), length: 3, entityLabel: "Tipos de Vale", cancellationToken);
+                _uow.Logistica.Catalogos.TiposVale.Query().Select(t => t.Code), length: 3, entityLabel: "Tipos de Vale", cancellationToken);
 
             var tipoVale = new TipoVale
             {
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposVale.CreateTipoV
                 IsActive = true
             };
 
-            await _uow.TiposVale.AddAsync(tipoVale, cancellationToken);
+            await _uow.Logistica.Catalogos.TiposVale.AddAsync(tipoVale, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tipoVale);

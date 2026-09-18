@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.MotivosDevolucion.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -24,7 +24,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.CreateMotivoDev
                 IsActive = true
             };
 
-            await _uow.MotivosDevolucion.AddAsync(motivo, cancellationToken);
+            await _uow.Comunes.MotivosDevolucion.AddAsync(motivo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(motivo);

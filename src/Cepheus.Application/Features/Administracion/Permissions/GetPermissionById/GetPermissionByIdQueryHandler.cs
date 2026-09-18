@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Permissions.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.GetPermissionB
 
         public async Task<PermissionResponse> Handle(GetPermissionByIdQuery request, CancellationToken cancellationToken)
         {
-            var permission = await _uow.Permissions.Query()
+            var permission = await _uow.Administracion.Permissions.Query()
                 .AsNoTracking()
                 .Where(p => p.Id == request.Id)
                 .Select(p => new PermissionResponse

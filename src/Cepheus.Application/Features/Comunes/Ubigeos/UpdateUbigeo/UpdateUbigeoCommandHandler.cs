@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Ubigeos.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
 
         public async Task<UbigeoResponse> Handle(UpdateUbigeoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Ubigeos.Query()
+            var current = await _uow.Comunes.Ubigeos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Code == request.Code, cancellationToken);
 
@@ -40,7 +40,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.UpdateUbigeo
                 RowVersion = request.RowVersion
             };
 
-            _uow.Ubigeos.Update(ubigeo);
+            _uow.Comunes.Ubigeos.Update(ubigeo);
 
             try
             {

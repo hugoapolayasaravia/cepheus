@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.CreateRole
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.Roles.Query()
+            => !await _uow.Administracion.Roles.Query()
                 .AnyAsync(r => r.Name == name.Trim(), cancellationToken);
     }
 

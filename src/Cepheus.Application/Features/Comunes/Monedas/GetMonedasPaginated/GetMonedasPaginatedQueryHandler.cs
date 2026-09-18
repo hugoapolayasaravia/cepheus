@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.Monedas.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedasPaginated
         public async Task<PagedResult<MonedaResponse>> Handle(
             GetMonedasPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Monedas.Query().AsNoTracking();
+            var query = _uow.Comunes.Monedas.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Modulos.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.UpdateModulo
 
         public async Task<ModuloResponse> Handle(UpdateModuloCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Modulos.Query()
+            var current = await _uow.Administracion.Modulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
 
@@ -32,7 +32,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.UpdateModulo
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 Icon = string.IsNullOrWhiteSpace(request.Icon) ? null : request.Icon.Trim(),
-                Tooltip = string.IsNullOrWhiteSpace(request.Tooltip) ? null : request.Tooltip.Trim(),
+                Tooltip = request.Tooltip?.Trim() ?? string.Empty,
                 DisplayOrder = request.DisplayOrder,
 
                 IsActive = current.IsActive,
@@ -42,7 +42,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.UpdateModulo
                 RowVersion = request.RowVersion
             };
 
-            _uow.Modulos.Update(modulo);
+            _uow.Administracion.Modulos.Update(modulo);
 
             try
             {

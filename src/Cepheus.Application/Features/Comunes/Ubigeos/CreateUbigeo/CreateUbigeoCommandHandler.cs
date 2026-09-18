@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Ubigeos.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -25,7 +25,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.CreateUbigeo
                 IsActive = true
             };
 
-            await _uow.Ubigeos.AddAsync(ubigeo, cancellationToken);
+            await _uow.Comunes.Ubigeos.AddAsync(ubigeo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(ubigeo);

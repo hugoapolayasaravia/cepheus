@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposDocumento.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +16,11 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.GetTipoDocumentoBy
 
         public async Task<TipoDocumentoResponse> Handle(GetTipoDocumentoByIdQuery request, CancellationToken cancellationToken)
         {
-            var tipoDocumento = await _uow.TiposDocumento.Query()
+            var tipoDocumento = await _uow.Comunes.TiposDocumento.Query()
                 .AsNoTracking()
-                .Where(t => t.Id == request.Id)
+                .Where(t => t.Code == request.Code)
                 .Select(t => new TipoDocumentoResponse
                 {
-                    Id = t.Id,
                     Code = t.Code,
                     Name = t.Name,
                     ShortName = t.ShortName,
@@ -42,7 +41,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.GetTipoDocumentoBy
 
             if (tipoDocumento is null)
             {
-                throw new KeyNotFoundException($"Tipo de documento {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Tipo de documento {request.Code} no encontrado.");
             }
 
             return tipoDocumento;

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Monedas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.GetMonedaById
 
         public async Task<MonedaResponse> Handle(GetMonedaByIdQuery request, CancellationToken cancellationToken)
         {
-            var moneda = await _uow.Monedas.Query()
+            var moneda = await _uow.Comunes.Monedas.Query()
                 .AsNoTracking()
                 .Where(m => m.Code == request.Code)
                 .Select(m => new MonedaResponse

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Update
         }
 
         private async Task<bool> BeUniqueName(UpdatePlanArticuloCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.PlanesArticulo.Query()
+            => !await _uow.Logistica.Catalogos.PlanesArticulo.Query()
                 .AnyAsync(p => p.Code != command.Code && p.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

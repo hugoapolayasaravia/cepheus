@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common.Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Domain.Logistica.Catalogos;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.UpdateNot
 
         public async Task<NotaCompraResponse> Handle(UpdateNotaCompraCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.NotasCompra.Query()
+            var current = await _uow.Logistica.Catalogos.NotasCompra.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(n => n.Code == request.Code, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.UpdateNot
                 RowVersion = request.RowVersion
             };
 
-            _uow.NotasCompra.Update(nota);
+            _uow.Logistica.Catalogos.NotasCompra.Update(nota);
 
             try
             {

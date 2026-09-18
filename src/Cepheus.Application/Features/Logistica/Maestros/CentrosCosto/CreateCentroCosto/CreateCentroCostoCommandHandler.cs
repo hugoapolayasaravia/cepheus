@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.CentrosCosto.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.CentrosCosto.CreateCen
         public async Task<CentroCostoResponse> Handle(CreateCentroCostoCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.CentrosCosto.Query().Select(c => c.Code), length: 3, entityLabel: "Centros de Costo", cancellationToken);
+                _uow.Logistica.Maestros.CentrosCosto.Query().Select(c => c.Code), length: 3, entityLabel: "Centros de Costo", cancellationToken);
 
             var centro = new CentroCosto
             {
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.CentrosCosto.CreateCen
                 IsActive = true
             };
 
-            await _uow.CentrosCosto.AddAsync(centro, cancellationToken);
+            await _uow.Logistica.Maestros.CentrosCosto.AddAsync(centro, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(centro);

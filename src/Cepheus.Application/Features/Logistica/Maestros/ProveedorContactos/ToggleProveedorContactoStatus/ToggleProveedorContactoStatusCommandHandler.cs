@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.ToggleProveedorContactoStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Tog
 
         public async Task<bool> Handle(ToggleProveedorContactoStatusCommand request, CancellationToken cancellationToken)
         {
-            var contacto = await _uow.ProveedorContactos.GetByIdAsync(request.Id, cancellationToken);
+            var contacto = await _uow.Logistica.Maestros.ProveedorContactos.GetByIdAsync(request.Id, cancellationToken);
 
             if (contacto is null)
             {

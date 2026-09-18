@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.GetSub
 
         public async Task<SubCentroCostoResponse> Handle(GetSubCentroCostoByCodeQuery request, CancellationToken cancellationToken)
         {
-            var subCentro = await _uow.SubCentrosCosto.Query()
+            var subCentro = await _uow.Logistica.Maestros.SubCentrosCosto.Query()
                 .AsNoTracking()
                 .Where(s => s.Code == request.Code)
                 .Select(s => new SubCentroCostoResponse

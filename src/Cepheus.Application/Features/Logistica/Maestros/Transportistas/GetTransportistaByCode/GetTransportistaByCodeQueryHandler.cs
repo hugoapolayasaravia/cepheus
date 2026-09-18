@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Transportistas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.GetTran
 
         public async Task<TransportistaResponse> Handle(GetTransportistaByCodeQuery request, CancellationToken cancellationToken)
         {
-            var transportista = await _uow.Transportistas.Query()
+            var transportista = await _uow.Logistica.Maestros.Transportistas.Query()
                 .AsNoTracking()
                 .Where(t => t.Code == request.Code)
                 .Select(t => new TransportistaResponse

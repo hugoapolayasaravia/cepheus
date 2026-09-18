@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,8 +17,23 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Create
 
         public async Task<SubCentroCostoResponse> Handle(CreateSubCentroCostoCommand request, CancellationToken cancellationToken)
         {
-            var code = await SequentialCodeGenerator.NextAsync(
-                _uow.SubCentrosCosto.Query().Select(s => s.Code), length: 6, entityLabel: "SubCentros de Costo", cancellationToken);
+            var centroCostoCode = string.IsNullOrWhiteSpace(request.CentroCostoCode)
+                ? null
+                : request.CentroCostoCode.Trim().ToUpperInvariant();
+
+            if (string.IsNullOrWhiteSpace(centroCostoCode))
+            {
+                throw new ArgumentException(
+                    "El Centro de Costo es obligatorio para crear un SubCentro de Costo.");
+            }
+
+
+            var code = await SequentialCodeGenerator.NextChildAsync(
+                _uow.Logistica.Maestros.SubCentrosCosto.Query().Select(s => s.Code),
+                centroCostoCode,
+                suffixLength: 3,
+                entityLabel: "SubCentros de Costo",
+                cancellationToken);
 
             var subCentro = new SubCentroCosto
             {
@@ -32,7 +47,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Create
                 IsActive = true
             };
 
-            await _uow.SubCentrosCosto.AddAsync(subCentro, cancellationToken);
+            await _uow.Logistica.Maestros.SubCentrosCosto.AddAsync(subCentro, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(subCentro);

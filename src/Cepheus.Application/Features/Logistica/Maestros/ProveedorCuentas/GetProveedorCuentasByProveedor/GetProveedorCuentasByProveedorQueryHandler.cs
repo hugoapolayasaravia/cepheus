@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.GetPr
         {
             var proveedorCode = request.ProveedorCode.Trim().ToUpperInvariant();
 
-            return await _uow.ProveedorCuentas.Query()
+            return await _uow.Logistica.Maestros.ProveedorCuentas.Query()
                 .AsNoTracking()
                 .Where(c => c.ProveedorCode == proveedorCode)
                 .OrderByDescending(c => c.IsPrimary)

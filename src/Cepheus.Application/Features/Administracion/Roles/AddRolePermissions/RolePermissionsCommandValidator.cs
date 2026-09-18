@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,13 +24,13 @@ namespace Cepheus.Application.Features.Administracion.Roles.AddRolePermissions
         }
 
         private async Task<bool> RoleExists(int roleId, CancellationToken cancellationToken)
-            => await _uow.Roles.Query().AnyAsync(r => r.Id == roleId, cancellationToken);
+            => await _uow.Administracion.Roles.Query().AnyAsync(r => r.Id == roleId, cancellationToken);
 
         private async Task<bool> AllPermissionsExist(List<int> permissionIds, CancellationToken cancellationToken)
         {
             var distinctIds = permissionIds.Distinct().ToList();
 
-            var existingCount = await _uow.Permissions.Query()
+            var existingCount = await _uow.Administracion.Permissions.Query()
                 .CountAsync(p => distinctIds.Contains(p.Id), cancellationToken);
 
             return existingCount == distinctIds.Count;

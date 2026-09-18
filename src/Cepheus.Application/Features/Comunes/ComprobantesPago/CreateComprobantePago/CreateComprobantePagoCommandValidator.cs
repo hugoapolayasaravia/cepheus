@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,11 +39,11 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.ComprobantesPago.Query()
+            => !await _uow.Comunes.ComprobantesPago.Query()
                 .AnyAsync(c => c.Code == code.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueSunatCode(string sunatCode, CancellationToken cancellationToken)
-            => !await _uow.ComprobantesPago.Query()
+            => !await _uow.Comunes.ComprobantesPago.Query()
                 .AnyAsync(c => c.SunatCode == sunatCode.Trim(), cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,7 +37,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
         private async Task<bool> BeUniqueCode(
             UpdateSubmoduloCommand command, string code, CancellationToken cancellationToken)
         {
-            var submodulo = await _uow.Submodulos.Query()
+            var submodulo = await _uow.Administracion.Submodulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == command.Id, cancellationToken);
 
@@ -46,7 +46,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
                 return true; // el KeyNotFoundException real lo tira el Handler
             }
 
-            return !await _uow.Submodulos.Query()
+            return !await _uow.Administracion.Submodulos.Query()
                 .AnyAsync(s =>
                     s.ModuloId == submodulo.ModuloId &&
                     s.Code == code.Trim().ToUpper() &&
@@ -57,7 +57,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
         private async Task<bool> BeUniqueName(
             UpdateSubmoduloCommand command, string name, CancellationToken cancellationToken)
         {
-            var submodulo = await _uow.Submodulos.Query()
+            var submodulo = await _uow.Administracion.Submodulos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == command.Id, cancellationToken);
 
@@ -66,7 +66,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.UpdateSubmodulo
                 return true;
             }
 
-            return !await _uow.Submodulos.Query()
+            return !await _uow.Administracion.Submodulos.Query()
                 .AnyAsync(s =>
                     s.ModuloId == submodulo.ModuloId &&
                     s.Name == name.Trim() &&

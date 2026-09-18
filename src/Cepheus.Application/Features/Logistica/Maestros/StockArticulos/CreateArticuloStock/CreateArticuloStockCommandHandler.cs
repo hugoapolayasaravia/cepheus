@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.CreateA
                 MaxStock = request.MaxStock
             };
 
-            await _uow.StockArticulos.AddAsync(stock, cancellationToken);
+            await _uow.Logistica.Maestros.StockArticulos.AddAsync(stock, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(stock);

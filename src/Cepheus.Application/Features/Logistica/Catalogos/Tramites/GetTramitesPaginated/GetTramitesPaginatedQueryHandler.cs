@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.Tramites.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.GetTramitesP
         public async Task<PagedResult<TramiteResponse>> Handle(
             GetTramitesPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Tramites.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.Tramites.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

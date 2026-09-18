@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Proveedores.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
         public async Task<ProveedorResponse> Handle(CreateProveedorCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Proveedores.Query().Select(p => p.Code), length: 5, entityLabel: "Proveedores", cancellationToken);
+                _uow.Logistica.Maestros.Proveedores.Query().Select(p => p.Code), length: 5, entityLabel: "Proveedores", cancellationToken);
 
             var proveedor = new Proveedor
             {
@@ -35,7 +35,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
                 IsActive = true
             };
 
-            await _uow.Proveedores.AddAsync(proveedor, cancellationToken);
+            await _uow.Logistica.Maestros.Proveedores.AddAsync(proveedor, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(proveedor);

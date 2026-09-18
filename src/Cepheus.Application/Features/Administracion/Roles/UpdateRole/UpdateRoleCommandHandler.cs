@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.UpdateRole
 
         public async Task<RoleResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Roles.Query()
+            var current = await _uow.Administracion.Roles.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
 
@@ -40,7 +40,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.UpdateRole
                 RowVersion = request.RowVersion
             };
 
-            _uow.Roles.Update(role);
+            _uow.Administracion.Roles.Update(role);
 
             try
             {

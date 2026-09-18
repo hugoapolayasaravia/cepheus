@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.GetPr
 
         public async Task<ProveedorCuentaResponse> Handle(GetProveedorCuentaByIdQuery request, CancellationToken cancellationToken)
         {
-            var cuenta = await _uow.ProveedorCuentas.Query()
+            var cuenta = await _uow.Logistica.Maestros.ProveedorCuentas.Query()
                 .AsNoTracking()
                 .Where(c => c.Id == request.Id)
                 .Select(c => new ProveedorCuentaResponse

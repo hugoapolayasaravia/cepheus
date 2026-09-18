@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.ToggleLu
 
         public async Task<bool> Handle(ToggleLugarEnvioStatusCommand request, CancellationToken cancellationToken)
         {
-            var lugar = await _uow.LugaresEnvio.Query()
+            var lugar = await _uow.Logistica.Catalogos.LugaresEnvio.Query()
                 .FirstOrDefaultAsync(l => l.Code == request.Code, cancellationToken);
 
             if (lugar is null)

@@ -2,5 +2,5 @@
 
 namespace Cepheus.Application.Features.Comunes.TiposDocumento.ToggleTipoDocumentoStatus
 {
-    public record ToggleTipoDocumentoStatusCommand(int Id) : IRequest<bool>;
+    public record ToggleTipoDocumentoStatusCommand(string Code) : IRequest<bool>;
 }

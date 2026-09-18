@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.ToggleForm
 
         public async Task<bool> Handle(ToggleFormaPagoStatusCommand request, CancellationToken cancellationToken)
         {
-            var formaPago = await _uow.FormasPago.Query()
+            var formaPago = await _uow.Logistica.Catalogos.FormasPago.Query()
                 .FirstOrDefaultAsync(f => f.Code == request.Code, cancellationToken);
 
             if (formaPago is null)

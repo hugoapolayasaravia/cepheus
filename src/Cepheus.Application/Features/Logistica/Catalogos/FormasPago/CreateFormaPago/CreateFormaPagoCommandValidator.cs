@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.CreateForm
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.FormasPago.Query()
+            => !await _uow.Logistica.Catalogos.FormasPago.Query()
                 .AnyAsync(f => f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

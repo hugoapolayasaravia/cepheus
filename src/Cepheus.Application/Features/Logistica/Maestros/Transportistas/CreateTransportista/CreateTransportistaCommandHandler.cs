@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Transportistas.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.CreateT
         public async Task<TransportistaResponse> Handle(CreateTransportistaCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Transportistas.Query().Select(t => t.Code), length: 5, entityLabel: "Transportistas", cancellationToken);
+                _uow.Logistica.Maestros.Transportistas.Query().Select(t => t.Code), length: 5, entityLabel: "Transportistas", cancellationToken);
 
             var transportista = new Transportista
             {
@@ -37,7 +37,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.CreateT
                 IsActive = true
             };
 
-            await _uow.Transportistas.AddAsync(transportista, cancellationToken);
+            await _uow.Logistica.Maestros.Transportistas.AddAsync(transportista, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(transportista);

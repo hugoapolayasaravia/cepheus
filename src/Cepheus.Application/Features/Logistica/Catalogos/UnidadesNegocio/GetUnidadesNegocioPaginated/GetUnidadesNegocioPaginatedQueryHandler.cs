@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.GetUn
         public async Task<PagedResult<UnidadNegocioResponse>> Handle(
             GetUnidadesNegocioPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.UnidadesNegocio.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.UnidadesNegocio.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

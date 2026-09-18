@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Toggle
 
         public async Task<bool> Handle(ToggleUnidadMedidaStatusCommand request, CancellationToken cancellationToken)
         {
-            var unidad = await _uow.UnidadesMedida.Query()
+            var unidad = await _uow.Logistica.Catalogos.UnidadesMedida.Query()
                 .FirstOrDefaultAsync(u => u.Code == request.Code, cancellationToken);
 
             if (unidad is null)

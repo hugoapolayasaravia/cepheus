@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Compradores.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.GetCompra
 
         public async Task<CompradorResponse> Handle(GetCompradorByCodeQuery request, CancellationToken cancellationToken)
         {
-            var comprador = await _uow.Compradores.Query()
+            var comprador = await _uow.Logistica.Catalogos.Compradores.Query()
                 .AsNoTracking()
                 .Where(c => c.Code == request.Code)
                 .Select(c => new CompradorResponse

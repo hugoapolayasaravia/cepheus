@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Tramites.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.GetTramiteBy
 
         public async Task<TramiteResponse> Handle(GetTramiteByCodeQuery request, CancellationToken cancellationToken)
         {
-            var tramite = await _uow.Tramites.Query()
+            var tramite = await _uow.Logistica.Catalogos.Tramites.Query()
                 .AsNoTracking()
                 .Where(t => t.Code == request.Code)
                 .Select(t => new TramiteResponse

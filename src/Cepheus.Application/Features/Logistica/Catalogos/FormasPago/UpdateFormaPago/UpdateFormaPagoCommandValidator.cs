@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.UpdateForm
         }
 
         private async Task<bool> BeUniqueName(UpdateFormaPagoCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.FormasPago.Query()
+            => !await _uow.Logistica.Catalogos.FormasPago.Query()
                 .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

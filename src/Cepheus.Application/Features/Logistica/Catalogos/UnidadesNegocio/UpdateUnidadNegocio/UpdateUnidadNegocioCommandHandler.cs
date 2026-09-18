@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Updat
 
         public async Task<UnidadNegocioResponse> Handle(UpdateUnidadNegocioCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.UnidadesNegocio.Query()
+            var current = await _uow.Logistica.Catalogos.UnidadesNegocio.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Code == request.Code, cancellationToken);
 
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Updat
                 RowVersion = request.RowVersion
             };
 
-            _uow.UnidadesNegocio.Update(unidad);
+            _uow.Logistica.Catalogos.UnidadesNegocio.Update(unidad);
 
             try
             {

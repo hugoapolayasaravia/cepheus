@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +26,11 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
         }
 
         private async Task<bool> FamiliaExists(string familiaCode, CancellationToken cancellationToken)
-            => await _uow.Familias.Query()
+            => await _uow.Logistica.Catalogos.Familias.Query()
                 .AnyAsync(f => f.Code == familiaCode.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.SubFamilias.Query()
+            => !await _uow.Logistica.Catalogos.SubFamilias.Query()
                 .AnyAsync(s => s.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

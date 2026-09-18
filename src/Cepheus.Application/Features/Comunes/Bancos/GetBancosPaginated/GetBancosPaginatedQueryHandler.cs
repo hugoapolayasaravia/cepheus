@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.Bancos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.GetBancosPaginated
         public async Task<PagedResult<BancoResponse>> Handle(
             GetBancosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Bancos.Query().AsNoTracking();
+            var query = _uow.Comunes.Bancos.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

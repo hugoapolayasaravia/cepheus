@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +32,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.UpdatePermissi
         private async Task<bool> BeUniqueCode(
             UpdatePermissionCommand command, string code, CancellationToken cancellationToken)
         {
-            var permission = await _uow.Permissions.Query()
+            var permission = await _uow.Administracion.Permissions.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == command.Id, cancellationToken);
 
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.UpdatePermissi
                 return true; // el KeyNotFoundException real lo tira el Handler
             }
 
-            return !await _uow.Permissions.Query()
+            return !await _uow.Administracion.Permissions.Query()
                 .AnyAsync(p =>
                     p.ProgramaId == permission.ProgramaId &&
                     p.Code == code.Trim().ToUpper() &&

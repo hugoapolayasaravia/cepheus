@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.ToggleBancoStatus
 
         public async Task<bool> Handle(ToggleBancoStatusCommand request, CancellationToken cancellationToken)
         {
-            var banco = await _uow.Bancos.Query()
+            var banco = await _uow.Comunes.Bancos.Query()
                 .FirstOrDefaultAsync(b => b.Code == request.Code, cancellationToken);
 
             if (banco is null)

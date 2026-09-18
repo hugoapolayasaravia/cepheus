@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.ToggleProv
 
         public async Task<bool> Handle(ToggleProveedorStatusCommand request, CancellationToken cancellationToken)
         {
-            var proveedor = await _uow.Proveedores.Query()
+            var proveedor = await _uow.Logistica.Maestros.Proveedores.Query()
                 .FirstOrDefaultAsync(p => p.Code == request.Code, cancellationToken);
 
             if (proveedor is null)

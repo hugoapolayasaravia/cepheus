@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Create
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.PlanesArticulo.Query()
+            => !await _uow.Logistica.Catalogos.PlanesArticulo.Query()
                 .AnyAsync(p => p.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

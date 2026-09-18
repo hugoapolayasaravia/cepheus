@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Vehiculos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.CreateVehicu
         public async Task<VehiculoResponse> Handle(CreateVehiculoCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Vehiculos.Query().Select(v => v.Code), length: 5, entityLabel: "Vehículos", cancellationToken);
+                _uow.Logistica.Maestros.Vehiculos.Query().Select(v => v.Code), length: 5, entityLabel: "Vehículos", cancellationToken);
 
             var vehiculo = new Vehiculo
             {
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.CreateVehicu
                 IsActive = true
             };
 
-            await _uow.Vehiculos.AddAsync(vehiculo, cancellationToken);
+            await _uow.Logistica.Maestros.Vehiculos.AddAsync(vehiculo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(vehiculo);

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.ToggleProveedorCuentaStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Toggl
 
         public async Task<bool> Handle(ToggleProveedorCuentaStatusCommand request, CancellationToken cancellationToken)
         {
-            var cuenta = await _uow.ProveedorCuentas.GetByIdAsync(request.Id, cancellationToken);
+            var cuenta = await _uow.Logistica.Maestros.ProveedorCuentas.GetByIdAsync(request.Id, cancellationToken);
 
             if (cuenta is null)
             {

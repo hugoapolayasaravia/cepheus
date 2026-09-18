@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common.Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
@@ -21,7 +21,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.GetNotasC
         public async Task<PagedResult<NotaCompraResponse>> Handle(
             GetNotasCompraPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.NotasCompra.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.NotasCompra.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

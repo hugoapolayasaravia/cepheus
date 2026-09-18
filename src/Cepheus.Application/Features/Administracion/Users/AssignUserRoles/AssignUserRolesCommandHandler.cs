@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Users.AssignUserRoles
             // Existencia de Usuario y de todos los Roles ya se validó en el Validator.
             var requestedRoleIds = request.RoleIds.Distinct().ToHashSet();
 
-            var currentAssignments = await _uow.RoleUsers.Query()
+            var currentAssignments = await _uow.Administracion.RoleUsers.Query()
                 .Where(ru => ru.UserId == request.UserId)
                 .ToListAsync(cancellationToken);
 
@@ -36,19 +36,19 @@ namespace Cepheus.Application.Features.Administracion.Users.AssignUserRoles
 
             foreach (var assignment in toRemove)
             {
-                _uow.RoleUsers.Remove(assignment);
+                _uow.Administracion.RoleUsers.Remove(assignment);
             }
 
             foreach (var roleId in toAddIds)
             {
-                await _uow.RoleUsers.AddAsync(
+                await _uow.Administracion.RoleUsers.AddAsync(
                     new RoleUser { UserId = request.UserId, RoleId = roleId },
                     cancellationToken);
             }
 
             await _uow.SaveChangesAsync(cancellationToken);
 
-            return await _uow.RoleUsers.Query()
+            return await _uow.Administracion.RoleUsers.Query()
                 .Where(ru => ru.UserId == request.UserId)
                 .Select(ru => new RoleResponse
                 {

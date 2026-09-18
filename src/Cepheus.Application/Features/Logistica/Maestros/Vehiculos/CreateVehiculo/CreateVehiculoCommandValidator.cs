@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,9 +49,9 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.CreateVehicu
         }
 
         private async Task<bool> TransportistaExists(string code, CancellationToken ct)
-            => await _uow.Transportistas.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Maestros.Transportistas.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniquePlate(string plate, CancellationToken ct)
-            => !await _uow.Vehiculos.Query().AnyAsync(v => v.LicensePlate == plate.Trim().ToUpper(), ct);
+            => !await _uow.Logistica.Maestros.Vehiculos.Query().AnyAsync(v => v.LicensePlate == plate.Trim().ToUpper(), ct);
     }
 }

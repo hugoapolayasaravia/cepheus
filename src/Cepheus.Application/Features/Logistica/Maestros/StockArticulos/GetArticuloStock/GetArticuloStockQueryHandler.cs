@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.GetArti
 
         public async Task<ArticuloStockResponse> Handle(GetArticuloStockQuery request, CancellationToken cancellationToken)
         {
-            var stock = await _uow.StockArticulos.Query()
+            var stock = await _uow.Logistica.Maestros.StockArticulos.Query()
                 .AsNoTracking()
                 .Where(s => s.PlantaCode == request.PlantaCode && s.ArticuloCode == request.ArticuloCode)
                 .Select(s => new ArticuloStockResponse

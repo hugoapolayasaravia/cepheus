@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Programas.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.GetProgramasPagi
         public async Task<PagedResult<ProgramaResponse>> Handle(
             GetProgramasPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Programas.Query().AsNoTracking();
+            var query = _uow.Administracion.Programas.Query().AsNoTracking();
 
             if (request.SubmoduloId.HasValue)
             {

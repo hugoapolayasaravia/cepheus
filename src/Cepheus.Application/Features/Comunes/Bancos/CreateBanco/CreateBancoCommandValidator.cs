@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.Bancos.CreateBanco
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.Bancos.Query()
+            => !await _uow.Comunes.Bancos.Query()
                 .AnyAsync(b => b.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

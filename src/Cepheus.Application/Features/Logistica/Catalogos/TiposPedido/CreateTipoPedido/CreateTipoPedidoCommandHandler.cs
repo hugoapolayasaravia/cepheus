@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.CreateTip
         public async Task<TipoPedidoResponse> Handle(CreateTipoPedidoCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.TiposPedido.Query().Select(f => f.Code), length: 2, entityLabel: "Tipos de Pedido", cancellationToken);
+                _uow.Logistica.Catalogos.TiposPedido.Query().Select(f => f.Code), length: 2, entityLabel: "Tipos de Pedido", cancellationToken);
 
 
             var tipoPedido = new TipoPedido
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.CreateTip
                 IsActive = true
             };
 
-            await _uow.TiposPedido.AddAsync(tipoPedido, cancellationToken);
+            await _uow.Logistica.Catalogos.TiposPedido.AddAsync(tipoPedido, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tipoPedido);

@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.Transportistas.Common;
 using MediatR;
@@ -25,7 +25,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.GetTran
         public async Task<PagedResult<TransportistaResponse>> Handle(
             GetTransportistasPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Transportistas.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.Transportistas.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Permissions.TogglePermissionStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.TogglePermissi
 
         public async Task<bool> Handle(TogglePermissionStatusCommand request, CancellationToken cancellationToken)
         {
-            var permission = await _uow.Permissions.GetByIdAsync(request.Id, cancellationToken);
+            var permission = await _uow.Administracion.Permissions.GetByIdAsync(request.Id, cancellationToken);
 
             if (permission is null)
             {

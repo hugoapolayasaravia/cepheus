@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.FormasPago.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.UpdateForm
 
         public async Task<FormaPagoResponse> Handle(UpdateFormaPagoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.FormasPago.Query()
+            var current = await _uow.Logistica.Catalogos.FormasPago.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(f => f.Code == request.Code, cancellationToken);
 
@@ -40,7 +40,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.UpdateForm
                 RowVersion = request.RowVersion
             };
 
-            _uow.FormasPago.Update(formaPago);
+            _uow.Logistica.Catalogos.FormasPago.Update(formaPago);
 
             try
             {

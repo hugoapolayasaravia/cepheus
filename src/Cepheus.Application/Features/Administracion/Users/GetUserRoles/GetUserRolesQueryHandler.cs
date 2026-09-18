@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUserRoles
 
         public async Task<List<RoleResponse>> Handle(GetUserRolesQuery request, CancellationToken cancellationToken)
         {
-            var userExists = await _uow.Users.Query()
+            var userExists = await _uow.Administracion.Users.Query()
                 .AnyAsync(u => u.Id == request.UserId, cancellationToken);
 
             if (!userExists)
@@ -24,7 +24,7 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUserRoles
                 throw new KeyNotFoundException($"Usuario {request.UserId} no encontrado.");
             }
 
-            return await _uow.RoleUsers.Query()
+            return await _uow.Administracion.RoleUsers.Query()
                 .Where(ru => ru.UserId == request.UserId)
                 .Select(ru => new RoleResponse
                 {

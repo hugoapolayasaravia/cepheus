@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ComprobantesPago.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
                 IsActive = true
             };
 
-            await _uow.ComprobantesPago.AddAsync(comprobante, cancellationToken);
+            await _uow.Comunes.ComprobantesPago.AddAsync(comprobante, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(comprobante);

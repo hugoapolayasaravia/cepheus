@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.UpdateLu
 
         public async Task<LugarEnvioResponse> Handle(UpdateLugarEnvioCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.LugaresEnvio.Query()
+            var current = await _uow.Logistica.Catalogos.LugaresEnvio.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(l => l.Code == request.Code, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.UpdateLu
                 RowVersion = request.RowVersion
             };
 
-            _uow.LugaresEnvio.Update(lugar);
+            _uow.Logistica.Catalogos.LugaresEnvio.Update(lugar);
 
             try
             {

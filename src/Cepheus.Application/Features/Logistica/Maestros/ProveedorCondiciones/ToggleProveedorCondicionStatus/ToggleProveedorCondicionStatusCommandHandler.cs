@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.ToggleProveedorCondicionStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.T
 
         public async Task<bool> Handle(ToggleProveedorCondicionStatusCommand request, CancellationToken cancellationToken)
         {
-            var condicion = await _uow.ProveedorCondiciones.GetByIdAsync(request.Id, cancellationToken);
+            var condicion = await _uow.Logistica.Maestros.ProveedorCondiciones.GetByIdAsync(request.Id, cancellationToken);
 
             if (condicion is null)
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.UpdateProv
             RuleFor(x => x.DocumentTypeCode)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El tipo de documento es obligatorio.")
-                .Length(2).WithMessage("El código de tipo de documento debe tener 2 caracteres.")
+                .Length(3).WithMessage("El código de tipo de documento debe tener 2 caracteres.")
                 .MustAsync(DocumentTypeExists).WithMessage("El tipo de documento indicado no existe.");
 
             RuleFor(x => x.DocumentNumber)
@@ -59,15 +59,15 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.UpdateProv
         }
 
         private async Task<bool> DocumentTypeExists(string documentTypeCode, CancellationToken cancellationToken)
-            => await _uow.TiposDocumento.Query()
+            => await _uow.Comunes.TiposDocumento.Query()
                 .AnyAsync(t => t.Code == documentTypeCode.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueDocumentNumber(UpdateProveedorCommand command, string documentNumber, CancellationToken cancellationToken)
-            => !await _uow.Proveedores.Query()
+            => !await _uow.Logistica.Maestros.Proveedores.Query()
                 .AnyAsync(p => p.Code != command.Code && p.DocumentNumber == documentNumber.Trim(), cancellationToken);
 
         private async Task<bool> BeUniqueLegalName(UpdateProveedorCommand command, string legalName, CancellationToken cancellationToken)
-            => !await _uow.Proveedores.Query()
+            => !await _uow.Logistica.Maestros.Proveedores.Query()
                 .AnyAsync(p => p.Code != command.Code && p.LegalName.ToLower() == legalName.Trim().ToLower(), cancellationToken);
     }
 }

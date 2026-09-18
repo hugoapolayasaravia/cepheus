@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.ToggleMonedaStatus
         public async Task<bool> Handle(ToggleMonedaStatusCommand request, CancellationToken cancellationToken)
         {
 
-            var moneda = await _uow.Monedas.Query()
+            var moneda = await _uow.Comunes.Monedas.Query()
                     .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
             if (moneda is null)

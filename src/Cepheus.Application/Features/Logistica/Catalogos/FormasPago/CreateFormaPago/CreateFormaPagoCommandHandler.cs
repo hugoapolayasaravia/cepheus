@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.FormasPago.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.CreateForm
         public async Task<FormaPagoResponse> Handle(CreateFormaPagoCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.FormasPago.Query().Select(f => f.Code), length: 2, entityLabel: "Formas de Pago", cancellationToken);
+                _uow.Logistica.Catalogos.FormasPago.Query().Select(f => f.Code), length: 2, entityLabel: "Formas de Pago", cancellationToken);
 
             var formaPago = new FormaPago
             {
@@ -29,7 +29,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.CreateForm
                 IsActive = true
             };
 
-            await _uow.FormasPago.AddAsync(formaPago, cancellationToken);
+            await _uow.Logistica.Catalogos.FormasPago.AddAsync(formaPago, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(formaPago);

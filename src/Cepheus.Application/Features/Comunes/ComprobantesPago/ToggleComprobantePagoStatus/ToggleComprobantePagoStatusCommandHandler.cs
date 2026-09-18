@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.ComprobantesPago.ToggleComprobantePagoStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.ToggleComprobant
 
         public async Task<bool> Handle(ToggleComprobantePagoStatusCommand request, CancellationToken cancellationToken)
         {
-            var comprobante = await _uow.ComprobantesPago.GetByIdAsync(request.Id, cancellationToken);
+            var comprobante = await _uow.Comunes.ComprobantesPago.GetByIdAsync(request.Id, cancellationToken);
 
             if (comprobante is null)
             {

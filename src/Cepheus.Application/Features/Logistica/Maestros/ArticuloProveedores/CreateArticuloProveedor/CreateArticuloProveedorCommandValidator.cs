@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,16 +38,16 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Cr
         }
 
         private async Task<bool> PlantaExists(string code, CancellationToken ct)
-            => await _uow.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> ArticuloExists(string code, CancellationToken ct)
-            => await _uow.Articulos.Query().AnyAsync(a => a.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Maestros.Articulos.Query().AnyAsync(a => a.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> ProveedorExists(string code, CancellationToken ct)
-            => await _uow.Proveedores.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Maestros.Proveedores.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniqueCombination(CreateArticuloProveedorCommand command, CancellationToken ct)
-            => !await _uow.ArticuloProveedores.Query()
+            => !await _uow.Logistica.Maestros.ArticuloProveedores.Query()
                 .AnyAsync(x =>
                     x.PlantaCode == command.PlantaCode.Trim().ToUpper() &&
                     x.ArticuloCode == command.ArticuloCode.Trim().ToUpper() &&

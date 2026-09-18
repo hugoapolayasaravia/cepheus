@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Cre
         }
 
         private async Task<bool> ProveedorExists(string proveedorCode, CancellationToken cancellationToken)
-            => await _uow.Proveedores.Query()
+            => await _uow.Logistica.Maestros.Proveedores.Query()
                 .AnyAsync(p => p.Code == proveedorCode.Trim().ToUpper(), cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesNegocio.GetUn
 
         public async Task<UnidadNegocioResponse> Handle(GetUnidadNegocioByCodeQuery request, CancellationToken cancellationToken)
         {
-            var unidad = await _uow.UnidadesNegocio.Query()
+            var unidad = await _uow.Logistica.Catalogos.UnidadesNegocio.Query()
                 .AsNoTracking()
                 .Where(u => u.Code == request.Code)
                 .Select(u => new UnidadNegocioResponse

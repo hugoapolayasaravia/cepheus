@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -24,7 +24,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ControlCierres.CreateC
                 DifferenceAmount = request.DifferenceAmount
             };
 
-            await _uow.ControlCierres.AddAsync(control, cancellationToken);
+            await _uow.Logistica.Maestros.ControlCierres.AddAsync(control, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(control);

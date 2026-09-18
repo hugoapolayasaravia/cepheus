@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Permissions.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.GetPermissions
         public async Task<PagedResult<PermissionResponse>> Handle(
             GetPermissionsPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Permissions.Query().AsNoTracking();
+            var query = _uow.Administracion.Permissions.Query().AsNoTracking();
 
             if (request.ProgramaId.HasValue)
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.ToggleNot
 
         public async Task<bool> Handle(ToggleNotaCompraStatusCommand request, CancellationToken cancellationToken)
         {
-            var nota = await _uow.NotasCompra.Query()
+            var nota = await _uow.Logistica.Catalogos.NotasCompra.Query()
                 .FirstOrDefaultAsync(n => n.Code == request.Code, cancellationToken);
 
             if (nota is null)

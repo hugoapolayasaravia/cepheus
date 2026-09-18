@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,17 +56,17 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.UpdateCond
         }
 
         private async Task<bool> DocumentTypeExists(string code, CancellationToken ct)
-            => await _uow.TiposDocumento.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Comunes.TiposDocumento.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniqueDocument(UpdateConductorCommand command, CancellationToken ct)
-            => !await _uow.Conductores.Query()
+            => !await _uow.Logistica.Maestros.Conductores.Query()
                 .AnyAsync(c =>
                     c.Code != command.Code &&
                     c.DocumentTypeCode == command.DocumentTypeCode.Trim().ToUpper() &&
                     c.DocumentNumber == command.DocumentNumber.Trim(), ct);
 
         private async Task<bool> BeUniqueLicense(UpdateConductorCommand command, string license, CancellationToken ct)
-            => !await _uow.Conductores.Query()
+            => !await _uow.Logistica.Maestros.Conductores.Query()
                 .AnyAsync(c => c.Code != command.Code && c.DriverLicenseNumber == license.Trim().ToUpper(), ct);
     }
 }

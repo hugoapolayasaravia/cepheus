@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.ToggleArticu
 
         public async Task<bool> Handle(ToggleArticuloStatusCommand request, CancellationToken cancellationToken)
         {
-            var articulo = await _uow.Articulos.Query()
+            var articulo = await _uow.Logistica.Maestros.Articulos.Query()
                 .FirstOrDefaultAsync(a => a.Code == request.Code, cancellationToken);
 
             if (articulo is null)

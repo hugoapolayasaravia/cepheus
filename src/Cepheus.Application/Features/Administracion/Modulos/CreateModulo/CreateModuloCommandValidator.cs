@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 namespace Cepheus.Application.Features.Administracion.Modulos.CreateModulo
@@ -31,11 +31,11 @@ namespace Cepheus.Application.Features.Administracion.Modulos.CreateModulo
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.Modulos.Query()
+            => !await _uow.Administracion.Modulos.Query()
                 .AnyAsync(m => m.Code == code.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.Modulos.Query()
+            => !await _uow.Administracion.Modulos.Query()
                 .AnyAsync(m => m.Name == name.Trim(), cancellationToken);
     }
 }

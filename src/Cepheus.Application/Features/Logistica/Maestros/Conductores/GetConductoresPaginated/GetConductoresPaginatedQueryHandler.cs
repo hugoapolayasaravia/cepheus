@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Maestros.Conductores.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.GetConduct
         public async Task<PagedResult<ConductorResponse>> Handle(
             GetConductoresPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Conductores.Query().AsNoTracking();
+            var query = _uow.Logistica.Maestros.Conductores.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

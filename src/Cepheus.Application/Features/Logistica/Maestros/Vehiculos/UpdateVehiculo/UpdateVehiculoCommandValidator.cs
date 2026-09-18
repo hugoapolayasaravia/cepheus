@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,7 +50,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.UpdateVehicu
         }
 
         private async Task<bool> BeUniquePlate(UpdateVehiculoCommand command, string plate, CancellationToken ct)
-            => !await _uow.Vehiculos.Query()
+            => !await _uow.Logistica.Maestros.Vehiculos.Query()
                 .AnyAsync(v => v.Code != command.Code && v.LicensePlate == plate.Trim().ToUpper(), ct);
     }
 }

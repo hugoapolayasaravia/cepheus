@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.ToggleMotivoDevolucionStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.ToggleMotivoDev
 
         public async Task<bool> Handle(ToggleMotivoDevolucionStatusCommand request, CancellationToken cancellationToken)
         {
-            var motivo = await _uow.MotivosDevolucion.GetByIdAsync(request.Id, cancellationToken);
+            var motivo = await _uow.Comunes.MotivosDevolucion.GetByIdAsync(request.Id, cancellationToken);
 
             if (motivo is null)
             {

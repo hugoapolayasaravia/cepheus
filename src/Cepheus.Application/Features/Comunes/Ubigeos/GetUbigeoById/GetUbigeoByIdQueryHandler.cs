@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Ubigeos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeoById
 
         public async Task<UbigeoResponse> Handle(GetUbigeoByIdQuery request, CancellationToken cancellationToken)
         {
-            var ubigeo = await _uow.Ubigeos.Query()
+            var ubigeo = await _uow.Comunes.Ubigeos.Query()
                 .AsNoTracking()
                 .Where(u => u.Code == request.Code)
                 .Select(u => new UbigeoResponse

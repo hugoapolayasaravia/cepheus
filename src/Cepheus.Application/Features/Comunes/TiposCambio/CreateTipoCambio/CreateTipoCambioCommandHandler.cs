@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
                 BuyRate = request.BuyRate
             };
 
-            await _uow.TiposCambio.AddAsync(tipoCambio, cancellationToken);
+            await _uow.Comunes.TiposCambio.AddAsync(tipoCambio, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tipoCambio);

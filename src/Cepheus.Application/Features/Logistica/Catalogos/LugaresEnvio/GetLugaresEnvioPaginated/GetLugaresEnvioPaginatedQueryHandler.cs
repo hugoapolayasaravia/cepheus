@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.GetLugar
         public async Task<PagedResult<LugarEnvioResponse>> Handle(
             GetLugaresEnvioPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.LugaresEnvio.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.LugaresEnvio.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

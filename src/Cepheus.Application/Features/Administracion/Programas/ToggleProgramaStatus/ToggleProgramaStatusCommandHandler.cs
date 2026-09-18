@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Programas.ToggleProgramaStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.ToggleProgramaSt
 
         public async Task<bool> Handle(ToggleProgramaStatusCommand request, CancellationToken cancellationToken)
         {
-            var programa = await _uow.Programas.GetByIdAsync(request.Id, cancellationToken);
+            var programa = await _uow.Administracion.Programas.GetByIdAsync(request.Id, cancellationToken);
 
             if (programa is null)
             {

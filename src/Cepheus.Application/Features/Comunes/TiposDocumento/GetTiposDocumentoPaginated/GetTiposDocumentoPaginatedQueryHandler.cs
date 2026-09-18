@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.TiposDocumento.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.GetTiposDocumentoP
         public async Task<PagedResult<TipoDocumentoResponse>> Handle(
             GetTiposDocumentoPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.TiposDocumento.Query().AsNoTracking();
+            var query = _uow.Comunes.TiposDocumento.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
@@ -45,7 +45,6 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.GetTiposDocumentoP
 
             var projected = sortedQuery.Select(t => new TipoDocumentoResponse
             {
-                Id = t.Id,
                 Code = t.Code,
                 Name = t.Name,
                 ShortName = t.ShortName,

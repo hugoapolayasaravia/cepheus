@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.Plantas.TogglePlantaStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.TogglePlantaStatus
 
         public async Task<bool> Handle(TogglePlantaStatusCommand request, CancellationToken cancellationToken)
         {
-            var planta = await _uow.Plantas.GetByCodeAsync(request.Code, cancellationToken);
+            var planta = await _uow.Comunes.Plantas.GetByCodeAsync(request.Code, cancellationToken);
 
             if (planta is null)
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +29,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.U
         }
 
         private async Task<bool> UbigeoExists(string? ubigeoCode, CancellationToken cancellationToken)
-            => await _uow.Ubigeos.Query()
+            => await _uow.Comunes.Ubigeos.Query()
                 .AnyAsync(u => u.Code == ubigeoCode!.Trim().ToUpper(), cancellationToken);
     }
 }

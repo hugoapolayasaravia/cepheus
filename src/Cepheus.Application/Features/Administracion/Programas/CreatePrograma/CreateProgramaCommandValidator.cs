@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,16 +34,16 @@ namespace Cepheus.Application.Features.Administracion.Programas.CreatePrograma
         }
 
         private async Task<bool> SubmoduloExists(int submoduloId, CancellationToken cancellationToken)
-            => await _uow.Submodulos.Query().AnyAsync(s => s.Id == submoduloId, cancellationToken);
+            => await _uow.Administracion.Submodulos.Query().AnyAsync(s => s.Id == submoduloId, cancellationToken);
 
         private async Task<bool> BeUniqueCode(
             CreateProgramaCommand command, string code, CancellationToken cancellationToken)
-            => !await _uow.Programas.Query()
+            => !await _uow.Administracion.Programas.Query()
                 .AnyAsync(p => p.SubmoduloId == command.SubmoduloId && p.Code == code.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueName(
             CreateProgramaCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.Programas.Query()
+            => !await _uow.Administracion.Programas.Query()
                 .AnyAsync(p => p.SubmoduloId == command.SubmoduloId && p.Name == name.Trim(), cancellationToken);
     }
 

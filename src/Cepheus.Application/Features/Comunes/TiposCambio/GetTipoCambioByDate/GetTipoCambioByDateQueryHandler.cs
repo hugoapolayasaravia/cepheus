@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTipoCambioByDate
 
         public async Task<TipoCambioResponse> Handle(GetTipoCambioByDateQuery request, CancellationToken cancellationToken)
         {
-            var tipoCambio = await _uow.TiposCambio.Query()
+            var tipoCambio = await _uow.Comunes.TiposCambio.Query()
                 .AsNoTracking()
                 .Where(t => t.Date == request.Date)
                 .Select(t => new TipoCambioResponse

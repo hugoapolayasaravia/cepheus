@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +36,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.CreateUbigeo
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.Ubigeos.Query()
+            => !await _uow.Comunes.Ubigeos.Query()
                 .AnyAsync(u => u.Code == code.Trim(), cancellationToken);
     }
 }

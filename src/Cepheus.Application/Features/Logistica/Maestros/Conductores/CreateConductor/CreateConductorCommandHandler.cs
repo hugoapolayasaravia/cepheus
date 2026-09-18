@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Conductores.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.CreateCond
         public async Task<ConductorResponse> Handle(CreateConductorCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Conductores.Query().Select(c => c.Code), length: 5, entityLabel: "Conductores", cancellationToken);
+                _uow.Logistica.Maestros.Conductores.Query().Select(c => c.Code), length: 5, entityLabel: "Conductores", cancellationToken);
 
             var conductor = new Conductor
             {
@@ -35,7 +35,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.CreateCond
                 IsActive = true
             };
 
-            await _uow.Conductores.AddAsync(conductor, cancellationToken);
+            await _uow.Logistica.Maestros.Conductores.AddAsync(conductor, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(conductor);

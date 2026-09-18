@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Familias.UpdateFamilia;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.UpdateTip
         }
 
         private async Task<bool> BeUniqueName(UpdateTipoPedidoCommand command, string name, CancellationToken cancellationToken)
-            => !await _uow.TiposPedido.Query()
+            => !await _uow.Logistica.Catalogos.TiposPedido.Query()
                 .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

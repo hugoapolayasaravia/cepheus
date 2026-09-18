@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Upd
 
         public async Task<ProveedorContactoResponse> Handle(UpdateProveedorContactoCommand request, CancellationToken cancellationToken)
         {
-            var contacto = await _uow.ProveedorContactos.GetByIdAsync(request.Id, cancellationToken);
+            var contacto = await _uow.Logistica.Maestros.ProveedorContactos.GetByIdAsync(request.Id, cancellationToken);
 
             if (contacto is null)
             {
@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Upd
 
             if (request.IsPrimary && !contacto.IsPrimary)
             {
-                var otros = await _uow.ProveedorContactos.Query()
+                var otros = await _uow.Logistica.Maestros.ProveedorContactos.Query()
                     .Where(c => c.ProveedorCode == contacto.ProveedorCode && c.IsPrimary && c.Id != contacto.Id)
                     .ToListAsync(cancellationToken);
 

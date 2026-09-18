@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.GetTipo
         public async Task<PagedResult<TipoArticuloResponse>> Handle(
             GetTiposArticuloPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.TiposArticulo.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.TiposArticulo.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

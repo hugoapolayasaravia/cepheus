@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Create
         {
             var normalizedCode = code.Trim().ToUpper();
 
-            return !await _uow.UnidadesMedida.Query()
+            return !await _uow.Logistica.Catalogos.UnidadesMedida.Query()
                 .AnyAsync(
                     u => u.Code.ToUpper() == normalizedCode,
                     cancellationToken);
@@ -50,7 +50,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Create
         {
             var normalizedName = name.Trim().ToLower();
 
-            return !await _uow.UnidadesMedida.Query()
+            return !await _uow.Logistica.Catalogos.UnidadesMedida.Query()
                 .AnyAsync(
                     u => u.Name.ToLower() == normalizedName,
                     cancellationToken);

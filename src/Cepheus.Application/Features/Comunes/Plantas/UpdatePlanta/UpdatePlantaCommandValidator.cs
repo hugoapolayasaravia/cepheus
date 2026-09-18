@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +34,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
         }
 
         private async Task<bool> BeUniqueCode(UpdatePlantaCommand command, string code, CancellationToken cancellationToken)
-            => !await _uow.Plantas.Query()
+            => !await _uow.Comunes.Plantas.Query()
                 .AnyAsync(p => p.Code == code.Trim().ToUpper() && p.Code != command.Code, cancellationToken);
     }
 }

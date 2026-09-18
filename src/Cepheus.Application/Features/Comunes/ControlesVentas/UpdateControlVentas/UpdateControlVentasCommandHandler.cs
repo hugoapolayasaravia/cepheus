@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ControlesVentas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.ControlesVentas.UpdateControlVent
 
         public async Task<ControlVentasResponse> Handle(UpdateControlVentasCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.ControlesVentas.Query()
+            var current = await _uow.Comunes.ControlesVentas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
@@ -57,7 +57,7 @@ namespace Cepheus.Application.Features.Comunes.ControlesVentas.UpdateControlVent
                 RowVersion = request.RowVersion
             };
 
-            _uow.ControlesVentas.Update(control);
+            _uow.Comunes.ControlesVentas.Update(control);
 
             try
             {

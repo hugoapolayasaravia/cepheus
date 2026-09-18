@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,18 +58,18 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
         }
 
         private async Task<bool> UnidadMedidaExists(string code, CancellationToken ct)
-            => await _uow.UnidadesMedida.Query().AnyAsync(u => u.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Catalogos.UnidadesMedida.Query().AnyAsync(u => u.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> SubFamiliaExists(string code, CancellationToken ct)
-            => await _uow.SubFamilias.Query().AnyAsync(s => s.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Catalogos.SubFamilias.Query().AnyAsync(s => s.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> TipoArticuloExists(string code, CancellationToken ct)
-            => await _uow.TiposArticulo.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Catalogos.TiposArticulo.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> PlanExists(string code, CancellationToken ct)
-            => await _uow.PlanesArticulo.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Catalogos.PlanesArticulo.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> PlantaExists(string? code, CancellationToken ct)
-            => await _uow.Plantas.Query().AnyAsync(p => p.Code == code!.Trim().ToUpper(), ct);
+            => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code!.Trim().ToUpper(), ct);
     }
 }

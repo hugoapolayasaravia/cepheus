@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ControlesVentas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.ControlesVentas.GetControlVentas
 
         public async Task<ControlVentasResponse> Handle(GetControlVentasQuery request, CancellationToken cancellationToken)
         {
-            var control = await _uow.ControlesVentas.Query()
+            var control = await _uow.Comunes.ControlesVentas.Query()
                 .AsNoTracking()
                 .Select(c => new ControlVentasResponse
                 {

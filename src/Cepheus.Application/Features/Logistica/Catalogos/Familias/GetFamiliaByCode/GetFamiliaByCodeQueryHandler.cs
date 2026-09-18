@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Familias.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.GetFamiliaBy
 
         public async Task<FamiliaResponse> Handle(GetFamiliaByCodeQuery request, CancellationToken cancellationToken)
         {
-            var familia = await _uow.Familias.Query()
+            var familia = await _uow.Logistica.Catalogos.Familias.Query()
                 .AsNoTracking()
                 .Where(f => f.Code == request.Code)
                 .Select(f => new FamiliaResponse

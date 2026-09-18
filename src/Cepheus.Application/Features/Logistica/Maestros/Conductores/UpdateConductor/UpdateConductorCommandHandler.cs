@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Conductores.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.UpdateCond
 
         public async Task<ConductorResponse> Handle(UpdateConductorCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Conductores.Query()
+            var current = await _uow.Logistica.Maestros.Conductores.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
@@ -46,7 +46,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Conductores.UpdateCond
                 RowVersion = request.RowVersion
             };
 
-            _uow.Conductores.Update(conductor);
+            _uow.Logistica.Maestros.Conductores.Update(conductor);
 
             try
             {

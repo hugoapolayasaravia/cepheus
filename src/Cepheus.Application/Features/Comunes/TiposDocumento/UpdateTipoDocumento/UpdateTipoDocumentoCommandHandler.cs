@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposDocumento.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,18 +17,17 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocument
 
         public async Task<TipoDocumentoResponse> Handle(UpdateTipoDocumentoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.TiposDocumento.Query()
+            var current = await _uow.Comunes.TiposDocumento.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Tipo de documento {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Tipo de documento {request.Code} no encontrado.");
             }
 
             var tipoDocumento = new TipoDocumento
             {
-                Id = request.Id,
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 ShortName = string.IsNullOrWhiteSpace(request.ShortName) ? null : request.ShortName.Trim().ToUpperInvariant(),
@@ -48,7 +47,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocument
                 RowVersion = request.RowVersion
             };
 
-            _uow.TiposDocumento.Update(tipoDocumento);
+            _uow.Comunes.TiposDocumento.Update(tipoDocumento);
 
             try
             {
@@ -62,7 +61,6 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.UpdateTipoDocument
 
             return new TipoDocumentoResponse
             {
-                Id = tipoDocumento.Id,
                 Code = tipoDocumento.Code,
                 Name = tipoDocumento.Name,
                 ShortName = tipoDocumento.ShortName,

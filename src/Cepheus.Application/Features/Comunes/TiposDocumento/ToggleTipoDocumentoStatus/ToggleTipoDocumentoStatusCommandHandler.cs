@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.TiposDocumento.ToggleTipoDocumentoStatus
@@ -14,11 +14,11 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.ToggleTipoDocument
 
         public async Task<bool> Handle(ToggleTipoDocumentoStatusCommand request, CancellationToken cancellationToken)
         {
-            var tipoDocumento = await _uow.TiposDocumento.GetByIdAsync(request.Id, cancellationToken);
+            var tipoDocumento = await _uow.Comunes.TiposDocumento.GetByCodeAsync(request.Code, cancellationToken);
 
             if (tipoDocumento is null)
             {
-                throw new KeyNotFoundException($"Tipo de documento {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Tipo de documento {request.Code} no encontrado.");
             }
 
             tipoDocumento.IsActive = !tipoDocumento.IsActive;

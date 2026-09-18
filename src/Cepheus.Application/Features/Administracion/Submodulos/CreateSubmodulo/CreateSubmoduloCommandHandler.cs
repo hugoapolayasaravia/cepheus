@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Submodulos.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.CreateSubmodulo
                 IsActive = true
             };
 
-            await _uow.Submodulos.AddAsync(submodulo, cancellationToken);
+            await _uow.Administracion.Submodulos.AddAsync(submodulo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new SubmoduloResponse

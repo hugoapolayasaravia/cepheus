@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Submodulos.ToggleSubmoduloStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.ToggleSubmodulo
 
         public async Task<bool> Handle(ToggleSubmoduloStatusCommand request, CancellationToken cancellationToken)
         {
-            var submodulo = await _uow.Submodulos.GetByIdAsync(request.Id, cancellationToken);
+            var submodulo = await _uow.Administracion.Submodulos.GetByIdAsync(request.Id, cancellationToken);
 
             if (submodulo is null)
             {

@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.ComprobantesPago.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantesP
         public async Task<PagedResult<ComprobantePagoResponse>> Handle(
             GetComprobantesPagoPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.ComprobantesPago.Query().AsNoTracking();
+            var query = _uow.Comunes.ComprobantesPago.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

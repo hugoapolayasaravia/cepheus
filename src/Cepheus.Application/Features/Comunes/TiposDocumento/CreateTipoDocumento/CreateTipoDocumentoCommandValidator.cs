@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código del tipo de documento es obligatorio.")
-                .MaximumLength(2).WithMessage("El código no puede exceder los 2 caracteres.")
+                .MaximumLength(3).WithMessage("El código no puede exceder los 3 caracteres.")
                 .MustAsync(BeUniqueCode).WithMessage("Ya existe un tipo de documento con ese código.");
 
             RuleFor(x => x.Name)
@@ -31,7 +31,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.TiposDocumento.Query()
+            => !await _uow.Comunes.TiposDocumento.Query()
                 .AnyAsync(t => t.Code == code.Trim().ToUpper(), cancellationToken);
     }
 }

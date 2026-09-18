@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Proveedores.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.GetProveed
 
         public async Task<ProveedorResponse> Handle(GetProveedorByCodeQuery request, CancellationToken cancellationToken)
         {
-            var proveedor = await _uow.Proveedores.Query()
+            var proveedor = await _uow.Logistica.Maestros.Proveedores.Query()
                 .AsNoTracking()
                 .Where(p => p.Code == request.Code)
                 .Select(p => new ProveedorResponse

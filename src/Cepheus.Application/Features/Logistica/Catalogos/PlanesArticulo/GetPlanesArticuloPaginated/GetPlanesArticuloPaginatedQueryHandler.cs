@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.GetPla
         public async Task<PagedResult<PlanArticuloResponse>> Handle(
             GetPlanesArticuloPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.PlanesArticulo.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.PlanesArticulo.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

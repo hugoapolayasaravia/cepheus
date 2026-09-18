@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Proveedores.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.UpdateProv
 
         public async Task<ProveedorResponse> Handle(UpdateProveedorCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Proveedores.Query()
+            var current = await _uow.Logistica.Maestros.Proveedores.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Code == request.Code, cancellationToken);
 
@@ -48,7 +48,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.UpdateProv
                 RowVersion = request.RowVersion
             };
 
-            _uow.Proveedores.Update(proveedor);
+            _uow.Logistica.Maestros.Proveedores.Update(proveedor);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +29,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
                 .When(x => !string.IsNullOrWhiteSpace(x.NumericCode))
                 .WithMessage("El código numérico ISO 4217 debe tener 3 dígitos.")
                 .MustAsync(async (command, numericCode, cancellationToken) =>
-                    !await uow.Monedas.Query()
+                    !await uow.Comunes.Monedas.Query()
                         .AnyAsync(
                             m => m.NumericCode == numericCode!.Trim()
                                  && m.Code != command.Code.Trim().ToUpperInvariant(),

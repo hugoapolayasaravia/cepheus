@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +46,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.CreatePlanta
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.Plantas.Query()
+            => !await _uow.Comunes.Plantas.Query()
                 .AnyAsync(p => p.Code == code.Trim().ToUpper(), cancellationToken);
     }
 }

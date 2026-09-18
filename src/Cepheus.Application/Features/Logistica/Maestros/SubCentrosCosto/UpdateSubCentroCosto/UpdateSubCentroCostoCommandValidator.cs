@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,16 +45,16 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Update
         }
 
         private async Task<bool> CentroCostoExists(string? code, CancellationToken ct)
-            => await _uow.CentrosCosto.Query().AnyAsync(c => c.Code == code!.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Maestros.CentrosCosto.Query().AnyAsync(c => c.Code == code!.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniqueName(UpdateSubCentroCostoCommand command, string name, CancellationToken ct)
-            => !await _uow.SubCentrosCosto.Query()
+            => !await _uow.Logistica.Maestros.SubCentrosCosto.Query()
                 .AnyAsync(s => s.Code != command.Code && s.Name.ToLower() == name.Trim().ToLower(), ct);
 
         private async Task<bool> PlantaExists(string code, CancellationToken ct)
-            => await _uow.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> ParentExists(string? parentCode, CancellationToken ct)
-            => await _uow.SubCentrosCosto.Query().AnyAsync(s => s.Code == parentCode!.Trim().ToUpper(), ct);
+            => await _uow.Logistica.Maestros.SubCentrosCosto.Query().AnyAsync(s => s.Code == parentCode!.Trim().ToUpper(), ct);
     }
 }

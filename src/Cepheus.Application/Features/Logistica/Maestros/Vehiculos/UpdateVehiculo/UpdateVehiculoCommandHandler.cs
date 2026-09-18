@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Vehiculos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.UpdateVehicu
 
         public async Task<VehiculoResponse> Handle(UpdateVehiculoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Vehiculos.Query()
+            var current = await _uow.Logistica.Maestros.Vehiculos.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(v => v.Code == request.Code, cancellationToken);
 
@@ -55,7 +55,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.UpdateVehicu
                 RowVersion = request.RowVersion
             };
 
-            _uow.Vehiculos.Update(vehiculo);
+            _uow.Logistica.Maestros.Vehiculos.Update(vehiculo);
 
             try
             {

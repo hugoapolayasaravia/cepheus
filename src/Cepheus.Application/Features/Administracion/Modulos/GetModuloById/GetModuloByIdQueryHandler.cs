@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Modulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.GetModuloById
 
         public async Task<ModuloResponse> Handle(GetModuloByIdQuery request, CancellationToken cancellationToken)
         {
-            var modulo = await _uow.Modulos.Query()
+            var modulo = await _uow.Administracion.Modulos.Query()
                 .AsNoTracking()
                 .Where(m => m.Id == request.Id)
                 .Select(m => new ModuloResponse

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Modulos.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -21,12 +21,12 @@ namespace Cepheus.Application.Features.Administracion.Modulos.CreateModulo
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 Icon = string.IsNullOrWhiteSpace(request.Icon) ? null : request.Icon.Trim(),
-                Tooltip = string.IsNullOrWhiteSpace(request.Tooltip) ? null : request.Tooltip.Trim(),
+                Tooltip = request.Tooltip?.Trim() ?? string.Empty,
                 DisplayOrder = request.DisplayOrder,
                 IsActive = true
             };
 
-            await _uow.Modulos.AddAsync(modulo, cancellationToken);
+            await _uow.Administracion.Modulos.AddAsync(modulo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new ModuloResponse

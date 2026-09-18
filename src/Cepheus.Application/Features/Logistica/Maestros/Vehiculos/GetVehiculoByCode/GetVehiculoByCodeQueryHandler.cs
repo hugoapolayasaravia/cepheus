@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Vehiculos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Vehiculos.GetVehiculoB
 
         public async Task<VehiculoResponse> Handle(GetVehiculoByCodeQuery request, CancellationToken cancellationToken)
         {
-            var vehiculo = await _uow.Vehiculos.Query()
+            var vehiculo = await _uow.Logistica.Maestros.Vehiculos.Query()
                 .AsNoTracking()
                 .Where(v => v.Code == request.Code)
                 .Select(v => new VehiculoResponse

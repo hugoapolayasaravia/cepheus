@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.FormasPago.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.FormasPago.GetFormaPa
 
         public async Task<FormaPagoResponse> Handle(GetFormaPagoByCodeQuery request, CancellationToken cancellationToken)
         {
-            var formaPago = await _uow.FormasPago.Query()
+            var formaPago = await _uow.Logistica.Catalogos.FormasPago.Query()
                 .AsNoTracking()
                 .Where(f => f.Code == request.Code)
                 .Select(f => new FormaPagoResponse

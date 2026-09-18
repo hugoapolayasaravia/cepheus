@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
 
         public async Task<UserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Users.Query()
+            var current = await _uow.Administracion.Users.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
@@ -42,7 +42,7 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 RowVersion = request.RowVersion
             };
 
-            _uow.Users.Update(user);
+            _uow.Administracion.Users.Update(user);
 
             try
             {

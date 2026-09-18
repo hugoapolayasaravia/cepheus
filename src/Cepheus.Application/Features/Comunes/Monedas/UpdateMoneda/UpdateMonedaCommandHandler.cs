@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Monedas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
 
         public async Task<MonedaResponse> Handle(UpdateMonedaCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Monedas.Query()
+            var current = await _uow.Comunes.Monedas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Code == request.Code, cancellationToken);
 
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Comunes.Monedas.UpdateMoneda
                 RowVersion = request.RowVersion
             };
 
-            _uow.Monedas.Update(moneda);
+            _uow.Comunes.Monedas.Update(moneda);
 
             try
             {

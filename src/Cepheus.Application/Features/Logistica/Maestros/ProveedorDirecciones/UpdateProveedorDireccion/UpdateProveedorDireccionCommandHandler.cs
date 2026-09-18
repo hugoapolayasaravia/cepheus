@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.U
 
         public async Task<ProveedorDireccionResponse> Handle(UpdateProveedorDireccionCommand request, CancellationToken cancellationToken)
         {
-            var direccion = await _uow.ProveedorDirecciones.GetByIdAsync(request.Id, cancellationToken);
+            var direccion = await _uow.Logistica.Maestros.ProveedorDirecciones.GetByIdAsync(request.Id, cancellationToken);
 
             if (direccion is null)
             {
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.U
             // Invariante: una sola dirección principal por proveedor.
             if (request.IsPrimary && !direccion.IsPrimary)
             {
-                var otras = await _uow.ProveedorDirecciones.Query()
+                var otras = await _uow.Logistica.Maestros.ProveedorDirecciones.Query()
                     .Where(d => d.ProveedorCode == direccion.ProveedorCode && d.IsPrimary && d.Id != direccion.Id)
                     .ToListAsync(cancellationToken);
 

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUserById
 
         public async Task<UserResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _uow.Users.Query()
+            var user = await _uow.Administracion.Users.Query()
                 .AsNoTracking()
                 .Where(u => u.Id == request.Id)
                 .Select(u => new UserResponse

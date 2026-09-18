@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.Ubigeos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.Ubigeos.GetUbigeosPaginated
         public async Task<PagedResult<UbigeoResponse>> Handle(
             GetUbigeosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Ubigeos.Query().AsNoTracking();
+            var query = _uow.Comunes.Ubigeos.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

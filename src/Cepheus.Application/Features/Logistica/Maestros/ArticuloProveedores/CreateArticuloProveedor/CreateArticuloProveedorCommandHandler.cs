@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Cr
                 AgreementPrice = request.AgreementPrice
             };
 
-            await _uow.ArticuloProveedores.AddAsync(relacion, cancellationToken);
+            await _uow.Logistica.Maestros.ArticuloProveedores.AddAsync(relacion, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(relacion);

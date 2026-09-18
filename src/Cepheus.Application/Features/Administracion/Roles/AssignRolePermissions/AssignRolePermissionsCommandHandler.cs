@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Permissions.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -22,7 +22,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.AssignRolePermission
             // Existencia de Role y de todos los Permissions ya se validó en el Validator.
             var requestedPermissionIds = request.PermissionIds.Distinct().ToHashSet();
 
-            var currentPermissionIds = await _uow.PermissionRoles.Query()
+            var currentPermissionIds = await _uow.Administracion.PermissionRoles.Query()
                 .Where(pr => pr.RoleId == request.RoleId)
                 .Select(pr => pr.PermissionId)
                 .ToHashSetAsync(cancellationToken);
@@ -35,7 +35,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.AssignRolePermission
 
             foreach (var permissionId in toAddIds)
             {
-                await _uow.PermissionRoles.AddAsync(
+                await _uow.Administracion.PermissionRoles.AddAsync(
                     new PermissionRole { RoleId = request.RoleId, PermissionId = permissionId },
                     cancellationToken);
             }
@@ -45,7 +45,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.AssignRolePermission
                 await _uow.SaveChangesAsync(cancellationToken);
             }
 
-            return await _uow.PermissionRoles.Query()
+            return await _uow.Administracion.PermissionRoles.Query()
                 .Where(pr => pr.RoleId == request.RoleId)
                 .Select(pr => new PermissionResponse
                 {

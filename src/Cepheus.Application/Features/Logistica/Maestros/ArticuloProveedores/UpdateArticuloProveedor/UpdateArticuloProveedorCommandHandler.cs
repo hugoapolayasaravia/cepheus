@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ArticuloProveedores.Up
 
         public async Task<ArticuloProveedorResponse> Handle(UpdateArticuloProveedorCommand request, CancellationToken cancellationToken)
         {
-            var relacion = await _uow.ArticuloProveedores.Query()
+            var relacion = await _uow.Logistica.Maestros.ArticuloProveedores.Query()
                 .FirstOrDefaultAsync(x =>
                     x.PlantaCode == request.PlantaCode &&
                     x.ArticuloCode == request.ArticuloCode &&

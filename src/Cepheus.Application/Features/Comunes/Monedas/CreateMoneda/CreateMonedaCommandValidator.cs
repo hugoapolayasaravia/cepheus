@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,11 +37,11 @@ namespace Cepheus.Application.Features.Comunes.Monedas.CreateMoneda
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.Monedas.Query()
+            => !await _uow.Comunes.Monedas.Query()
                 .AnyAsync(m => m.Code == code.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> BeUniqueNumericCode(string? numericCode, CancellationToken cancellationToken)
-            => !await _uow.Monedas.Query()
+            => !await _uow.Comunes.Monedas.Query()
                 .AnyAsync(m => m.NumericCode == numericCode!.Trim(), cancellationToken);
     }
 }

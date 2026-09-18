@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Decreas
 
             for (var attempt = 1; attempt <= MaxConcurrencyRetries; attempt++)
             {
-                var stock = await _uow.StockArticulos.Query()
+                var stock = await _uow.Logistica.Maestros.StockArticulos.Query()
                     .FirstOrDefaultAsync(s => s.PlantaCode == plantaCode && s.ArticuloCode == articuloCode, cancellationToken);
 
                 if (stock is null)

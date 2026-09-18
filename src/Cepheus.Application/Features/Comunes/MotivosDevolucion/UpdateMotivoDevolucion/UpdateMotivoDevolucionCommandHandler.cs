@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.MotivosDevolucion.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.UpdateMotivoDev
 
         public async Task<MotivoDevolucionResponse> Handle(UpdateMotivoDevolucionCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.MotivosDevolucion.Query()
+            var current = await _uow.Comunes.MotivosDevolucion.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
 
@@ -40,7 +40,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.UpdateMotivoDev
                 RowVersion = request.RowVersion
             };
 
-            _uow.MotivosDevolucion.Update(motivo);
+            _uow.Comunes.MotivosDevolucion.Update(motivo);
 
             try
             {

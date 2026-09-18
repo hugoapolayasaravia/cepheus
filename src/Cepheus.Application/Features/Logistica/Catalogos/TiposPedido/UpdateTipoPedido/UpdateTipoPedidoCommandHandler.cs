@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.UpdateTip
 
         public async Task<TipoPedidoResponse> Handle(UpdateTipoPedidoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.TiposPedido.Query()
+            var current = await _uow.Logistica.Catalogos.TiposPedido.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposPedido.UpdateTip
                 RowVersion = request.RowVersion
             };
 
-            _uow.TiposPedido.Update(tipoPedido);
+            _uow.Logistica.Catalogos.TiposPedido.Update(tipoPedido);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +25,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.CreateMotivoDev
         }
 
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
-            => !await _uow.MotivosDevolucion.Query()
+            => !await _uow.Comunes.MotivosDevolucion.Query()
                 .AnyAsync(m => m.Code == code.Trim().ToUpper(), cancellationToken);
     }
 }

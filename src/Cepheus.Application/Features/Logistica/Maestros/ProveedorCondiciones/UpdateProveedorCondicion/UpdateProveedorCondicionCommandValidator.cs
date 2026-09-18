@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,11 +35,11 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.U
         }
 
         private async Task<bool> FormaPagoExists(string formaPagoCode, CancellationToken cancellationToken)
-            => await _uow.FormasPago.Query()
+            => await _uow.Logistica.Catalogos.FormasPago.Query()
                 .AnyAsync(f => f.Code == formaPagoCode.Trim().ToUpper(), cancellationToken);
 
         private async Task<bool> MonedaExists(string monedaCode, CancellationToken cancellationToken)
-            => await _uow.Monedas.Query()
+            => await _uow.Comunes.Monedas.Query()
                 .AnyAsync(m => m.Code == monedaCode.Trim().ToUpper(), cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Get
 
         public async Task<ProveedorContactoResponse> Handle(GetProveedorContactoByIdQuery request, CancellationToken cancellationToken)
         {
-            var contacto = await _uow.ProveedorContactos.Query()
+            var contacto = await _uow.Logistica.Maestros.ProveedorContactos.Query()
                 .AsNoTracking()
                 .Where(c => c.Id == request.Id)
                 .Select(c => new ProveedorContactoResponse

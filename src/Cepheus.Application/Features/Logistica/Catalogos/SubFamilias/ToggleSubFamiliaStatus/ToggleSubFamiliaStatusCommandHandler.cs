@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.ToggleSub
 
         public async Task<bool> Handle(ToggleSubFamiliaStatusCommand request, CancellationToken cancellationToken)
         {
-            var subFamilia = await _uow.SubFamilias.Query()
+            var subFamilia = await _uow.Logistica.Catalogos.SubFamilias.Query()
                 .FirstOrDefaultAsync(s => s.Code == request.Code, cancellationToken);
 
             if (subFamilia is null)

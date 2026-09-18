@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ControlesVentas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -52,7 +52,7 @@ namespace Cepheus.Application.Features.Comunes.ControlesVentas.CreateControlVent
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _uow.ControlesVentas.AddAsync(control, cancellationToken);
+            await _uow.Comunes.ControlesVentas.AddAsync(control, cancellationToken);
 
             await _uow.SaveChangesAsync(cancellationToken);
 

@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.CreateT
         public async Task<TipoArticuloResponse> Handle(CreateTipoArticuloCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.TiposArticulo.Query().Select(t => t.Code), length: 3, entityLabel: "Tipos de Artículo", cancellationToken);
+                _uow.Logistica.Catalogos.TiposArticulo.Query().Select(t => t.Code), length: 3, entityLabel: "Tipos de Artículo", cancellationToken);
 
             var tipoArticulo = new TipoArticulo
             {
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.CreateT
                 IsActive = true
             };
 
-            await _uow.TiposArticulo.AddAsync(tipoArticulo, cancellationToken);
+            await _uow.Logistica.Catalogos.TiposArticulo.AddAsync(tipoArticulo, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tipoArticulo);

@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTiposCambioPaginat
         public async Task<PagedResult<TipoCambioResponse>> Handle(
             GetTiposCambioPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.TiposCambio.Query().AsNoTracking();
+            var query = _uow.Comunes.TiposCambio.Query().AsNoTracking();
 
             if (request.FromDate.HasValue)
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common.Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.Common;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.GetNotaCo
 
         public async Task<NotaCompraResponse> Handle(GetNotaCompraByCodeQuery request, CancellationToken cancellationToken)
         {
-            var nota = await _uow.NotasCompra.Query()
+            var nota = await _uow.Logistica.Catalogos.NotasCompra.Query()
                 .AsNoTracking()
                 .Where(n => n.Code == request.Code)
                 .Select(n => new NotaCompraResponse

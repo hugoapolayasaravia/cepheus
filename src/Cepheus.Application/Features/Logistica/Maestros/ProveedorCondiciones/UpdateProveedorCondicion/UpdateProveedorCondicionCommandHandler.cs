@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.U
 
         public async Task<ProveedorCondicionResponse> Handle(UpdateProveedorCondicionCommand request, CancellationToken cancellationToken)
         {
-            var condicion = await _uow.ProveedorCondiciones.GetByIdAsync(request.Id, cancellationToken);
+            var condicion = await _uow.Logistica.Maestros.ProveedorCondiciones.GetByIdAsync(request.Id, cancellationToken);
 
             if (condicion is null)
             {
@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCondiciones.U
 
             if (request.IsPrimary && !condicion.IsPrimary)
             {
-                var otras = await _uow.ProveedorCondiciones.Query()
+                var otras = await _uow.Logistica.Maestros.ProveedorCondiciones.Query()
                     .Where(c => c.ProveedorCode == condicion.ProveedorCode && c.IsPrimary && c.Id != condicion.Id)
                     .ToListAsync(cancellationToken);
 

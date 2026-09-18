@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
         }
 
         private async Task<bool> BeUniqueDate(DateOnly date, CancellationToken cancellationToken)
-            => !await _uow.TiposCambio.Query()
+            => !await _uow.Comunes.TiposCambio.Query()
                 .AnyAsync(t => t.Date == date, cancellationToken);
     }
 }

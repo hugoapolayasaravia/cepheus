@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.CreateLu
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.LugaresEnvio.Query()
+            => !await _uow.Logistica.Catalogos.LugaresEnvio.Query()
                 .AnyAsync(f => f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

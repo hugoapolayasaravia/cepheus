@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,7 +37,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
         private async Task<bool> BeUniqueCode(
             UpdateProgramaCommand command, string code, CancellationToken cancellationToken)
         {
-            var programa = await _uow.Programas.Query()
+            var programa = await _uow.Administracion.Programas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == command.Id, cancellationToken);
 
@@ -46,7 +46,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
                 return true;
             }
 
-            return !await _uow.Programas.Query()
+            return !await _uow.Administracion.Programas.Query()
                 .AnyAsync(p =>
                     p.SubmoduloId == programa.SubmoduloId &&
                     p.Code == code.Trim().ToUpper() &&
@@ -57,7 +57,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
         private async Task<bool> BeUniqueName(
             UpdateProgramaCommand command, string name, CancellationToken cancellationToken)
         {
-            var programa = await _uow.Programas.Query()
+            var programa = await _uow.Administracion.Programas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == command.Id, cancellationToken);
 
@@ -66,7 +66,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
                 return true;
             }
 
-            return !await _uow.Programas.Query()
+            return !await _uow.Administracion.Programas.Query()
                 .AnyAsync(p =>
                     p.SubmoduloId == programa.SubmoduloId &&
                     p.Name == name.Trim() &&

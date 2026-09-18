@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Users.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -26,7 +27,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Authenticate
         {
             var email = request.Email.Trim().ToLowerInvariant();
 
-            var user = await _uow.Users.Query()
+            var user = await _uow.Administracion.Users.Query()
                 .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                 .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
@@ -56,7 +57,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Authenticate
                 ExpiresAt = DateTime.UtcNow.AddDays(_jwtTokenService.RefreshTokenExpirationDays)
             };
 
-            await _uow.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+            await _uow.Administracion.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return new AuthenticateResponse

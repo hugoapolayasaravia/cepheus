@@ -18,7 +18,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.DocumentTypeCode)
                 .IsRequired()
-                .HasMaxLength(2);
+                .HasMaxLength(3);
 
             builder.Property(x => x.DocumentNumber)
                 .IsRequired()

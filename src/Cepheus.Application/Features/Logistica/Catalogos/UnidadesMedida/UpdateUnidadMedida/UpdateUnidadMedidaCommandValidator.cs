@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Update
         {
             var normalizedName = name.Trim().ToLower();
 
-            return !await _uow.UnidadesMedida
+            return !await _uow.Logistica.Catalogos.UnidadesMedida
                 .Query()
                 .AnyAsync(
                     u => u.Code != command.Code &&

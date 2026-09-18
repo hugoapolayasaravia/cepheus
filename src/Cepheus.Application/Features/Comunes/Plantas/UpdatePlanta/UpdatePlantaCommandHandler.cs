@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Plantas.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
 
         public async Task<PlantaResponse> Handle(UpdatePlantaCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Plantas.Query()
+            var current = await _uow.Comunes.Plantas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Code == request.Code, cancellationToken);
 
@@ -49,7 +49,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
                 RowVersion = request.RowVersion
             };
 
-            _uow.Plantas.Update(planta);
+            _uow.Comunes.Plantas.Update(planta);
 
             try
             {

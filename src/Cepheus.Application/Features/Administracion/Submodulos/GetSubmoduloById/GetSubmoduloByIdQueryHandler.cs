@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Submodulos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.GetSubmoduloByI
 
         public async Task<SubmoduloResponse> Handle(GetSubmoduloByIdQuery request, CancellationToken cancellationToken)
         {
-            var submodulo = await _uow.Submodulos.Query()
+            var submodulo = await _uow.Administracion.Submodulos.Query()
                 .AsNoTracking()
                 .Where(s => s.Id == request.Id)
                 .Select(s => new SubmoduloResponse

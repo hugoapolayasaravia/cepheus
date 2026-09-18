@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposCompra.ToggleTip
 
         public async Task<bool> Handle(ToggleTipoCompraStatusCommand request, CancellationToken cancellationToken)
         {
-            var tipoCompra = await _uow.TiposCompra.Query()
+            var tipoCompra = await _uow.Logistica.Catalogos.TiposCompra.Query()
                 .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
             if (tipoCompra is null)

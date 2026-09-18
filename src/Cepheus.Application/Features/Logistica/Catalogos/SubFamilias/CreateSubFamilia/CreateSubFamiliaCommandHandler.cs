@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
             var familiaCode = request.FamiliaCode.Trim().ToUpperInvariant();
 
             var code = await SequentialCodeGenerator.NextChildAsync(
-                _uow.SubFamilias.Query().Select(s => s.Code),
+                _uow.Logistica.Catalogos.SubFamilias.Query().Select(s => s.Code),
                 prefix: familiaCode,
                 suffixLength: 2,
                 entityLabel: "SubFamilias",
@@ -34,7 +34,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.SubFamilias.CreateSub
                 IsActive = true
             };
 
-            await _uow.SubFamilias.AddAsync(subFamilia, cancellationToken);
+            await _uow.Logistica.Catalogos.SubFamilias.AddAsync(subFamilia, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(subFamilia);

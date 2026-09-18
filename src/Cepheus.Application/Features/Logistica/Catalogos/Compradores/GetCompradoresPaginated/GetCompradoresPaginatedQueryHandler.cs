@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.Compradores.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.GetCompra
         public async Task<PagedResult<CompradorResponse>> Handle(
             GetCompradoresPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Compradores.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.Compradores.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

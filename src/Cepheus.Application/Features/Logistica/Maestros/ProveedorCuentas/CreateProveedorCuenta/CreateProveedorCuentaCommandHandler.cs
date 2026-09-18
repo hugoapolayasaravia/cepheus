@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -22,7 +22,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Creat
 
             if (request.IsPrimary)
             {
-                var otras = await _uow.ProveedorCuentas.Query()
+                var otras = await _uow.Logistica.Maestros.ProveedorCuentas.Query()
                     .Where(c => c.ProveedorCode == proveedorCode && c.IsPrimary)
                     .ToListAsync(cancellationToken);
 
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorCuentas.Creat
                 IsActive = true
             };
 
-            await _uow.ProveedorCuentas.AddAsync(cuenta, cancellationToken);
+            await _uow.Logistica.Maestros.ProveedorCuentas.AddAsync(cuenta, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(cuenta);

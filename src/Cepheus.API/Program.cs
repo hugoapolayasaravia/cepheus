@@ -1,15 +1,11 @@
-using Cepheus.API.Endpoints.Administracion;
-using Cepheus.API.Endpoints.Comunes;
-using Cepheus.API.Endpoints.Logistica.Catalogos;
-using Cepheus.API.Endpoints.Logistica.Maestros;
+using Cepheus.API.Extensions.Endpoints;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
-using Cepheus.Infrastructure.Persistence;
+using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
 using Cepheus.Infrastructure.Persistence.Seed;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -154,57 +150,20 @@ app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 // Administracion
-app.MapAuthEndpoints();
-app.MapUsersEndpoints();
-app.MapRolesEndpoints();
-app.MapModulosEndpoints();
-app.MapSubmodulosEndpoints();
-app.MapProgramasEndpoints();
-app.MapPermissionsEndpoints();
+app.MapAdministracionEndpoints();
 
 // Comunes
-app.MapPlantasEndpoints();
-app.MapMonedasEndpoints();
-app.MapTiposDocumentoEndpoints();
-app.MapComprobantesPagoEndpoints();
-app.MapUbigeosEndpoints();
-app.MapTiposCambioEndpoints();
-app.MapControlesVentasEndpoints();
-app.MapMotivosDevolucionEndpoints();
-app.MapBancosEndpoints();
+app.MapComunesEndpoints();
 
-// Logistica - Catalogos
-app.MapFamiliasEndpoints();
-app.MapSubFamiliasEndpoints();
-app.MapUnidadesMedidaEndpoints();
-app.MapTiposCompraEndpoints();
-app.MapNotasCompraEndpoints();
-app.MapLugaresEnvioEndpoints();
-app.MapCompradoresEndpoints();
-app.MapTramitesEndpoints();
-app.MapTiposPedidoEndpoints();
-app.MapUnidadesNegocioEndpoints();
-app.MapTiposValeEndpoints();
-app.MapTiposArticuloEndpoints();
-app.MapPlanesArticuloEndpoints();
-app.MapFormasPagoEndpoints();
+// Logistica
+app.MapLogisticaCatalogosEndpoints();
+app.MapLogisticaMaestrosEndpoints();
 
-// Logistica - Maestros
-app.MapProveedoresEndpoints();
-app.MapProveedorDireccionesEndpoints();
-app.MapProveedorContactosEndpoints();
-app.MapProveedorCuentasEndpoints();
-app.MapProveedorCondicionesEndpoints();
-app.MapArticulosEndpoints();
-app.MapArticuloProveedoresEndpoints();
-app.MapStockArticulosEndpoints();
-app.MapCentrosCostoEndpoints();
-app.MapSubCentrosCostoEndpoints();
-app.MapTransportistasEndpoints();
-app.MapVehiculosEndpoints();
-app.MapConductoresEndpoints();
-app.MapControlCierresEndpoints();
+// Mantenimiento
+app.MapMantenimientoCatalogosEndpoints();
+app.MapMantenimientoMaestrosEndpoints();
+app.MapMantenimientoTransaccionesEndpoints();
 
 app.Run();
-

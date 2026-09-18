@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Programas.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.CreatePrograma
                 IsActive = true
             };
 
-            await _uow.Programas.AddAsync(programa, cancellationToken);
+            await _uow.Administracion.Programas.AddAsync(programa, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken); // necesita Id antes de crear los Permissions
 
             var permissions = new List<Permission>();
@@ -57,7 +57,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.CreatePrograma
                 };
 
                 permissions.Add(permission);
-                await _uow.Permissions.AddAsync(permission, cancellationToken);
+                await _uow.Administracion.Permissions.AddAsync(permission, cancellationToken);
             }
 
             await _uow.SaveChangesAsync(cancellationToken);

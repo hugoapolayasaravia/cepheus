@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Tramites.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.CreateTramit
         public async Task<TramiteResponse> Handle(CreateTramiteCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Tramites.Query().Select(f => f.Code), length: 1, entityLabel: "Tramites", cancellationToken);
+                _uow.Logistica.Catalogos.Tramites.Query().Select(f => f.Code), length: 1, entityLabel: "Tramites", cancellationToken);
 
 
             var tramite = new Tramite
@@ -28,7 +28,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.CreateTramit
                 IsActive = true
             };
 
-            await _uow.Tramites.AddAsync(tramite, cancellationToken);
+            await _uow.Logistica.Catalogos.Tramites.AddAsync(tramite, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tramite);

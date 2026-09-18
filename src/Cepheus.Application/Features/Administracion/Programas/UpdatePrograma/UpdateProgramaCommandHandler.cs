@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Programas.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
 
         public async Task<ProgramaResponse> Handle(UpdateProgramaCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Programas.Query()
+            var current = await _uow.Administracion.Programas.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
                 RowVersion = request.RowVersion
             };
 
-            _uow.Programas.Update(programa);
+            _uow.Administracion.Programas.Update(programa);
 
             try
             {
@@ -56,7 +56,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
                     "El programa fue modificado por otro proceso. Recargue los datos e intente nuevamente.");
             }
 
-            var permissions = await _uow.Permissions.Query()
+            var permissions = await _uow.Administracion.Permissions.Query()
                 .AsNoTracking()
                 .Where(p => p.ProgramaId == programa.Id)
                 .Select(p => new PermissionSummary { Id = p.Id, Code = p.Code, Name = p.Name })

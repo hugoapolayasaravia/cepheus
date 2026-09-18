@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.TiposDocumento.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -32,7 +32,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
                 IsActive = true
             };
 
-            await _uow.TiposDocumento.AddAsync(tipoDocumento, cancellationToken);
+            await _uow.Comunes.TiposDocumento.AddAsync(tipoDocumento, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(tipoDocumento);
@@ -40,7 +40,6 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
 
         internal static TipoDocumentoResponse Map(TipoDocumento tipoDocumento) => new()
         {
-            Id = tipoDocumento.Id,
             Code = tipoDocumento.Code,
             Name = tipoDocumento.Name,
             ShortName = tipoDocumento.ShortName,

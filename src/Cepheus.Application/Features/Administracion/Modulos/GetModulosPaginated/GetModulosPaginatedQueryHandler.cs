@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Modulos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.GetModulosPaginate
         public async Task<PagedResult<ModuloResponse>> Handle(
             GetModulosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Modulos.Query().AsNoTracking();
+            var query = _uow.Administracion.Modulos.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

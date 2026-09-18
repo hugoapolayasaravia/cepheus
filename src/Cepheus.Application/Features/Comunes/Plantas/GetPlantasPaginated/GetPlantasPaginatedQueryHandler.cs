@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Comunes.Plantas.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantasPaginated
         public async Task<PagedResult<PlantaResponse>> Handle(
             GetPlantasPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Plantas.Query().AsNoTracking();
+            var query = _uow.Comunes.Plantas.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

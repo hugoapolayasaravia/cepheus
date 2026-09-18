@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ControlCierres.UpdateC
 
         public async Task<ControlCierreResponse> Handle(UpdateControlCierreCommand request, CancellationToken cancellationToken)
         {
-            var control = await _uow.ControlCierres.Query()
+            var control = await _uow.Logistica.Maestros.ControlCierres.Query()
                 .FirstOrDefaultAsync(c => c.PlantaCode == request.PlantaCode && c.PeriodCode == request.PeriodCode, cancellationToken);
 
             if (control is null)

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Users.Logout
 
         public async Task Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var storedToken = await _uow.RefreshTokens.Query()
+            var storedToken = await _uow.Administracion.RefreshTokens.Query()
                 .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken, cancellationToken);
 
             // Idempotente a propósito: si el token no existe o ya estaba revocado,

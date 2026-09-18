@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.TiposArticulo.GetTipo
 
         public async Task<TipoArticuloResponse> Handle(GetTipoArticuloByCodeQuery request, CancellationToken cancellationToken)
         {
-            var tipoArticulo = await _uow.TiposArticulo.Query()
+            var tipoArticulo = await _uow.Logistica.Catalogos.TiposArticulo.Query()
                 .AsNoTracking()
                 .Where(t => t.Code == request.Code)
                 .Select(t => new TipoArticuloResponse

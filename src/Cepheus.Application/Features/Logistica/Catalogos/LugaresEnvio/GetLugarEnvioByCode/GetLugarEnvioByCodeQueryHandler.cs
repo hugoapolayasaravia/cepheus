@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.LugaresEnvio.GetLugar
 
         public async Task<LugarEnvioResponse> Handle(GetLugarEnvioByCodeQuery request, CancellationToken cancellationToken)
         {
-            var lugar = await _uow.LugaresEnvio.Query()
+            var lugar = await _uow.Logistica.Catalogos.LugaresEnvio.Query()
                 .AsNoTracking()
                 .Where(l => l.Code == request.Code)
                 .Select(l => new LugarEnvioResponse

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.Compradores.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.UpdateCom
 
         public async Task<CompradorResponse> Handle(UpdateCompradorCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Compradores.Query()
+            var current = await _uow.Logistica.Catalogos.Compradores.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Compradores.UpdateCom
                 RowVersion = request.RowVersion
             };
 
-            _uow.Compradores.Update(comprador);
+            _uow.Logistica.Catalogos.Compradores.Update(comprador);
 
             try
             {

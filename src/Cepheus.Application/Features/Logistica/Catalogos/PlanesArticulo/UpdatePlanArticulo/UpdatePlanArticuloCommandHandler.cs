@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Update
 
         public async Task<PlanArticuloResponse> Handle(UpdatePlanArticuloCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.PlanesArticulo.Query()
+            var current = await _uow.Logistica.Catalogos.PlanesArticulo.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Code == request.Code, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Update
                 RowVersion = request.RowVersion
             };
 
-            _uow.PlanesArticulo.Update(plan);
+            _uow.Logistica.Catalogos.PlanesArticulo.Update(plan);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Programas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.GetProgramaById
 
         public async Task<ProgramaResponse> Handle(GetProgramaByIdQuery request, CancellationToken cancellationToken)
         {
-            var programa = await _uow.Programas.Query()
+            var programa = await _uow.Administracion.Programas.Query()
                 .AsNoTracking()
                 .Where(p => p.Id == request.Id)
                 .Select(p => new ProgramaResponse

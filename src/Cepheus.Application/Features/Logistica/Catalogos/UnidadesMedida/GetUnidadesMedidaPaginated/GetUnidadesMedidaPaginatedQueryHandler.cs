@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.UnidadesMedida.GetUni
         public async Task<PagedResult<UnidadMedidaResponse>> Handle(
             GetUnidadesMedidaPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.UnidadesMedida.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.UnidadesMedida.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

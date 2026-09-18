@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Update
 
         public async Task<SubCentroCostoResponse> Handle(UpdateSubCentroCostoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.SubCentrosCosto.Query()
+            var current = await _uow.Logistica.Maestros.SubCentrosCosto.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Code == request.Code, cancellationToken);
 
@@ -43,7 +43,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Update
                 RowVersion = request.RowVersion
             };
 
-            _uow.SubCentrosCosto.Update(subCentro);
+            _uow.Logistica.Maestros.SubCentrosCosto.Update(subCentro);
 
             try
             {

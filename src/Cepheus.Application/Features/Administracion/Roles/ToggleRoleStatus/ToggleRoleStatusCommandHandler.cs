@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Roles.ToggleRoleStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.ToggleRoleStatus
 
         public async Task<bool> Handle(ToggleRoleStatusCommand request, CancellationToken cancellationToken)
         {
-            var role = await _uow.Roles.GetByIdAsync(request.Id, cancellationToken);
+            var role = await _uow.Administracion.Roles.GetByIdAsync(request.Id, cancellationToken);
 
             if (role is null)
             {

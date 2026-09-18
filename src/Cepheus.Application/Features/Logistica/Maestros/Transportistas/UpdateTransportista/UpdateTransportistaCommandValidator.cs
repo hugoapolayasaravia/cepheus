@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -61,20 +61,20 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.UpdateT
         }
 
         private async Task<bool> DocumentTypeExists(string code, CancellationToken ct)
-            => await _uow.TiposDocumento.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
+            => await _uow.Comunes.TiposDocumento.Query().AnyAsync(t => t.Code == code.Trim().ToUpper(), ct);
 
         private async Task<bool> BeUniqueDocument(UpdateTransportistaCommand command, CancellationToken ct)
-            => !await _uow.Transportistas.Query()
+            => !await _uow.Logistica.Maestros.Transportistas.Query()
                 .AnyAsync(t =>
                     t.Code != command.Code &&
                     t.DocumentTypeCode == command.DocumentTypeCode.Trim().ToUpper() &&
                     t.DocumentNumber == command.DocumentNumber.Trim(), ct);
 
         private async Task<bool> BeUniqueLegalName(UpdateTransportistaCommand command, string name, CancellationToken ct)
-            => !await _uow.Transportistas.Query()
+            => !await _uow.Logistica.Maestros.Transportistas.Query()
                 .AnyAsync(t => t.Code != command.Code && t.LegalName.ToLower() == name.Trim().ToLower(), ct);
 
         private async Task<bool> UbigeoExists(string? code, CancellationToken ct)
-            => await _uow.Ubigeos.Query().AnyAsync(u => u.Code == code!.Trim().ToUpper(), ct);
+            => await _uow.Comunes.Ubigeos.Query().AnyAsync(u => u.Code == code!.Trim().ToUpper(), ct);
     }
 }

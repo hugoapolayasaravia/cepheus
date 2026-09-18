@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Logistica.Catalogos.Familias.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.GetFamiliasP
         public async Task<PagedResult<FamiliaResponse>> Handle(
             GetFamiliasPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Familias.Query().AsNoTracking();
+            var query = _uow.Logistica.Catalogos.Familias.Query().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {

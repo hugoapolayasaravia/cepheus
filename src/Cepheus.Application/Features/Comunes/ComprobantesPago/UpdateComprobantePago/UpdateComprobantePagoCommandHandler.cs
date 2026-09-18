@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ComprobantesPago.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
 
         public async Task<ComprobantePagoResponse> Handle(UpdateComprobantePagoCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.ComprobantesPago.Query()
+            var current = await _uow.Comunes.ComprobantesPago.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
                 RowVersion = request.RowVersion
             };
 
-            _uow.ComprobantesPago.Update(comprobante);
+            _uow.Comunes.ComprobantesPago.Update(comprobante);
 
             try
             {

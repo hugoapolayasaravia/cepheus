@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Users.ToggleUserStatus
@@ -16,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Users.ToggleUserStatus
 
         public async Task<bool> Handle(ToggleUserStatusCommand request, CancellationToken cancellationToken)
         {
-            var user = await _uow.Users.GetByIdAsync(request.Id, cancellationToken);
+            var user = await _uow.Administracion.Users.GetByIdAsync(request.Id, cancellationToken);
 
             if (user is null)
             {

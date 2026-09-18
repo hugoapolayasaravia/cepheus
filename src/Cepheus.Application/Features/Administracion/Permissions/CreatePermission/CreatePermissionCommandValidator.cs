@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,11 +29,11 @@ namespace Cepheus.Application.Features.Administracion.Permissions.CreatePermissi
         }
 
         private async Task<bool> ProgramaExists(int programaId, CancellationToken cancellationToken)
-            => await _uow.Programas.Query().AnyAsync(p => p.Id == programaId, cancellationToken);
+            => await _uow.Administracion.Programas.Query().AnyAsync(p => p.Id == programaId, cancellationToken);
 
         private async Task<bool> BeUniqueCode(
             CreatePermissionCommand command, string code, CancellationToken cancellationToken)
-            => !await _uow.Permissions.Query()
+            => !await _uow.Administracion.Permissions.Query()
                 .AnyAsync(p =>
                     p.ProgramaId == command.ProgramaId && p.Code == code.Trim().ToUpper(),
                     cancellationToken);

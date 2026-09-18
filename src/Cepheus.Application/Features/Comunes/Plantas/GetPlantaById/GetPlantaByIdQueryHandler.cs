@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.Plantas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Comunes.Plantas.GetPlantaById
 
         public async Task<PlantaResponse> Handle(GetPlantaByIdQuery request, CancellationToken cancellationToken)
         {
-            var planta = await _uow.Plantas.Query()
+            var planta = await _uow.Comunes.Plantas.Query()
                 .AsNoTracking()
                 .Where(p => p.Code == request.Code)
                 .Select(p => new PlantaResponse

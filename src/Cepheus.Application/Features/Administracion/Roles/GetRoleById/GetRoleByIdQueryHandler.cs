@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Roles.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Cepheus.Application.Features.Administracion.Roles.GetRoleById
 
         public async Task<RoleResponse> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
         {
-            var role = await _uow.Roles.Query()
+            var role = await _uow.Administracion.Roles.Query()
                 .AsNoTracking()
                 .Where(r => r.Id == request.Id)
                 .Select(r => new RoleResponse

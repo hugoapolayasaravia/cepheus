@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Administracion.Modulos.ToggleModuloStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.ToggleModuloStatus
 
         public async Task<bool> Handle(ToggleModuloStatusCommand request, CancellationToken cancellationToken)
         {
-            var modulo = await _uow.Modulos.GetByIdAsync(request.Id, cancellationToken);
+            var modulo = await _uow.Administracion.Modulos.GetByIdAsync(request.Id, cancellationToken);
 
             if (modulo is null)
             {

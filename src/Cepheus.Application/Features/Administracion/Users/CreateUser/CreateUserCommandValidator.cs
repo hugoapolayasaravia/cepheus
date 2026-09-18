@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,12 +35,12 @@ namespace Cepheus.Application.Features.Administracion.Users.CreateUser
         }
 
         private async Task<bool> BeUniqueEmail(string email, CancellationToken cancellationToken)
-            => !await _uow.Users.Query()
+            => !await _uow.Administracion.Users.Query()
                 .AnyAsync(u => u.Email == email.Trim().ToLower(), cancellationToken);
 
         private async Task<bool> BeUniqueFullName(
             CreateUserCommand command, string lastName, CancellationToken cancellationToken)
-            => !await _uow.Users.Query()
+            => !await _uow.Administracion.Users.Query()
                 .AnyAsync(u =>
                     u.FirstName == command.FirstName.Trim() &&
                     u.LastName == lastName.Trim(),

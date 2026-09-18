@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Helpers;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Common;
 using Cepheus.Domain.Logistica.Catalogos;
 using MediatR;
@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Create
         public async Task<PlanArticuloResponse> Handle(CreatePlanArticuloCommand request, CancellationToken cancellationToken)
         {
             var code = await SequentialCodeGenerator.NextAsync(
-                _uow.PlanesArticulo.Query().Select(p => p.Code), length: 3, entityLabel: "Planes de Artículo", cancellationToken);
+                _uow.Logistica.Catalogos.PlanesArticulo.Query().Select(p => p.Code), length: 3, entityLabel: "Planes de Artículo", cancellationToken);
 
             var plan = new PlanArticulo
             {
@@ -27,7 +27,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.PlanesArticulo.Create
                 IsActive = true
             };
 
-            await _uow.PlanesArticulo.AddAsync(plan, cancellationToken);
+            await _uow.Logistica.Catalogos.PlanesArticulo.AddAsync(plan, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(plan);

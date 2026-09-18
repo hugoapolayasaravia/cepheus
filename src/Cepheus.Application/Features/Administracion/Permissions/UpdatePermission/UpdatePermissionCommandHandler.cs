@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Administracion.Permissions.Common;
 using Cepheus.Domain.Administracion;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.UpdatePermissi
 
         public async Task<PermissionResponse> Handle(UpdatePermissionCommand request, CancellationToken cancellationToken)
         {
-            var current = await _uow.Permissions.Query()
+            var current = await _uow.Administracion.Permissions.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
@@ -40,7 +40,7 @@ namespace Cepheus.Application.Features.Administracion.Permissions.UpdatePermissi
                 RowVersion = request.RowVersion
             };
 
-            _uow.Permissions.Update(permission);
+            _uow.Administracion.Permissions.Update(permission);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Common;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Cre
             // Invariante: un solo contacto principal por proveedor.
             if (request.IsPrimary)
             {
-                var otros = await _uow.ProveedorContactos.Query()
+                var otros = await _uow.Logistica.Maestros.ProveedorContactos.Query()
                     .Where(c => c.ProveedorCode == proveedorCode && c.IsPrimary)
                     .ToListAsync(cancellationToken);
 
@@ -46,7 +46,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorContactos.Cre
                 IsActive = true
             };
 
-            await _uow.ProveedorContactos.AddAsync(contacto, cancellationToken);
+            await _uow.Logistica.Maestros.ProveedorContactos.AddAsync(contacto, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(contacto);

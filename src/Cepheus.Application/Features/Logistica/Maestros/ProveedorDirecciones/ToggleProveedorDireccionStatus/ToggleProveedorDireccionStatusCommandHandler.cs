@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 
 namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.ToggleProveedorDireccionStatus
@@ -14,7 +14,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.ProveedorDirecciones.T
 
         public async Task<bool> Handle(ToggleProveedorDireccionStatusCommand request, CancellationToken cancellationToken)
         {
-            var direccion = await _uow.ProveedorDirecciones.GetByIdAsync(request.Id, cancellationToken);
+            var direccion = await _uow.Logistica.Maestros.ProveedorDirecciones.GetByIdAsync(request.Id, cancellationToken);
 
             if (direccion is null)
             {

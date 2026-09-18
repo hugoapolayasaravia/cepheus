@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Tramites.ToggleTramit
 
         public async Task<bool> Handle(ToggleTramiteStatusCommand request, CancellationToken cancellationToken)
         {
-            var tramite = await _uow.Tramites.Query()
+            var tramite = await _uow.Logistica.Catalogos.Tramites.Query()
                 .FirstOrDefaultAsync(t => t.Code == request.Code, cancellationToken);
 
             if (tramite is null)

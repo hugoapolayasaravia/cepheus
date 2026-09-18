@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.NotasCompra.CreateNot
         }
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-            => !await _uow.NotasCompra.Query()
+            => !await _uow.Logistica.Catalogos.NotasCompra.Query()
                 .AnyAsync(n => n.Name == name.Trim().ToUpper(), cancellationToken);
     }
 }

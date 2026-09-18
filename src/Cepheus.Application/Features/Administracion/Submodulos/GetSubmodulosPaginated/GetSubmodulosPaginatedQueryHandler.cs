@@ -1,5 +1,5 @@
 ﻿using Cepheus.Application.Comun.Extensions;
-using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Submodulos.Common;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Cepheus.Application.Features.Administracion.Submodulos.GetSubmodulosPa
         public async Task<PagedResult<SubmoduloResponse>> Handle(
             GetSubmodulosPaginatedQuery request, CancellationToken cancellationToken)
         {
-            var query = _uow.Submodulos.Query().AsNoTracking();
+            var query = _uow.Administracion.Submodulos.Query().AsNoTracking();
 
             if (request.ModuloId.HasValue)
             {

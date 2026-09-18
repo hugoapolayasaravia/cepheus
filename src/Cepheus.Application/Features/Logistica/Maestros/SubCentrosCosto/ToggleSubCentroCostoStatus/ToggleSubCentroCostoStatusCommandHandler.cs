@@ -1,4 +1,4 @@
-﻿using Cepheus.Application.Comun.Interfaces;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Toggle
 
         public async Task<bool> Handle(ToggleSubCentroCostoStatusCommand request, CancellationToken cancellationToken)
         {
-            var subCentro = await _uow.SubCentrosCosto.Query()
+            var subCentro = await _uow.Logistica.Maestros.SubCentrosCosto.Query()
                 .FirstOrDefaultAsync(s => s.Code == request.Code, cancellationToken);
 
             if (subCentro is null)
