@@ -166,4 +166,13 @@ app.MapMantenimientoCatalogosEndpoints();
 app.MapMantenimientoMaestrosEndpoints();
 app.MapMantenimientoTransaccionesEndpoints();
 
+// Recursos Humanos
+app.MapRrhhCatalogosEndpoints();
+app.MapRrhhMaestrosEndpoints();
+app.MapRrhhTransaccionesEndpoints();
+
+// Facturacion
+app.MapFacturacionCatalogosEndpoints();
+app.MapFacturacionMaestrosEndpoints();
+
 app.Run();

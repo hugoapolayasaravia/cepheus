@@ -5,6 +5,7 @@ using Cepheus.Domain.Logistica.Maestros;
 using Cepheus.Domain.Mantenimiento.Catalogos;
 using Cepheus.Domain.Mantenimiento.Enum;
 using Cepheus.Domain.Mantenimiento.Maestros;
+using Cepheus.Domain.Rrhh.Maestros;
 
 namespace Cepheus.Domain.Mantenimiento.Transacciones
 {
@@ -49,6 +50,7 @@ namespace Cepheus.Domain.Mantenimiento.Transacciones
 
         // Pendiente de FK real: Trabajador aún no existe como tabla
         public string ResponsableCode { get; set; } = default!;
+        public Trabajador Responsable { get; set; } = default!;
 
         public string EspecialidadCode { get; set; } = default!;
         public Especialidad Especialidad { get; set; } = default!;

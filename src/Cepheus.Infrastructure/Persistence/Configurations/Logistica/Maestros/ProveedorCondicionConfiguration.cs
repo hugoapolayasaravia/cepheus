@@ -14,18 +14,18 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.ProveedorCode)
                 .IsRequired()
-                .HasMaxLength(5);
+                 .HasColumnType("char(5)");
 
             builder.Property(x => x.FormaPagoCode)
                 .IsRequired()
-                .HasMaxLength(2);
+                 .HasColumnType("char(2)");
 
             builder.Property(x => x.PaymentTermDays)
                 .IsRequired();
 
             builder.Property(x => x.MonedaCode)
                 .IsRequired()
-                .HasMaxLength(3);
+                 .HasColumnType("char(3)");
 
             builder.Property(x => x.CreditLimit)
                 .HasColumnType("decimal(18,2)");

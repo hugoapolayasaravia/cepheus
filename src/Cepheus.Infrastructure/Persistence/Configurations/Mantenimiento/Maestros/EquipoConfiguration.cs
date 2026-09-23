@@ -14,7 +14,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Mantenimiento.Maestr
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(8);
+                 .HasColumnType("char(8)");
 
             builder.Property(x => x.Name)
                 .IsRequired()

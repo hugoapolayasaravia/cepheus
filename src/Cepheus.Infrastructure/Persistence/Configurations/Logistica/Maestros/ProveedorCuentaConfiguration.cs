@@ -14,11 +14,11 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.ProveedorCode)
                 .IsRequired()
-                .HasMaxLength(5);
+                 .HasColumnType("char(5)");
 
             builder.Property(x => x.BancoCode)
                 .IsRequired()
-                .HasMaxLength(3);
+                 .HasColumnType("char(3)");
 
             builder.Property(x => x.AccountType)
                 .IsRequired()

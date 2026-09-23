@@ -14,11 +14,11 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.PlantaCode)
                 .IsRequired()
-                .HasMaxLength(2);
+                 .HasColumnType("char(2)");
 
             builder.Property(x => x.ArticuloCode)
                 .IsRequired()
-                .HasMaxLength(7);
+                 .HasColumnType("char(7)");
 
             builder.Property(x => x.Quantity)
                 .IsRequired()

@@ -14,7 +14,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Catalogos
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(4);
+                 .HasColumnType("char(4)");
 
             builder.Property(x => x.FamiliaCode)
                 .IsRequired()

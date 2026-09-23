@@ -12,8 +12,13 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Mantenimiento.Transa
 
             builder.HasKey(x => new { x.PlantaCode, x.Code });
 
-            builder.Property(x => x.PlantaCode).IsRequired().HasMaxLength(2);
-            builder.Property(x => x.Code).IsRequired().HasMaxLength(6);
+            builder.Property(x => x.PlantaCode)
+                .IsRequired()
+                 .HasColumnType("char(2)");
+
+            builder.Property(x => x.Code)
+                .IsRequired()
+                .HasColumnType("char(6)");
 
             builder.HasOne(x => x.Planta)
                 .WithMany()
@@ -25,7 +30,18 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Mantenimiento.Transa
             builder.Property(x => x.FechaProceso).IsRequired();
 
             // Sin FK real todavía: Trabajador no existe como tabla
-            builder.Property(x => x.ResponsableCode).IsRequired().HasMaxLength(5);
+            builder.Property(x => x.ResponsableCode)
+                .IsRequired()
+                .HasColumnType("char(5)");
+
+
+            // Relación con Trabajador
+            builder.HasOne(x => x.Responsable)
+                .WithMany()
+                .HasForeignKey(x => x.ResponsableCode)
+                .HasPrincipalKey(x => x.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             builder.Property(x => x.EspecialidadCode).IsRequired().HasMaxLength(1);
             builder.HasOne(x => x.Especialidad).WithMany().HasForeignKey(x => x.EspecialidadCode)

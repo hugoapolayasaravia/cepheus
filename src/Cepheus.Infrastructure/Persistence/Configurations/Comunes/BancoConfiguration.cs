@@ -14,7 +14,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(3);
+                 .HasColumnType("char(3)");
 
             builder.Property(x => x.Name)
                 .IsRequired()

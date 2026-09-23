@@ -1,4 +1,5 @@
 using Cepheus.Domain.Comun;
+using Cepheus.Domain.Rrhh.Maestros;
 
 namespace Cepheus.Domain.Mantenimiento.Transacciones
 {
@@ -32,6 +33,7 @@ namespace Cepheus.Domain.Mantenimiento.Transacciones
 
         // Sin FK real todavía: Trabajador aún no existe como tabla
         public string TrabajadorCode { get; set; } = default!;
+        public Trabajador Responsable { get; set; } = default!;
 
         public decimal TiempoProceso { get; set; }
         public decimal Basico { get; set; }

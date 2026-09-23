@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Cepheus.Infrastructure\Cepheus.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\Facturacion\Transacciones\" />
+  </ItemGroup>
+
 </Project>

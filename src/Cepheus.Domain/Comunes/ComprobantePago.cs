@@ -19,8 +19,6 @@ namespace Cepheus.Domain.Comunes
     ///   fecha_creacion       -> CreatedAt (vía IAuditableEntity)
     ///   fecha_actualizacion  -> UpdatedAt (vía IAuditableEntity)
     ///
-    /// Este catálogo es limpio 1:1 respecto al legacy — no hubo campos a excluir
-    /// ni ambigüedades de alcance (a diferencia de MPlantas/Ttipdoc).
     /// </summary>
     public class ComprobantePago : IAuditableEntity
     {

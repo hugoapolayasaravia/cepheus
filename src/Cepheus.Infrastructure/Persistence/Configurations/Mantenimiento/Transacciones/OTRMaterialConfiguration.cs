@@ -12,8 +12,13 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Mantenimiento.Transa
 
             builder.HasKey(x => new { x.PlantaCode, x.OrdenTrabajoCode, x.FechaProceso, x.ArticuloCode });
 
-            builder.Property(x => x.PlantaCode).IsRequired().HasMaxLength(2);
-            builder.Property(x => x.OrdenTrabajoCode).IsRequired().HasMaxLength(6);
+            builder.Property(x => x.PlantaCode)
+                .IsRequired()
+                 .HasColumnType("char(2)");
+
+            builder.Property(x => x.OrdenTrabajoCode)
+                .IsRequired()
+                 .HasColumnType("char(6)");
 
             builder.HasOne(x => x.OrdenTrabajo)
                 .WithMany()

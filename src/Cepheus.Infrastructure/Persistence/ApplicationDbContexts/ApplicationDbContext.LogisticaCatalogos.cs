@@ -1,4 +1,5 @@
 ﻿using Cepheus.Domain.Logistica.Catalogos;
+using Cepheus.Domain.Logistica.Maestros;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
@@ -34,4 +35,8 @@ public partial class ApplicationDbContext
     public DbSet<PlanArticulo> PlanesArticulo => Set<PlanArticulo>();
 
     public DbSet<FormaPago> FormasPago => Set<FormaPago>();
+    public DbSet<Nivel> Niveles => Set<Nivel>();
+    public DbSet<TipoTransaccion> TiposTransaccion => Set<TipoTransaccion>();
+    public DbSet<RangoAprobacion> RangosAprobacion => Set<RangoAprobacion>();
+    public DbSet<AprobadorAsignado> AprobadoresAsignados => Set<AprobadorAsignado>();
 }

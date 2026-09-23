@@ -14,7 +14,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(6);
+                 .HasColumnType("char(6)");
 
             builder.Property(x => x.CentroCostoCode)
                 .HasMaxLength(3);
