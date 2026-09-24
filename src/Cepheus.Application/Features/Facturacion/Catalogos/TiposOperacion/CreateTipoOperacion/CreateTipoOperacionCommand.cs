@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposOperacion.CreateTipoOperacion
 {
     public record CreateTipoOperacionCommand(
-        string Code,
         string Name
     ) : IRequest<TipoOperacionResponse>;
 }

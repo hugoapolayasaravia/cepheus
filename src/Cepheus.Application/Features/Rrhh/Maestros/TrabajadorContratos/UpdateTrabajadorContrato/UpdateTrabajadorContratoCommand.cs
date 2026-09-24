@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.UpdateT
 {
     public record UpdateTrabajadorContratoCommand(
         long Id,
+        string? TrabajadorCode,
         string? TipoContratoCode,
         string? TipoExtensionCode,
         DateTime? FechaInicio,

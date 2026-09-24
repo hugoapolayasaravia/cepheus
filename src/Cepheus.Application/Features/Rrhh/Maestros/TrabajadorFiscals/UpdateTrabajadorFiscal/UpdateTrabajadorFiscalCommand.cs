@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorFiscals.UpdateTra
 {
     public record UpdateTrabajadorFiscalCommand(
         long Id,
+        string? TrabajadorCode,
         bool ConInmTrabajador,
         bool Domiciliado,
         bool OtrosIngresosQuinta,

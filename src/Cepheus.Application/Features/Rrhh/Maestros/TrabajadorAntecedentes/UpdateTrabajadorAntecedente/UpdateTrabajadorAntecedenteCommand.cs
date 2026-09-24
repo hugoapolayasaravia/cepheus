@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorAntecedentes.Upda
 {
     public record UpdateTrabajadorAntecedenteCommand(
         long Id,
+        string? TrabajadorCode,
         bool TieneAntecedentes,
         string? Descripcion,
         byte[] RowVersion

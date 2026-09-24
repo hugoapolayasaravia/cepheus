@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContables.UpdateT
 {
     public record UpdateTrabajadorContableCommand(
         long Id,
+        string? TrabajadorCode,
         int NumeroItem,
         string? CuentaContable,
         string? Tipo,

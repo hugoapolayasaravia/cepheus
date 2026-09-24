@@ -21,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-contables/{result.Id}", result);
             })
             .WithName("CreateTrabajadorContable")
-            .RequireAuthorization("TRABAJADORCONTABLE.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -29,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("GetTrabajadorContablesByTrabajador")
-            .RequireAuthorization("TRABAJADORCONTABLE.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorContableCommand bodyCommand, ISender sender) =>
             {
@@ -42,7 +42,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorContable")
-            .RequireAuthorization("TRABAJADORCONTABLE.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
 
             group.MapDelete("/{id:long}", async (long id, ISender sender) =>
             {
@@ -50,7 +50,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.NoContent();
             })
             .WithName("DeleteTrabajadorContable")
-            .RequireAuthorization("TRABAJADORCONTABLE.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

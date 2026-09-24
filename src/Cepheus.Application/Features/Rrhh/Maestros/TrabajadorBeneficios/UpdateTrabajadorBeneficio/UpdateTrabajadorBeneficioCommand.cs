@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorBeneficios.Update
 {
     public record UpdateTrabajadorBeneficioCommand(
         long Id,
+        string? TrabajadorCode,
         bool Cts,
         bool Gratificacion,
         bool Vacaciones,

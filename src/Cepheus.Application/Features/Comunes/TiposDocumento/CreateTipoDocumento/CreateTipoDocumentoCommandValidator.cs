@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código del tipo de documento es obligatorio.")
-                .MaximumLength(3).WithMessage("El código no puede exceder los 3 caracteres.")
+                .MaximumLength(2).WithMessage("El código no puede exceder los 2 caracteres.")
                 .MustAsync(BeUniqueCode).WithMessage("Ya existe un tipo de documento con ese código.");
 
             RuleFor(x => x.Name)

@@ -1,5 +1,4 @@
 ﻿using Cepheus.Domain.Facturacion.Catalogos;
-using Cepheus.Domain.Facturacion.Maestros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -46,12 +45,17 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Catalogo
             builder.Property(x => x.RowVersion)
                 .IsRowVersion();
 
-            builder.HasOne<Producto>()
+            builder.HasOne(x => x.Producto)
                 .WithMany()
                 .HasForeignKey(x => new
                 {
                     x.TipoProductoCode,
                     x.ProductoCode
+                })
+                .HasPrincipalKey(x => new
+                {
+                    x.TipoProductoCode,
+                    x.Code
                 })
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorBeneficios.CreateTrabajadorBeneficio;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorBeneficios.DeleteTrabajadorBeneficio;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorBeneficios.GetTrabajadorBeneficiosByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorBeneficios.UpdateTrabajadorBeneficio;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-beneficios/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorBeneficio")
-            .RequireAuthorization("TRABAJADORBENEFICIO.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorBeneficioByTrabajador")
-            .RequireAuthorization("TRABAJADORBENEFICIO.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorBeneficioCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorBeneficio")
-            .RequireAuthorization("TRABAJADORBENEFICIO.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorBeneficioCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteTrabajadorBeneficio")
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSeguros.CreateTrabajadorSeguro;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSeguros.DeleteTrabajadorSeguro;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSeguros.GetTrabajadorSegurosByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSeguros.UpdateTrabajadorSeguro;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-seguros/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorSeguro")
-            .RequireAuthorization("TRABAJADORSEGURO.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorSeguroByTrabajador")
-            .RequireAuthorization("TRABAJADORSEGURO.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorSeguroCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorSeguro")
-            .RequireAuthorization("TRABAJADORSEGURO.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorSeguroCommand(id));
+                return Results.NoContent();
+            })
+                .WithName("DeleteTrabajadorSeguro")
+                .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

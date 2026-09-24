@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSindicatos.Update
 {
     public record UpdateTrabajadorSindicatoCommand(
         long Id,
+        string? TrabajadorCode,
         bool Afiliado,
         byte[] RowVersion
     ) : IRequest<TrabajadorSindicatoResponse>;

@@ -21,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-vacacions/{result.Id}", result);
             })
             .WithName("CreateTrabajadorVacacion")
-            .RequireAuthorization("TRABAJADORVACACION.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -29,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("GetTrabajadorVacacionsByTrabajador")
-            .RequireAuthorization("TRABAJADORVACACION.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorVacacionCommand bodyCommand, ISender sender) =>
             {
@@ -42,7 +42,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorVacacion")
-            .RequireAuthorization("TRABAJADORVACACION.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
 
             group.MapDelete("/{id:long}", async (long id, ISender sender) =>
             {
@@ -50,7 +50,9 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.NoContent();
             })
             .WithName("DeleteTrabajadorVacacion")
-            .RequireAuthorization("TRABAJADORVACACION.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+
         }
     }
 }

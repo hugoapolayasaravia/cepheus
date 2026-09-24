@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorVacacions.UpdateT
 {
     public record UpdateTrabajadorVacacionCommand(
         long Id,
+        string? TrabajadorCode,
         DateTime? FechaVacaciones,
         byte[] RowVersion
     ) : IRequest<TrabajadorVacacionResponse>;

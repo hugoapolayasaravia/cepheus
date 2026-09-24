@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorRemuneracions.Upd
 {
     public record UpdateTrabajadorRemuneracionCommand(
         long Id,
+        string? TrabajadorCode,
         decimal SueldoBasico,
         string? MonedaCode,
         string? ModoPagoCode,

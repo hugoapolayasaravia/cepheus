@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorJornadas.CreateTrabajadorJornada;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorJornadas.DeleteTrabajadorJornada;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorJornadas.GetTrabajadorJornadasByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorJornadas.UpdateTrabajadorJornada;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-jornadas/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorJornada")
-            .RequireAuthorization("TRABAJADORJORNADA.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorJornadaByTrabajador")
-            .RequireAuthorization("TRABAJADORJORNADA.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorJornadaCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorJornada")
-            .RequireAuthorization("TRABAJADORJORNADA.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorJornadaCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteTrabajadorJornada")
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

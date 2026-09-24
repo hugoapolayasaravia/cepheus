@@ -1,7 +1,7 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.CreateTrabajadorContrato;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.DeleteTrabajadorContrato;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.GetTrabajadorContratosByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.UpdateTrabajadorContrato;
-using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorContratos.DeleteTrabajadorContrato;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Rrhh.Maestros
@@ -21,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-contratos/{result.Id}", result);
             })
             .WithName("CreateTrabajadorContrato")
-            .RequireAuthorization("TRABAJADORCONTRATO.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -29,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("GetTrabajadorContratosByTrabajador")
-            .RequireAuthorization("TRABAJADORCONTRATO.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorContratoCommand bodyCommand, ISender sender) =>
             {
@@ -42,7 +42,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorContrato")
-            .RequireAuthorization("TRABAJADORCONTRATO.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
 
             group.MapDelete("/{id:long}", async (long id, ISender sender) =>
             {
@@ -50,7 +50,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.NoContent();
             })
             .WithName("DeleteTrabajadorContrato")
-            .RequireAuthorization("TRABAJADORCONTRATO.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");   
         }
     }
 }

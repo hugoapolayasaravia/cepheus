@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorAntecedentes.CreateTrabajadorAntecedente;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorAntecedentes.DeleteTrabajadorAntecedente;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorAntecedentes.GetTrabajadorAntecedentesByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorAntecedentes.UpdateTrabajadorAntecedente;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-antecedentes/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorAntecedente")
-            .RequireAuthorization("TRABAJADORANTECEDENTE.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorAntecedenteByTrabajador")
-            .RequireAuthorization("TRABAJADORANTECEDENTE.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorAntecedenteCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorAntecedente")
-            .RequireAuthorization("TRABAJADORANTECEDENTE.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorAntecedenteCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteTrabajadorAntecedente")
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

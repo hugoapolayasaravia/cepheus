@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorFormacions.Update
 {
     public record UpdateTrabajadorFormacionCommand(
         long Id,
+        string? TrabajadorCode,
         string? NivelEducativoCode,
         string? GradoInstruccionCode,
         string? TituloCode,

@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
             RuleFor(x => x.DocumentTypeCode)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El tipo de documento es obligatorio.")
-                .Length(3).WithMessage("El código de tipo de documento debe tener 2 caracteres.")
+                .Length(2).WithMessage("El código de tipo de documento debe tener 2 caracteres.")
                 .MustAsync(DocumentTypeExists).WithMessage("El tipo de documento indicado no existe.");
 
             RuleFor(x => x.DocumentNumber)

@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSeguros.UpdateTra
 {
     public record UpdateTrabajadorSeguroCommand(
         long Id,
+        string? TrabajadorCode,
         string? EpsCode,
         string? SituacionEpsCode,
         string? NumeroSeguro,

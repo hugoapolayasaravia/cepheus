@@ -1,4 +1,3 @@
-using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorLaborals.Common;
 using Cepheus.Domain.Rrhh.Maestros;

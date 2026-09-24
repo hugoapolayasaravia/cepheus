@@ -1,11 +1,13 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Facturacion.Catalogos.TiposOperacion.Common;
 using Cepheus.Domain.Facturacion.Catalogos;
 using MediatR;
 
 namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposOperacion.CreateTipoOperacion
 {
-    public class CreateTipoOperacionCommandHandler : IRequestHandler<CreateTipoOperacionCommand, TipoOperacionResponse>
+    public class CreateTipoOperacionCommandHandler
+        : IRequestHandler<CreateTipoOperacionCommand, TipoOperacionResponse>
     {
         private readonly IUnitOfWork _uow;
 
@@ -14,9 +16,15 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposOperacion.Crea
             _uow = uow;
         }
 
-        public async Task<TipoOperacionResponse> Handle(CreateTipoOperacionCommand request, CancellationToken cancellationToken)
+        public async Task<TipoOperacionResponse> Handle(
+            CreateTipoOperacionCommand request,
+            CancellationToken cancellationToken)
         {
-            var code = request.Code.Trim().ToUpperInvariant();
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.Facturacion.Catalogos.TiposOperacion.Query().Select(t => t.Code),
+                length: 2,
+                entityLabel: "TiposOperacion",
+                cancellationToken);
 
             var entity = new TipoOperacion
             {
@@ -25,7 +33,10 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposOperacion.Crea
                 IsActive = true
             };
 
-            await _uow.Facturacion.Catalogos.TiposOperacion.AddAsync(entity, cancellationToken);
+            await _uow.Facturacion.Catalogos.TiposOperacion.AddAsync(
+                entity,
+                cancellationToken);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(entity);

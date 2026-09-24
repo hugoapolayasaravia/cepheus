@@ -1360,10 +1360,6 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(4)");
 
-                    b.Property<string>("ProductoTipoProductoCode")
-                        .IsRequired()
-                        .HasColumnType("char(2)");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -1382,8 +1378,6 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductoTipoProductoCode", "ProductoCode");
 
                     b.HasIndex("TipoProductoCode", "ProductoCode");
 
@@ -1888,8 +1882,9 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("char(5)");
 
-                    b.Property<int>("PersonType")
-                        .HasColumnType("int");
+                    b.Property<string>("PersonType")
+                        .IsRequired()
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -8339,12 +8334,6 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Catalogos.ListaPrecio", b =>
                 {
                     b.HasOne("Cepheus.Domain.Facturacion.Maestros.Producto", "Producto")
-                        .WithMany()
-                        .HasForeignKey("ProductoTipoProductoCode", "ProductoCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Producto", null)
                         .WithMany()
                         .HasForeignKey("TipoProductoCode", "ProductoCode")
                         .OnDelete(DeleteBehavior.Restrict)

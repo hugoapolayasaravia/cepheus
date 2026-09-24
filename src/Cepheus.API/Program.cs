@@ -1,3 +1,4 @@
+using Cepheus.API.Authorization;
 using Cepheus.API.Extensions.Endpoints;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
@@ -6,6 +7,8 @@ using Cepheus.Infrastructure.Persistence.Seed;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -20,7 +23,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly));
 
-builder.Services.AddValidatorsFromAssembly(typeof(Cepheus.Application.AssemblyReference).Assembly);
+builder.Services.AddValidatorsFromAssembly(
+    typeof(Cepheus.Application.AssemblyReference).Assembly);
 
 builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>),
@@ -33,10 +37,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         var secretKey = jwt["SecretKey"];
 
         // Falla rápido y ruidoso en vez de arrancar silenciosamente con una
-        // clave vacía o un placeholder conocido (que sería tan inseguro como
-        // no tener autenticación). Mejor un 500 al arrancar que un JWT
-        // forjable por cualquiera que haya visto el repo alguna vez.
-        if (string.IsNullOrWhiteSpace(secretKey) || secretKey.Contains("CAMBIAR", StringComparison.OrdinalIgnoreCase))
+        // clave vacía o un placeholder conocido.
+        if (string.IsNullOrWhiteSpace(secretKey) ||
+            secretKey.Contains("CAMBIAR", StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidOperationException(
                 "Jwt:SecretKey no está configurado. En Development, corré " +
@@ -50,8 +53,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+
             ValidIssuer = jwt["Issuer"],
             ValidAudience = jwt["Audience"],
+
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(secretKey))
         };
@@ -59,9 +64,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// CORS: orígenes permitidos vienen de appsettings (Cors:AllowedOrigins), NO
-// hardcodeados acá. Así Development/Production pueden tener listas distintas
-// sin tocar código (appsettings.Development.json vs appsettings.Production.json).
+// Personaliza la respuesta cuando el usuario está autenticado
+// pero no tiene los permisos requeridos para el endpoint.
+builder.Services.AddSingleton<
+    IAuthorizationMiddlewareResultHandler,
+    CustomAuthorizationMiddlewareResultHandler>();
+
+// CORS: los orígenes permitidos vienen de appsettings
+// (Cors:AllowedOrigins), no están hardcodeados acá.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(CorsPolicyName, policy =>
@@ -73,21 +83,27 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials(); // Solo necesario si el frontend usa cookies; con JWT en header no es obligatorio, pero no molesta.
+            .AllowCredentials();
     });
 });
+
+//builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+//{
+//    options.SerializerOptions.UnmappedMemberHandling =
+//        System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow;
+//});
 
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.UnmappedMemberHandling =
         System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow;
+
+    options.SerializerOptions.Converters.Add(
+        new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
-// Rate limiting: solo en login/register (los puntos de entrada sin auth previa,
-// blanco típico de fuerza bruta). Se limita por IP, no globalmente — así un
-// atacante no puede agotar la cuota de todos los usuarios legítimos.
-// 5 intentos cada 1 minuto, sin cola de espera (el que se pasa, espera al
-// siguiente minuto; no se le hace "esperar su turno").
+// Rate limiting: solo en login/register.
+// 5 intentos cada 1 minuto por IP.
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -105,51 +121,60 @@ builder.Services.AddRateLimiter(options =>
             Type = "https://httpstatuses.com/429"
         };
 
-        await context.HttpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await context.HttpContext.Response.WriteAsJsonAsync(
+            problemDetails,
+            cancellationToken);
     };
 
-    options.AddPolicy(AuthRateLimiterPolicyName, httpContext =>
-        RateLimitPartition.GetFixedWindowLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-            factory: _ => new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = 5,
-                Window = TimeSpan.FromMinutes(1),
-                QueueLimit = 0
-            }));
+    options.AddPolicy(
+        AuthRateLimiterPolicyName,
+        httpContext =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey:
+                    httpContext.Connection.RemoteIpAddress?.ToString()
+                    ?? "unknown",
+
+                factory: _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 5,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueLimit = 0
+                }));
 });
 
 var app = builder.Build();
 
-// Seed del árbol de Administración (Modulo "ADMIN" -> Submodulo "SEG" ->
-// Programas USERS/ROLES/MODULOS/SUBMODULOS/PROGRAMAS/PERMISSIONS, con su
-// CRUD estándar) + sincronización del rol Administrador con todo lo sembrado.
-// Idempotente: se puede correr en cada arranque sin duplicar nada.
+// Seed del árbol de Administración:
+// Modulo "ADMIN" -> Submodulo "SEG" ->
+// USERS / ROLES / MODULOS / SUBMODULOS / PROGRAMAS / PERMISSIONS.
+// También sincroniza el rol Administrador con todo lo sembrado.
+// Es idempotente.
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var dbContext =
+        scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
     await AdministracionSeeder.SeedAsync(dbContext);
 }
 
 app.UseExceptionHandling();
 app.UseSecurityHeaders();
 
-// HSTS solo fuera de Development: en local, con el certificado autofirmado
-// de HTTPS de desarrollo, HSTS genera más problemas (el navegador "recuerda"
-// forzar HTTPS incluso si después volvés a HTTP en otro proyecto local) que
-// beneficios. En Production, sobre un dominio real con certificado válido,
-// sí corresponde.
+// HSTS solo fuera de Development.
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseCors(CorsPolicyName);
-app.UseRateLimiter();
-app.UseAuthentication();
-app.UseAuthorization();
 
+app.UseCors(CorsPolicyName);
+
+app.UseRateLimiter();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 // Administracion
 app.MapAdministracionEndpoints();

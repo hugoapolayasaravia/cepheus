@@ -1,11 +1,13 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Facturacion.Catalogos.TiposBien.Common;
 using Cepheus.Domain.Facturacion.Catalogos;
 using MediatR;
 
 namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposBien.CreateTipoBien
 {
-    public class CreateTipoBienCommandHandler : IRequestHandler<CreateTipoBienCommand, TipoBienResponse>
+    public class CreateTipoBienCommandHandler
+        : IRequestHandler<CreateTipoBienCommand, TipoBienResponse>
     {
         private readonly IUnitOfWork _uow;
 
@@ -14,11 +16,17 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposBien.CreateTip
             _uow = uow;
         }
 
-        public async Task<TipoBienResponse> Handle(CreateTipoBienCommand request, CancellationToken cancellationToken)
+        public async Task<TipoBienResponse> Handle(
+            CreateTipoBienCommand request,
+            CancellationToken cancellationToken)
         {
-            var code = request.Code.Trim().ToUpperInvariant();
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.Facturacion.Catalogos.TiposBien.Query().Select(t => t.Code),
+                length: 3,
+                entityLabel: "TiposBien",
+                cancellationToken);
 
-            var entity = new TipoBien
+            var tipoBien = new TipoBien
             {
                 Code = code,
                 Name = request.Name.Trim(),
@@ -26,10 +34,13 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposBien.CreateTip
                 IsActive = true
             };
 
-            await _uow.Facturacion.Catalogos.TiposBien.AddAsync(entity, cancellationToken);
+            await _uow.Facturacion.Catalogos.TiposBien.AddAsync(
+                tipoBien,
+                cancellationToken);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
-            return Map(entity);
+            return Map(tipoBien);
         }
 
         internal static TipoBienResponse Map(TipoBien e) => new()

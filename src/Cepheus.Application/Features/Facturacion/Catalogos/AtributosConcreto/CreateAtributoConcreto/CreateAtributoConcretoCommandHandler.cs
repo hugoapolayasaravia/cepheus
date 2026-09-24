@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.Common;
 using Cepheus.Domain.Facturacion.Catalogos;
 using Cepheus.Domain.Facturacion.Enum;
@@ -6,7 +7,8 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.CreateAtributoConcreto
 {
-    public class CreateAtributoConcretoCommandHandler : IRequestHandler<CreateAtributoConcretoCommand, AtributoConcretoResponse>
+    public class CreateAtributoConcretoCommandHandler
+        : IRequestHandler<CreateAtributoConcretoCommand, AtributoConcretoResponse>
     {
         private readonly IUnitOfWork _uow;
 
@@ -15,19 +17,30 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.C
             _uow = uow;
         }
 
-        public async Task<AtributoConcretoResponse> Handle(CreateAtributoConcretoCommand request, CancellationToken cancellationToken)
+        public async Task<AtributoConcretoResponse> Handle(
+            CreateAtributoConcretoCommand request,
+            CancellationToken cancellationToken)
         {
-            var code = request.Code.Trim();
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.Facturacion.Catalogos.AtributosConcreto.Query().Select(a => a.Code),
+                length: 4,
+                entityLabel: "AtributosConcreto",
+                cancellationToken);
 
             var entity = new AtributoConcreto
             {
                 Code = code,
-                AttributeType = System.Enum.Parse<TipoAtributoConcreto>(request.AttributeType.Trim(), ignoreCase: true),
+                AttributeType = System.Enum.Parse<TipoAtributoConcreto>(
+                    request.AttributeType.Trim(),
+                    ignoreCase: true),
                 Name = request.Name.Trim(),
                 IsActive = true
             };
 
-            await _uow.Facturacion.Catalogos.AtributosConcreto.AddAsync(entity, cancellationToken);
+            await _uow.Facturacion.Catalogos.AtributosConcreto.AddAsync(
+                entity,
+                cancellationToken);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(entity);

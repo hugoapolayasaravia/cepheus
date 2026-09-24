@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorJornadas.UpdateTr
 {
     public record UpdateTrabajadorJornadaCommand(
         long Id,
+        string? TrabajadorCode,
         string? HorarioCode,
         bool HorasExtras,
         bool HorasExt40,

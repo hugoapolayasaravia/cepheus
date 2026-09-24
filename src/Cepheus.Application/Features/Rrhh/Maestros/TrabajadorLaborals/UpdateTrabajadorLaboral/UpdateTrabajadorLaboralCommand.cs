@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorLaborals.UpdateTr
 {
     public record UpdateTrabajadorLaboralCommand(
         long Id,
+        string TrabajadorCode,
         DateTime? FechaIngreso,
         DateTime? FechaCese,
         string? TipoTrabajadorCode,

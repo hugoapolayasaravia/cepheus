@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorDependientes.Upda
 {
     public record UpdateTrabajadorDependienteCommand(
         long Id,
+        string? TrabajadorCode,
         string Nombre,
         string? ParentescoCode,
         DateTime? FechaNacimiento,

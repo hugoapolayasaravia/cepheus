@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorCuentaBancarias.U
 {
     public record UpdateTrabajadorCuentaBancariaCommand(
         long Id,
+        string? TrabajadorCode,
         string? TipoCuentaCode,
         string? BancoCode,
         string? MonedaCode,

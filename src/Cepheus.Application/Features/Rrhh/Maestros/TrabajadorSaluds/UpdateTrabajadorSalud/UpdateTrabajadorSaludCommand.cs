@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorSaluds.UpdateTrab
 {
     public record UpdateTrabajadorSaludCommand(
         long Id,
+        string? TrabajadorCode,
         string? TipoSangreCode,
         string? AlergiaCode,
         string? Otros,

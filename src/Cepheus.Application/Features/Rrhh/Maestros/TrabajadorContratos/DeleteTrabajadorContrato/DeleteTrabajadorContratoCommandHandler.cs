@@ -1,4 +1,3 @@
-using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

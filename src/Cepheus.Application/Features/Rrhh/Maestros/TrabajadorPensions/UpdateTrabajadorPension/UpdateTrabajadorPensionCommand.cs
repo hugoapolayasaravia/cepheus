@@ -5,6 +5,7 @@ namespace Cepheus.Application.Features.Rrhh.Maestros.TrabajadorPensions.UpdateTr
 {
     public record UpdateTrabajadorPensionCommand(
         long Id,
+        string? TrabajadorCode,
         string? TipoAfiliacionCode,
         string? AfpCode,
         DateTime? FechaAfiliacion,

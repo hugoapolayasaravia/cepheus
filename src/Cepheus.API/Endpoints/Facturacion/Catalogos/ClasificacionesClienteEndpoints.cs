@@ -21,7 +21,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Created($"/api/facturacion/catalogos/clasificaciones-cliente/{result.Code}", result);
             })
             .WithName("CreateClasificacionCliente")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.CREATE");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.CREATE");
 
             group.MapGet("/paged", async (
                 [AsParameters] GetClasificacionesClientePaginatedQuery query,
@@ -31,7 +31,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Ok(result);
             })
             .WithName("GetClasificacionesClientePagedQueryString")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.VIEW");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.VIEW");
 
             group.MapPost("/paged/body", async (
                 GetClasificacionesClientePaginatedQuery query,
@@ -41,7 +41,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Ok(result);
             })
             .WithName("GetClasificacionesClientePagedBody")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.VIEW");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.VIEW");
 
             group.MapGet("/{codigo}", async (string codigo, ISender sender) =>
             {
@@ -49,7 +49,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Ok(result);
             })
             .WithName("GetClasificacionClienteByCode")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.VIEW");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.VIEW");
 
             group.MapPut("/{codigo}", async (string codigo, UpdateClasificacionClienteCommand command, ISender sender) =>
             {
@@ -62,7 +62,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Ok(result);
             })
             .WithName("UpdateClasificacionCliente")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.UPDATE");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.UPDATE");
 
             group.MapPatch("/{codigo}/toggle-status", async (string codigo, ISender sender) =>
             {
@@ -70,7 +70,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Catalogos
                 return Results.Ok(new { IsActive = isActive });
             })
             .WithName("ToggleClasificacionClienteStatus")
-            .RequireAuthorization("CLASIFICACIONESCLIENTE.UPDATE");
+            .RequireAuthorization("CLASIFICACIONCLIENTE.UPDATE");
         }
     }
 }

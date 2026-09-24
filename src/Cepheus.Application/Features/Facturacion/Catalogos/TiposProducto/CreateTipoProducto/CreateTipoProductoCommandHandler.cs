@@ -1,11 +1,13 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Facturacion.Catalogos.TiposProducto.Common;
 using Cepheus.Domain.Facturacion.Catalogos;
 using MediatR;
 
 namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposProducto.CreateTipoProducto
 {
-    public class CreateTipoProductoCommandHandler : IRequestHandler<CreateTipoProductoCommand, TipoProductoResponse>
+    public class CreateTipoProductoCommandHandler
+        : IRequestHandler<CreateTipoProductoCommand, TipoProductoResponse>
     {
         private readonly IUnitOfWork _uow;
 
@@ -14,21 +16,31 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposProducto.Creat
             _uow = uow;
         }
 
-        public async Task<TipoProductoResponse> Handle(CreateTipoProductoCommand request, CancellationToken cancellationToken)
+        public async Task<TipoProductoResponse> Handle(
+            CreateTipoProductoCommand request,
+            CancellationToken cancellationToken)
         {
-            var code = request.Code.Trim().ToUpperInvariant();
+            var code = await SequentialCodeGenerator.NextAsync(
+                _uow.Facturacion.Catalogos.TiposProducto
+                    .Query()
+                    .Select(t => t.Code),
+                length: 2,
+                entityLabel: "Tipos de Producto",
+                cancellationToken);
 
-            var entity = new TipoProducto
+            var tipoProducto = new TipoProducto
             {
                 Code = code,
                 Name = request.Name.Trim(),
                 IsActive = true
             };
 
-            await _uow.Facturacion.Catalogos.TiposProducto.AddAsync(entity, cancellationToken);
+            await _uow.Facturacion.Catalogos.TiposProducto
+                .AddAsync(tipoProducto, cancellationToken);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
-            return Map(entity);
+            return Map(tipoProducto);
         }
 
         internal static TipoProductoResponse Map(TipoProducto e) => new()

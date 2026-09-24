@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Facturacion.Catalogos.UnidadesMedidaVenta.UpdateUnidadMedidaVenta;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,9 +19,15 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.TiposProducto.Updat
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
-                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.");
+                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe otro tipo de producto con ese nombre.");
 
             RuleFor(x => x.RowVersion).NotEmpty().WithMessage("RowVersion es obligatorio para control de concurrencia.");
         }
+
+        private async Task<bool> BeUniqueName(UpdateTipoProductoCommand command, string name, CancellationToken cancellationToken)
+        => !await _uow.Facturacion.Catalogos.TiposProducto.Query()
+            .AnyAsync(t => t.Code != command.Code && t.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
+
     }
 }

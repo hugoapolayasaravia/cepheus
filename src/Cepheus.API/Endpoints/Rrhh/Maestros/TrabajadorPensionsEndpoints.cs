@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorPensions.CreateTrabajadorPension;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorPensions.DeleteTrabajadorPension;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorPensions.GetTrabajadorPensionsByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorPensions.UpdateTrabajadorPension;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-pensions/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorPension")
-            .RequireAuthorization("TRABAJADORPENSION.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorPensionByTrabajador")
-            .RequireAuthorization("TRABAJADORPENSION.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorPensionCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorPension")
-            .RequireAuthorization("TRABAJADORPENSION.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorPensionCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteTrabajadorPension")
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }

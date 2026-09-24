@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.CreateAtributoConcreto
 {
     public record CreateAtributoConcretoCommand(
-        string Code,
         string AttributeType,
         string Name
     ) : IRequest<AtributoConcretoResponse>;

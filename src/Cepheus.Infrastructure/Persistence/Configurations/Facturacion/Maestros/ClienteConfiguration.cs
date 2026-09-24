@@ -1,4 +1,5 @@
-﻿using Cepheus.Domain.Facturacion.Maestros;
+﻿using Cepheus.Domain.Facturacion.Enum;
+using Cepheus.Domain.Facturacion.Maestros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,8 +18,11 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Maestros
                  .HasColumnType("char(5)");
 
             builder.Property(x => x.PersonType)
-                .IsRequired()
-                .HasConversion<int>();
+                 .IsRequired()
+                 .HasConversion(
+                     v => v == TipoPersona.Empresa ? "E" : "N",
+                     v => v == "E" ? TipoPersona.Empresa : TipoPersona.Natural)
+                 .HasColumnType("char(1)");
 
             builder.Property(x => x.DocumentTypeCode)
                 .IsRequired()

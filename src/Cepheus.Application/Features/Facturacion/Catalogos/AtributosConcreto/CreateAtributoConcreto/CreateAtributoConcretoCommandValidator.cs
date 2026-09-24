@@ -13,12 +13,6 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.C
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código es obligatorio.")
-                .MaximumLength(4).WithMessage("El código no puede exceder los 4 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe un registro con ese código.");
-
             RuleFor(x => x.AttributeType)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El tipo de atributo es obligatorio.")
@@ -30,7 +24,5 @@ namespace Cepheus.Application.Features.Facturacion.Catalogos.AtributosConcreto.C
                 .MaximumLength(100).WithMessage("La descripción no puede exceder los 100 caracteres.");
         }
 
-        private async Task<bool> BeUniqueCode(string code, CancellationToken ct)
-            => !await _uow.Facturacion.Catalogos.AtributosConcreto.Query().AnyAsync(x => x.Code == code.Trim(), ct);
     }
 }

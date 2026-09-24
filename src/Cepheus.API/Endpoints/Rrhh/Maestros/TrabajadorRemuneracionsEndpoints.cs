@@ -1,4 +1,5 @@
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorRemuneracions.CreateTrabajadorRemuneracion;
+using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorRemuneracions.DeleteTrabajadorContrato;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorRemuneracions.GetTrabajadorRemuneracionsByTrabajador;
 using Cepheus.Application.Features.Rrhh.Maestros.TrabajadorRemuneracions.UpdateTrabajadorRemuneracion;
 using MediatR;
@@ -20,7 +21,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Created($"/api/rrhh/maestros/trabajador-remuneracions/trabajador/{trabajadorCode}", result);
             })
             .WithName("CreateTrabajadorRemuneracion")
-            .RequireAuthorization("TRABAJADORREMUNERACION.CREATE");
+            .RequireAuthorization("TRABAJADORES.CREATE");
 
             group.MapGet("/trabajador/{trabajadorCode}", async (string trabajadorCode, ISender sender) =>
             {
@@ -28,7 +29,7 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .WithName("GetTrabajadorRemuneracionByTrabajador")
-            .RequireAuthorization("TRABAJADORREMUNERACION.VIEW");
+            .RequireAuthorization("TRABAJADORES.VIEW");
 
             group.MapPut("/{id:long}", async (long id, UpdateTrabajadorRemuneracionCommand bodyCommand, ISender sender) =>
             {
@@ -41,7 +42,15 @@ namespace Cepheus.API.Endpoints.Rrhh.Maestros
                 return Results.Ok(result);
             })
             .WithName("UpdateTrabajadorRemuneracion")
-            .RequireAuthorization("TRABAJADORREMUNERACION.UPDATE");
+            .RequireAuthorization("TRABAJADORES.UPDATE");
+
+            group.MapDelete("/{id:long}", async (long id, ISender sender) =>
+            {
+                await sender.Send(new DeleteTrabajadorRemuneracionCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("DeleteTrabajadorRemuneracion")
+            .RequireAuthorization("TRABAJADORES.UPDATE");
         }
     }
 }
