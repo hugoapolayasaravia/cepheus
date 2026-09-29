@@ -1,4 +1,5 @@
 ﻿using Cepheus.Domain.Comun;
+using Cepheus.Domain.Rrhh.Maestros;
 
 namespace Cepheus.Domain.Administracion
 {
@@ -9,6 +10,8 @@ namespace Cepheus.Domain.Administracion
         public string PasswordHash { get; set; } = default!;
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
+        public string? TrabajadorCode { get; set; }
+        public Trabajador? Trabajador { get; set; }
         public bool IsActive { get; set; } = true;
 
         // Auditoría (IAuditableEntity)

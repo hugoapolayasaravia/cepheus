@@ -20,5 +20,6 @@ public partial class ApplicationDbContext
     public DbSet<Cobrador> Cobradores => Set<Cobrador>();
     public DbSet<Producto> Productos => Set<Producto>();
 
+    public DbSet<Tecnico> Tecnicos => Set<Tecnico>();
 
 }

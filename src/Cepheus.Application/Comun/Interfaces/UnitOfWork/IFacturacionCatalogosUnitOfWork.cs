@@ -20,5 +20,11 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<ListaPrecio> ListasPrecio { get; }
         IRepository<StockProducto> StockProductos { get; }
 
+        IRepository<Flete> Fletes { get; }
+        IRepository<AlturaLosa> AlturasLosa { get; }
+        IRepository<PrecioProducto> PreciosProducto { get; }
+        IRepository<NotaCotizacionPlantilla> NotasCotizacionPlantilla { get; }
+
+
     }
 }

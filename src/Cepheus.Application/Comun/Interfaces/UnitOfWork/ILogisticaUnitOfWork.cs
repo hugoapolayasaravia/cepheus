@@ -5,5 +5,7 @@
         ILogisticaCatalogosUnitOfWork Catalogos { get; }
 
         ILogisticaMaestrosUnitOfWork Maestros { get; }
+
+        ILogisticaTransaccionesUnitOfWork Transacciones { get; }
     }
 }

@@ -28,6 +28,10 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Administracion
                 .IsRequired()
                 .HasMaxLength(255);
 
+            builder.Property(x => x.TrabajadorCode).HasColumnType("char(5)");
+            builder.HasOne(x => x.Trabajador).WithMany().HasForeignKey(x => x.TrabajadorCode)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(x => x.IsActive)
                 .IsRequired()
                 .HasDefaultValue(true);

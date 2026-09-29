@@ -22,13 +22,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
                 Name = request.Name.Trim(),
                 ShortName = string.IsNullOrWhiteSpace(request.ShortName) ? null : request.ShortName.Trim().ToUpperInvariant(),
                 SunatCode = string.IsNullOrWhiteSpace(request.SunatCode) ? null : request.SunatCode.Trim(),
-                AffectsIgv = request.AffectsIgv,
-                IsNonTaxable = request.IsNonTaxable,
-                AffectsIncomeTax = request.AffectsIncomeTax,
-                AffectsFonavi = request.AffectsFonavi,
-                IsService = request.IsService,
-                AffectsForeignIgv = request.AffectsForeignIgv,
-                AvailableForPurchaseOrder = request.AvailableForPurchaseOrder,
+                
                 IsActive = true
             };
 
@@ -44,13 +38,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
             Name = tipoDocumento.Name,
             ShortName = tipoDocumento.ShortName,
             SunatCode = tipoDocumento.SunatCode,
-            AffectsIgv = tipoDocumento.AffectsIgv,
-            IsNonTaxable = tipoDocumento.IsNonTaxable,
-            AffectsIncomeTax = tipoDocumento.AffectsIncomeTax,
-            AffectsFonavi = tipoDocumento.AffectsFonavi,
-            IsService = tipoDocumento.IsService,
-            AffectsForeignIgv = tipoDocumento.AffectsForeignIgv,
-            AvailableForPurchaseOrder = tipoDocumento.AvailableForPurchaseOrder,
+            
             IsActive = tipoDocumento.IsActive,
             CreatedAt = tipoDocumento.CreatedAt,
             UpdatedAt = tipoDocumento.UpdatedAt,

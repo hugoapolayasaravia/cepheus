@@ -43,6 +43,14 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
                 .IsRequired()
                 .HasDefaultValue(false);
 
+            builder.Property(x => x.AffectsIgv).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.IsNonTaxable).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.AffectsIncomeTax).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.AffectsFonavi).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.IsService).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.AffectsForeignIgv).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.AvailableForPurchaseOrder).IsRequired().HasDefaultValue(false);
+
             builder.Property(x => x.IsActive)
                 .IsRequired()
                 .HasDefaultValue(true);

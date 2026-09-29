@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Logistica.Maestros.CentrosCosto.UpdateCentroCosto;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,8 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("La descripción del artículo es obligatoria.")
-                .MaximumLength(80).WithMessage("La descripción no puede exceder los 80 caracteres.");
+                .MaximumLength(80).WithMessage("La descripción no puede exceder los 80 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe otro artículos con ese nombre.");
 
             RuleFor(x => x.UnidadMedidaCode)
                 .Cascade(CascadeMode.Stop)
@@ -63,6 +65,11 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
             RuleFor(x => x.RowVersion)
                 .NotEmpty().WithMessage("RowVersion es obligatorio para control de concurrencia.");
         }
+
+        private async Task<bool> BeUniqueName(UpdateArticuloCommand command, string name, CancellationToken cancellationToken)
+            => !await _uow.Logistica.Maestros.Articulos.Query()
+        .AnyAsync(c => c.Code != command.Code && c.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
+
 
         private async Task<bool> UnidadMedidaExists(string code, CancellationToken ct)
             => await _uow.Logistica.Catalogos.UnidadesMedida.Query().AnyAsync(u => u.Code == code.Trim().ToUpper(), ct);

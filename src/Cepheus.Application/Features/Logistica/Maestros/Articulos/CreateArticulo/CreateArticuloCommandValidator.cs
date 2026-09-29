@@ -14,7 +14,8 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("La descripción del artículo es obligatoria.")
-                .MaximumLength(80).WithMessage("La descripción no puede exceder los 80 caracteres.");
+                .MaximumLength(80).WithMessage("La descripción no puede exceder los 80 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe un artículo con ese nombre.");
 
             RuleFor(x => x.UnidadMedidaCode)
                 .Cascade(CascadeMode.Stop)
@@ -56,6 +57,11 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
                 .MustAsync(PlantaExists).WithMessage("La planta de origen indicada no existe.")
                 .When(x => !string.IsNullOrWhiteSpace(x.PlantOriginCode));
         }
+
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
+            => !await _uow.Logistica.Maestros.Articulos.Query()
+        .AnyAsync(c => c.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
+
 
         private async Task<bool> UnidadMedidaExists(string code, CancellationToken ct)
             => await _uow.Logistica.Catalogos.UnidadesMedida.Query().AnyAsync(u => u.Code == code.Trim().ToUpper(), ct);

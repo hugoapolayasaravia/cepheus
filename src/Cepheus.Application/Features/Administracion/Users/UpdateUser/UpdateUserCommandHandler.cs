@@ -32,9 +32,10 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 Email = request.Email.Trim().ToLowerInvariant(),
                 FirstName = request.FirstName.Trim(),
                 LastName = request.LastName.Trim(),
-
+                TrabajadorCode = request.TrabajadorCode,
                 // Campos que este Update NO modifica: se conservan del registro actual
                 PasswordHash = current.PasswordHash,
+                
                 IsActive = current.IsActive,
                 CreatedAt = current.CreatedAt,
                 CreatedBy = current.CreatedBy,
@@ -60,6 +61,7 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                TrabajadorCode = user.TrabajadorCode,
                 IsActive = user.IsActive,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,

@@ -1,26 +1,27 @@
-﻿using Cepheus.Domain.Comun;
+﻿// Cepheus.Domain/Comunes/TipoDocumento.cs  (reemplaza el archivo completo)
+using Cepheus.Domain.Comun;
 
 namespace Cepheus.Domain.Comunes
 {
     /// <summary>
-    /// Tipo de documento de Identidad 
+    /// Tipo de documento de identidad (RUC/DNI/CE/etc.) — catálogo compartido
+    /// usado por Proveedor, Trabajador y otras entidades que necesitan
+    /// identificar personas o empresas.
     ///
     /// Legacy: dbo.Ttipdoc (SQL Server).
-    ///
     /// Mapeo de columnas legacy -> propiedades profesionales:
     ///   Codigo_tdo        -> Code
     ///   Descripcion_tdo   -> Name
     ///   DesAbreviada_tdo  -> ShortName
-    ///   sunat_tdo         -> SunatCode          (referencia a catálogo SUNAT relacionado)
-    ///   igv_tdo           -> AffectsIgv
-    ///   nograbable_tdo    -> IsNonTaxable
-    ///   renta_tdo         -> AffectsIncomeTax
-    ///   fonavi_tdo        -> AffectsFonavi       (ver nota de deprecación abajo)
-    ///   servicio_tdo      -> IsService
-    ///   igvext_tdo        -> AffectsForeignIgv
-    ///   En_ocompra        -> AvailableForPurchaseOrder
+    ///   sunat_tdo         -> SunatCode
     ///
-    ///
+    /// Nota (cambio de diseño): los flags tributarios (igv_tdo,
+    /// nograbable_tdo, renta_tdo, fonavi_tdo, servicio_tdo, igvext_tdo,
+    /// En_ocompra) que originalmente se pensaron para esta entidad se
+    /// trasladaron a Comunes.ComprobantePago — TipoDocumento ya se usa en
+    /// varias entidades como documento de identidad (Proveedor, RRHH
+    /// TipoDocumentoIdentidad, etc.) y mezclar ambos conceptos generaba
+    /// confusión. Ver ComprobantePago para esa lógica.
     /// </summary>
     public class TipoDocumento : IAuditableEntity
     {
@@ -28,14 +29,6 @@ namespace Cepheus.Domain.Comunes
         public string Name { get; set; } = default!;
         public string? ShortName { get; set; }
         public string? SunatCode { get; set; }
-
-        public bool AffectsIgv { get; set; }
-        public bool IsNonTaxable { get; set; }
-        public bool AffectsIncomeTax { get; set; }
-        public bool AffectsFonavi { get; set; }
-        public bool IsService { get; set; }
-        public bool AffectsForeignIgv { get; set; }
-        public bool AvailableForPurchaseOrder { get; set; }
 
         public bool IsActive { get; set; } = true;
 

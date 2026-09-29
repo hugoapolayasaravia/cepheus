@@ -44,5 +44,9 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<Producto>? _productos;
         public IRepository<Producto> Productos => _productos ??= new Repository<Producto>(_context);
+
+        private IRepository<Tecnico>? _tecnicos;
+        public IRepository<Tecnico> Tecnicos => _tecnicos ??= new Repository<Tecnico>(_context);
+
     }
 }

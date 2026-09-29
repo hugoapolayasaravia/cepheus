@@ -20,7 +20,8 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 .NotEmpty().WithMessage("El email es obligatorio.")
                 .EmailAddress().WithMessage("El email no tiene un formato válido.")
                 .MaximumLength(150)
-                .MustAsync(BeUniqueEmail).WithMessage("El email ya está registrado.");
+                .MustAsync(BeUniqueEmail)
+                .WithMessage("El email ya está registrado.");
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
@@ -30,26 +31,45 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El apellido es obligatorio.")
                 .MaximumLength(100)
-                .MustAsync(BeUniqueFullName).WithMessage("Ya existe un usuario registrado con ese nombre y apellido.");
+                .MustAsync(BeUniqueFullName)
+                .WithMessage("Ya existe un usuario registrado con ese nombre y apellido.");
+
+            RuleFor(x => x.TrabajadorCode)
+                .MustAsync(BeValidTrabajadorCode)
+                .WithMessage("El TrabajadorCode indicado no existe en RRHH.");
 
             RuleFor(x => x.RowVersion)
-                .NotEmpty().WithMessage("RowVersion es obligatorio para validar concurrencia.");
+                .NotEmpty()
+                .WithMessage("RowVersion es obligatorio para validar concurrencia.");
         }
 
-        private async Task<bool> BeUniqueEmail(UpdateUserCommand command, string email, CancellationToken cancellationToken)
-            => !await _uow.Administracion.Users.Query()
-                .AnyAsync(u => u.Email == email.Trim().ToLower() && u.Id != command.Id, cancellationToken);
+        private async Task<bool> BeValidTrabajadorCode(string? trabajadorCode, CancellationToken cancellationToken)
+        {
+            // Es opcional
+            if (string.IsNullOrWhiteSpace(trabajadorCode))
+                return true;
 
-        private async Task<bool> BeUniqueFullName(
-            UpdateUserCommand command, string lastName, CancellationToken cancellationToken)
+            return await _uow.Rrhh.Maestros.Trabajadores.Query()
+                .AnyAsync(t => t.Code == trabajadorCode.Trim(), cancellationToken);
+        }
+
+        private async Task<bool> BeUniqueEmail(
+            UpdateUserCommand command,
+            string email,
+            CancellationToken cancellationToken)
             => !await _uow.Administracion.Users.Query()
-                .AnyAsync(u =>
-                    u.FirstName == command.FirstName.Trim() &&
-                    u.LastName == lastName.Trim() &&
-                    u.Id != command.Id,
+                .AnyAsync(
+                    u => u.Email == email.Trim().ToLower() &&
+                         u.Id != command.Id,
+                    cancellationToken);
+
+        private async Task<bool> BeUniqueFullName(UpdateUserCommand command, string lastName, CancellationToken cancellationToken)
+            => !await _uow.Administracion.Users.Query()
+                .AnyAsync(
+                    u =>
+                        u.FirstName == command.FirstName.Trim() &&
+                        u.LastName == lastName.Trim() &&
+                        u.Id != command.Id,
                     cancellationToken);
     }
-
-
-
 }

@@ -28,16 +28,6 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
             builder.Property(x => x.SunatCode)
                 .HasMaxLength(2);
 
-            builder.Property(x => x.AffectsIgv).IsRequired();
-            builder.Property(x => x.IsNonTaxable).IsRequired();
-            builder.Property(x => x.AffectsIncomeTax).IsRequired();
-            builder.Property(x => x.AffectsFonavi).IsRequired();
-            builder.Property(x => x.IsService).IsRequired();
-            builder.Property(x => x.AffectsForeignIgv).IsRequired();
-
-            builder.Property(x => x.AvailableForPurchaseOrder)
-                .IsRequired()
-                .HasDefaultValue(false);
 
             builder.Property(x => x.IsActive)
                 .IsRequired()

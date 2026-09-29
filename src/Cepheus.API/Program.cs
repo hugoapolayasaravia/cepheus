@@ -185,6 +185,7 @@ app.MapComunesEndpoints();
 // Logistica
 app.MapLogisticaCatalogosEndpoints();
 app.MapLogisticaMaestrosEndpoints();
+app.MapLogisticaTransaccionesEndpoints();
 
 // Mantenimiento
 app.MapMantenimientoCatalogosEndpoints();
@@ -199,5 +200,6 @@ app.MapRrhhTransaccionesEndpoints();
 // Facturacion
 app.MapFacturacionCatalogosEndpoints();
 app.MapFacturacionMaestrosEndpoints();
+app.MapFacturacionTransaccionesEndpoints();
 
 app.Run();

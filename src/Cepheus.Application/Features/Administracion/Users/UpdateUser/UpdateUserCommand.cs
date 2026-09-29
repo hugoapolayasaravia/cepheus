@@ -8,6 +8,7 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
         string Email,
         string FirstName,
         string LastName,
+        string? TrabajadorCode,
         byte[] RowVersion
     ) : IRequest<UserResponse>;
 }

@@ -10,6 +10,16 @@
         public string? Description { get; set; }
         public bool RequiresRuc { get; set; }
         public bool RequiresAddress { get; set; }
+
+        public bool AffectsIgv { get; set; }
+        public bool IsNonTaxable { get; set; }
+        public bool AffectsIncomeTax { get; set; }
+        public bool AffectsFonavi { get; set; }
+        public bool IsService { get; set; }
+        public bool AffectsForeignIgv { get; set; }
+        public bool AvailableForPurchaseOrder { get; set; }
+
+
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

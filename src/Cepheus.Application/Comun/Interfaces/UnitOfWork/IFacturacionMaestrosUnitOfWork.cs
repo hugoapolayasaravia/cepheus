@@ -19,5 +19,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<Cobrador> Cobradores { get; }
 
         IRepository<Producto> Productos { get; }
+
+        IRepository<Tecnico> Tecnicos { get; }
+
     }
 }

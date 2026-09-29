@@ -25,6 +25,13 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
                 Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim(),
                 RequiresRuc = request.RequiresRuc,
                 RequiresAddress = request.RequiresAddress,
+                AffectsIgv = request.AffectsIgv,
+                IsNonTaxable = request.IsNonTaxable,
+                AffectsIncomeTax = request.AffectsIncomeTax,
+                AffectsFonavi = request.AffectsFonavi,
+                IsService = request.IsService,
+                AffectsForeignIgv = request.AffectsForeignIgv,
+                AvailableForPurchaseOrder = request.AvailableForPurchaseOrder,
                 IsActive = true
             };
 
@@ -44,6 +51,13 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
             Description = comprobante.Description,
             RequiresRuc = comprobante.RequiresRuc,
             RequiresAddress = comprobante.RequiresAddress,
+            AffectsIgv = comprobante.AffectsIgv,
+            IsNonTaxable = comprobante.IsNonTaxable,
+            AffectsIncomeTax = comprobante.AffectsIncomeTax,
+            AffectsFonavi = comprobante.AffectsFonavi,
+            IsService = comprobante.IsService,
+            AffectsForeignIgv = comprobante.AffectsForeignIgv,
+            AvailableForPurchaseOrder = comprobante.AvailableForPurchaseOrder,
             IsActive = comprobante.IsActive,
             CreatedAt = comprobante.CreatedAt,
             UpdatedAt = comprobante.UpdatedAt,

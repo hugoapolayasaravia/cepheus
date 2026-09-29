@@ -22,4 +22,10 @@ public partial class ApplicationDbContext
     public DbSet<ListaPrecio> ListasPrecio => Set<ListaPrecio>();
     public DbSet<StockProducto> StockProductos => Set<StockProducto>();
 
+    public DbSet<Flete> Fletes => Set<Flete>();
+    public DbSet<AlturaLosa> AlturasLosa => Set<AlturaLosa>();
+    public DbSet<PrecioProducto> PreciosProducto => Set<PrecioProducto>();
+    public DbSet<NotaCotizacionPlantilla> NotasCotizacionPlantilla => Set<NotaCotizacionPlantilla>();
+
+
 }

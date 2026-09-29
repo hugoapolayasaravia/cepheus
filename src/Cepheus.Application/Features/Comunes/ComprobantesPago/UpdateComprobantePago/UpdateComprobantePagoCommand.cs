@@ -12,6 +12,13 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
         string? Description,
         bool RequiresRuc,
         bool RequiresAddress,
+        bool AffectsIgv,
+        bool IsNonTaxable,
+        bool AffectsIncomeTax,
+        bool AffectsFonavi,
+        bool IsService,
+        bool AffectsForeignIgv,
+        bool AvailableForPurchaseOrder,
         byte[] RowVersion
     ) : IRequest<ComprobantePagoResponse>;
 }

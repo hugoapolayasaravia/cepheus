@@ -19,6 +19,9 @@ public static class FacturacionMaestrosEndpointsExtensions
         app.MapCobradoresEndpoints();
         app.MapProductosEndpoints();
 
+        app.MapTecnicosEndpoints();
+
+
         return app;
     }
 }

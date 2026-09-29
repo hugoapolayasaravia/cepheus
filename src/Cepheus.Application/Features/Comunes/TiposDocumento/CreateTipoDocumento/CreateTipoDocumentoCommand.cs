@@ -7,13 +7,7 @@ namespace Cepheus.Application.Features.Comunes.TiposDocumento.CreateTipoDocument
         string Code,
         string Name,
         string? ShortName,
-        string? SunatCode,
-        bool AffectsIgv,
-        bool IsNonTaxable,
-        bool AffectsIncomeTax,
-        bool AffectsFonavi,
-        bool IsService,
-        bool AffectsForeignIgv,
-        bool AvailableForPurchaseOrder
+        string? SunatCode
+
     ) : IRequest<TipoDocumentoResponse>;
 }

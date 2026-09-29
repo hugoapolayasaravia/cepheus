@@ -23,6 +23,12 @@ public static class FacturacionCatalogosEndpointsExtensions
         app.MapListasPrecioEndpoints();
         app.MapStockProductosEndpoints();
 
+        app.MapFletesEndpoints();
+        app.MapAlturasLosaEndpoints();
+        app.MapPreciosProductoEndpoints();
+        app.MapNotasCotizacionPlantillaEndpoints();
+
+
         return app;
     }
 }

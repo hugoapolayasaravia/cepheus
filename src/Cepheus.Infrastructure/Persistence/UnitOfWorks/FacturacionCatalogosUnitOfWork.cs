@@ -59,5 +59,17 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<StockProducto>? _stockProductos;
         public IRepository<StockProducto> StockProductos => _stockProductos ??= new Repository<StockProducto>(_context);
 
+        private IRepository<Flete>? _fletes;
+        public IRepository<Flete> Fletes => _fletes ??= new Repository<Flete>(_context);
+
+        private IRepository<AlturaLosa>? _alturasLosa;
+        public IRepository<AlturaLosa> AlturasLosa => _alturasLosa ??= new Repository<AlturaLosa>(_context);
+
+        private IRepository<PrecioProducto>? _preciosProducto;
+        public IRepository<PrecioProducto> PreciosProducto => _preciosProducto ??= new Repository<PrecioProducto>(_context);
+
+        private IRepository<NotaCotizacionPlantilla>? _notasCotizacionPlantilla;
+        public IRepository<NotaCotizacionPlantilla> NotasCotizacionPlantilla => _notasCotizacionPlantilla ??= new Repository<NotaCotizacionPlantilla>(_context);
+
     }
 }

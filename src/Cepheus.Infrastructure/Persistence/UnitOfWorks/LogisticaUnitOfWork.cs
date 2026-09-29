@@ -9,6 +9,7 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private ILogisticaCatalogosUnitOfWork? _catalogos;
         private ILogisticaMaestrosUnitOfWork? _maestros;
+        private ILogisticaTransaccionesUnitOfWork? _transacciones;
 
         public LogisticaUnitOfWork(ApplicationDbContext context)
         {
@@ -20,5 +21,8 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         public ILogisticaMaestrosUnitOfWork Maestros =>
             _maestros ??= new LogisticaMaestrosUnitOfWork(_context);
+
+        public ILogisticaTransaccionesUnitOfWork Transacciones =>
+            _transacciones ??= new LogisticaTransaccionesUnitOfWork(_context);
     }
 }
