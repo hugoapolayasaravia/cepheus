@@ -1,4 +1,4 @@
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.Common
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common
 {
     public class CotizacionMetradoDetalleResponse
     {

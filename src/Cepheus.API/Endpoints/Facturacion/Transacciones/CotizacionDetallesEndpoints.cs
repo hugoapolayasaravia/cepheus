@@ -1,7 +1,7 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionDetalles.DeleteCotizacionDetalle;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionDetalles.GetCotizacionDetallesByCotizacion;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionVentaDetalles.CreateCotizacionDetalle;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionVentaDetalles.UpdateCotizacionDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionDetalles.CreateCotizacionDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionDetalles.DeleteCotizacionDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionDetalles.GetCotizacionDetallesByCotizacion;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionDetalles.UpdateCotizacionDetalle;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Facturacion.Transacciones
@@ -16,7 +16,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
 
             group.MapPost("/", async (
                 string negocio, string anio, string mes, string codigo,
-                CreateCotizacionVentaDetalleCommand command, ISender sender) =>
+                CreateCotizacionDetalleCommand command, ISender sender) =>
             {
                 if (negocio != command.NegocioCode || anio != command.Year || mes != command.Month || codigo != command.Code)
                 {
@@ -42,7 +42,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
 
             group.MapPut("/{item:int}", async (
                 string negocio, string anio, string mes, string codigo, int item,
-                UpdateCotizacionVentaDetalleCommand command, ISender sender) =>
+                UpdateCotizacionDetalleCommand command, ISender sender) =>
             {
                 if (item != command.Item || negocio != command.NegocioCode || codigo != command.Code)
                 {

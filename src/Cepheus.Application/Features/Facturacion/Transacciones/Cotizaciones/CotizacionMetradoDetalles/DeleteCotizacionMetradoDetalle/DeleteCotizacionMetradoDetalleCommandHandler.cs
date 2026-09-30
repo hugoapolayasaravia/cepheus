@@ -3,7 +3,7 @@ using Cepheus.Domain.Facturacion.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.DeleteCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.DeleteCotizacionMetradoDetalle
 {
     public class DeleteCotizacionMetradoDetalleCommandHandler : IRequestHandler<DeleteCotizacionMetradoDetalleCommand>
     {

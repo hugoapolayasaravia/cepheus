@@ -32,6 +32,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.CreateT
                 Phone = string.IsNullOrWhiteSpace(request.Phone) ? null : request.Phone.Trim(),
                 Email = string.IsNullOrWhiteSpace(request.Email) ? null : request.Email.Trim(),
                 MtcRegistrationNumber = string.IsNullOrWhiteSpace(request.MtcRegistrationNumber) ? null : request.MtcRegistrationNumber.Trim(),
+                CertificationNumber = string.IsNullOrWhiteSpace(request.CertificationNumber) ? null : request.CertificationNumber.Trim(),
                 IsOwnFleet = request.IsOwnFleet,
                 Observations = string.IsNullOrWhiteSpace(request.Observations) ? null : request.Observations.Trim(),
                 IsActive = true
@@ -55,6 +56,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.CreateT
             Phone = transportista.Phone,
             Email = transportista.Email,
             MtcRegistrationNumber = transportista.MtcRegistrationNumber,
+            CertificationNumber = transportista.CertificationNumber,
             IsOwnFleet = transportista.IsOwnFleet,
             Observations = transportista.Observations,
             IsActive = transportista.IsActive,

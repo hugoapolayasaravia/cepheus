@@ -1,9 +1,9 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.GetCotizacionNotasByCotizacion
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.GetCotizacionNotasByCotizacion
 {
     public class GetCotizacionNotasByCotizacionQueryHandler
         : IRequestHandler<GetCotizacionNotasByCotizacionQuery, List<CotizacionNotaResponse>>

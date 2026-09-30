@@ -1,7 +1,7 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.Common;
 using MediatR;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen
 {
     public record CreateCotizacionMetradoResumenCommand(
         string NegocioCode, string Year, string Month, string Code,

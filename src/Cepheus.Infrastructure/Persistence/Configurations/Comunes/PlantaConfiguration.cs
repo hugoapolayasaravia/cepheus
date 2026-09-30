@@ -13,10 +13,11 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
             builder.HasKey(x => x.Code);
 
             builder.Property(x => x.Code)
-            .IsRequired()
-            .HasColumnType("char(2)");
+                .IsRequired()
+                .HasColumnType("char(2)");
 
-            builder.HasIndex(x => x.Code).IsUnique();
+            builder.HasIndex(x => x.Code)
+                .IsUnique();
 
             builder.Property(x => x.Name)
                 .IsRequired()
@@ -41,11 +42,61 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
             builder.Property(x => x.StatusCode)
                 .HasMaxLength(2);
 
-            builder.Property(x => x.HasWarehouse).IsRequired();
-            builder.Property(x => x.IsProductionPlant).IsRequired();
-            builder.Property(x => x.IsProject).IsRequired();
-            builder.Property(x => x.RequiresApprovals).IsRequired();
-            builder.Property(x => x.AppliesDetraction).IsRequired();
+            builder.Property(x => x.HasWarehouse)
+                .IsRequired();
+
+            builder.Property(x => x.IsProductionPlant)
+                .IsRequired();
+
+            builder.Property(x => x.IsProject)
+                .IsRequired();
+
+            builder.Property(x => x.RequiresApprovals)
+                .IsRequired();
+
+            builder.Property(x => x.AppliesDetraction)
+                .IsRequired();
+
+            // Numeración de documentos emitidos por la planta
+            builder.Property(x => x.NumeroGve)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroFve)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroDve)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroBve)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroCve)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroLet)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.NumeroRet)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
+
+            builder.Property(x => x.GuiaNum)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("000-000000");
 
             builder.Property(x => x.IsActive)
                 .IsRequired()

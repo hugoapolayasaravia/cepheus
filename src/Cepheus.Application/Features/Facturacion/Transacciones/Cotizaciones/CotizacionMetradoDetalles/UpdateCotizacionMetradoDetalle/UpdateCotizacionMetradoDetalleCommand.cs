@@ -1,7 +1,7 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common;
 using MediatR;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
 {
     /// <summary>
     /// La clave (NegocioCode/Year/Month/Code/LevelNumber/Order/ProductoTipoCode/

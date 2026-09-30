@@ -13,6 +13,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.CreateT
         string? Phone,
         string? Email,
         string? MtcRegistrationNumber,
+        string? CertificationNumber,
         bool IsOwnFleet,
         string? Observations
     ) : IRequest<TransportistaResponse>;

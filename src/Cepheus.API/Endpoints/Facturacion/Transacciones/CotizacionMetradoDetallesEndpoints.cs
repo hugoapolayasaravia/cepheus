@@ -1,7 +1,7 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.DeleteCotizacionMetradoDetalle;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.GetCotizacionMetradoDetallesByResumen;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.DeleteCotizacionMetradoDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.GetCotizacionMetradoDetallesByResumen;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Facturacion.Transacciones
@@ -29,7 +29,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                     $"/api/facturacion/transacciones/cotizaciones/{negocio}/{anio}/{mes}/{codigo}/metrado/{nivel}/detalle/{result.Order}/{result.ProductoTipoCode}/{result.ProductoCode}",
                     result);
             })
-            .WithName("CreateCotizacionMetradoDetalle")
+            .WithName("CreateCotizacionVentaMetradoDetalle")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
 
             group.MapGet("/", async (
@@ -38,7 +38,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 var result = await sender.Send(new GetCotizacionMetradoDetallesByResumenQuery(negocio, anio, mes, codigo, nivel));
                 return Results.Ok(result);
             })
-            .WithName("GetCotizacionMetradoDetallesByResumen")
+            .WithName("GetCotizacionVentaMetradoDetallesByResumen")
             .RequireAuthorization("COTIZACIONESVENTA.VIEW");
 
             group.MapPut("/{orden}/{tipoProducto}/{producto}", async (
@@ -55,7 +55,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 var result = await sender.Send(command);
                 return Results.Ok(result);
             })
-            .WithName("UpdateCotizacionMetradoDetalle")
+            .WithName("UpdateCotizacionVentaMetradoDetalle")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
 
             group.MapDelete("/{orden}/{tipoProducto}/{producto}", async (
@@ -65,7 +65,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 await sender.Send(new DeleteCotizacionMetradoDetalleCommand(negocio, anio, mes, codigo, nivel, orden, tipoProducto, producto));
                 return Results.NoContent();
             })
-            .WithName("DeleteCotizacionMetradoDetalle")
+            .WithName("DeleteCotizacionVentaMetradoDetalle")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
         }
     }

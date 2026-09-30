@@ -78,6 +78,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Ge
                 GlobalVolume = c.GlobalVolume,
                 IsEditable = c.IsEditable,
                 Type = c.Type.ToString(),
+                MetradoCalculationSystem = c.MetradoCalculationSystem == null ? null : c.MetradoCalculationSystem.ToString(),
                 WorkDurationMonths = c.WorkDurationMonths,
                 ClienteCode = c.ClienteCode,
                 Ruc = c.Ruc,

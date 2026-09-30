@@ -1,6 +1,6 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.CreateCotizacionNota;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.DeleteCotizacionNota;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.GetCotizacionNotasByCotizacion;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.CreateCotizacionNota;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.DeleteCotizacionNota;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.GetCotizacionNotasByCotizacion;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Facturacion.Transacciones
@@ -27,7 +27,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                     $"/api/facturacion/transacciones/cotizaciones/{negocio}/{anio}/{mes}/{codigo}/notas/{result.Sequence}",
                     result);
             })
-            .WithName("CreateCotizacionNota")
+            .WithName("CreateCotizacionVentaNota")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
 
             group.MapGet("/", async (
@@ -36,7 +36,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 var result = await sender.Send(new GetCotizacionNotasByCotizacionQuery(negocio, anio, mes, codigo));
                 return Results.Ok(result);
             })
-            .WithName("GetCotizacionNotasByCotizacion")
+            .WithName("GetCotizacionVentaNotasByCotizacion")
             .RequireAuthorization("COTIZACIONESVENTA.VIEW");
 
             group.MapDelete("/{sequence:int}", async (
@@ -45,7 +45,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 await sender.Send(new DeleteCotizacionNotaCommand(negocio, anio, mes, codigo, sequence));
                 return Results.NoContent();
             })
-            .WithName("DeleteCotizacionNota")
+            .WithName("DeleteCotizacionVentaNota")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
         }
     }

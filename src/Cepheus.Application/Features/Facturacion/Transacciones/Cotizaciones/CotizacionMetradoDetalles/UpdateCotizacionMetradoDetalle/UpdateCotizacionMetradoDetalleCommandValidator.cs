@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
 {
     public class UpdateCotizacionMetradoDetalleCommandValidator : AbstractValidator<UpdateCotizacionMetradoDetalleCommand>
     {

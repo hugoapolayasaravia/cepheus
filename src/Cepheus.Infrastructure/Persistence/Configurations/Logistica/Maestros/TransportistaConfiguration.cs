@@ -50,6 +50,9 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
             builder.Property(x => x.MtcRegistrationNumber)
                 .HasMaxLength(30);
 
+            builder.Property(x => x.CertificationNumber)
+                .HasMaxLength(40);
+
             builder.Property(x => x.IsOwnFleet)
                 .IsRequired()
                 .HasDefaultValue(false);

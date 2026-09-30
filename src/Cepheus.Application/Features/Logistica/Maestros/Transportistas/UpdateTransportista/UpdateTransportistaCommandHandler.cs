@@ -38,6 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.UpdateT
                 Phone = string.IsNullOrWhiteSpace(request.Phone) ? null : request.Phone.Trim(),
                 Email = string.IsNullOrWhiteSpace(request.Email) ? null : request.Email.Trim(),
                 MtcRegistrationNumber = string.IsNullOrWhiteSpace(request.MtcRegistrationNumber) ? null : request.MtcRegistrationNumber.Trim(),
+                CertificationNumber = string.IsNullOrWhiteSpace(request.CertificationNumber) ? null : request.CertificationNumber.Trim(),
                 IsOwnFleet = request.IsOwnFleet,
                 Observations = string.IsNullOrWhiteSpace(request.Observations) ? null : request.Observations.Trim(),
 

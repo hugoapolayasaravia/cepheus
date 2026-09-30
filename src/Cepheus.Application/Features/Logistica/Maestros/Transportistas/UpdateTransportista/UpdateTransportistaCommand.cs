@@ -14,6 +14,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.UpdateT
         string? Phone,
         string? Email,
         string? MtcRegistrationNumber,
+        string? CertificationNumber,
         bool IsOwnFleet,
         string? Observations,
         byte[] RowVersion

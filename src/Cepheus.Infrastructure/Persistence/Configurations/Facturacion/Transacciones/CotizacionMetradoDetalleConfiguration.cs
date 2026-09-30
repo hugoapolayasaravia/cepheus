@@ -12,8 +12,14 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Transacc
 
             builder.HasKey(x => new
             {
-                x.NegocioCode, x.Year, x.Month, x.Code, x.LevelNumber, x.Order,
-                x.ProductoTipoCode, x.ProductoCode
+                x.NegocioCode,
+                x.Year,
+                x.Month,
+                x.Code,
+                x.LevelNumber,
+                x.Order,
+                x.ProductoTipoCode,
+                x.ProductoCode
             });
 
             builder.Property(x => x.NegocioCode).IsRequired().HasColumnType("char(2)");

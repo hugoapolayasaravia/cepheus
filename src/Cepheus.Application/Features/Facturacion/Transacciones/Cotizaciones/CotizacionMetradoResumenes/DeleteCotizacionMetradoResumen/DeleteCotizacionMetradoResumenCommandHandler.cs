@@ -3,7 +3,7 @@ using Cepheus.Domain.Facturacion.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.DeleteCotizacionMetradoResumen
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.DeleteCotizacionMetradoResumen
 {
     /// <summary>
     /// Eliminar un nivel elimina en cascada su detalle de metrado

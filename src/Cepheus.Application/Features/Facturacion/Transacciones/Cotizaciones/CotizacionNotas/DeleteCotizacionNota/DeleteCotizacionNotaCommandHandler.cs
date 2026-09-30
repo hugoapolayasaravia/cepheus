@@ -2,7 +2,7 @@ using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.DeleteCotizacionNota
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.DeleteCotizacionNota
 {
     public class DeleteCotizacionNotaCommandHandler : IRequestHandler<DeleteCotizacionNotaCommand>
     {

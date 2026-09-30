@@ -1,11 +1,10 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.Common;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.Common;
 using Cepheus.Domain.Facturacion.Transacciones;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.UpdateCotizacionMetradoResumen
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.UpdateCotizacionMetradoResumen
 {
     public class UpdateCotizacionMetradoResumenCommandHandler
         : IRequestHandler<UpdateCotizacionMetradoResumenCommand, CotizacionMetradoResumenResponse>
@@ -82,7 +81,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Co
                     "El nivel de metrado fue modificado por otro proceso. Recargue los datos e intente nuevamente.");
             }
 
-            return CreateCotizacionMetradoResumenCommandHandler.Map(resumen);
+            return Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen.CreateCotizacionMetradoResumenCommandHandler.Map(resumen);
         }
     }
 }

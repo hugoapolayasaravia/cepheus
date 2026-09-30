@@ -1,9 +1,9 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.GetCotizacionMetradoResumenesByCotizacion
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.GetCotizacionMetradoResumenesByCotizacion
 {
     public class GetCotizacionMetradoResumenesByCotizacionQueryHandler
         : IRequestHandler<GetCotizacionMetradoResumenesByCotizacionQuery, List<CotizacionMetradoResumenResponse>>

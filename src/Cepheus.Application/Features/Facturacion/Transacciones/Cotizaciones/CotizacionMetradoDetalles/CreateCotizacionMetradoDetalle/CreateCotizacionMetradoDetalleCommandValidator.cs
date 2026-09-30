@@ -3,7 +3,7 @@ using Cepheus.Domain.Facturacion.Enum;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle
 {
     public class CreateCotizacionMetradoDetalleCommandValidator : AbstractValidator<CreateCotizacionMetradoDetalleCommand>
     {

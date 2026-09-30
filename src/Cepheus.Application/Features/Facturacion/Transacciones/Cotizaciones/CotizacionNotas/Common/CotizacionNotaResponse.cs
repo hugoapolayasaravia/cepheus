@@ -1,6 +1,6 @@
 using Cepheus.Domain.Facturacion.Enum;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.Common
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.Common
 {
     public class CotizacionNotaResponse
     {

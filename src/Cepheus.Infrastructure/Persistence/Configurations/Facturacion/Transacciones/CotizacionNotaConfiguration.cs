@@ -25,8 +25,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Transacc
             builder.Property(x => x.Option)
                 .IsRequired()
                 .HasConversion<int>()
-                .HasDefaultValue(OpcionNotaCotizacion.Observacion)
-                .HasSentinel(default(OpcionNotaCotizacion));
+                .HasDefaultValue(OpcionNotaCotizacion.Observacion).HasSentinel(default(OpcionNotaCotizacion));
 
             builder.Property(x => x.CreatedBy).HasMaxLength(250);
             builder.Property(x => x.UpdatedBy).HasMaxLength(250);

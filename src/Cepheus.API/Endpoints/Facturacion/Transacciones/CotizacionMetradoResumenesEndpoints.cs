@@ -1,7 +1,7 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.DeleteCotizacionMetradoResumen;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.GetCotizacionMetradoResumenesByCotizacion;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.UpdateCotizacionMetradoResumen;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.CreateCotizacionMetradoResumen;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.DeleteCotizacionMetradoResumen;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.GetCotizacionMetradoResumenesByCotizacion;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.UpdateCotizacionMetradoResumen;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Facturacion.Transacciones
@@ -28,7 +28,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                     $"/api/facturacion/transacciones/cotizaciones/{negocio}/{anio}/{mes}/{codigo}/metrado/{result.LevelNumber}",
                     result);
             })
-            .WithName("CreateCotizacionMetradoResumen")
+            .WithName("CreateCotizacionVentaMetradoResumen")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
 
             group.MapGet("/", async (
@@ -52,7 +52,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 var result = await sender.Send(command);
                 return Results.Ok(result);
             })
-            .WithName("UpdateCotizacionMetradoResumen")
+            .WithName("UpdateCotizacionVentaMetradoResumen")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
 
             group.MapDelete("/{nivel:int}", async (
@@ -61,7 +61,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 await sender.Send(new DeleteCotizacionMetradoResumenCommand(negocio, anio, mes, codigo, nivel));
                 return Results.NoContent();
             })
-            .WithName("DeleteCotizacionMetradoResumen")
+            .WithName("DeleteCotizacionVentaMetradoResumen")
             .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
         }
     }

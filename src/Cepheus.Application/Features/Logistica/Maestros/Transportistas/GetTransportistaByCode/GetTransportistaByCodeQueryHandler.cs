@@ -31,6 +31,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Transportistas.GetTran
                     Phone = t.Phone,
                     Email = t.Email,
                     MtcRegistrationNumber = t.MtcRegistrationNumber,
+                    CertificationNumber = t.CertificationNumber,
                     IsOwnFleet = t.IsOwnFleet,
                     Observations = t.Observations,
                     IsActive = t.IsActive,

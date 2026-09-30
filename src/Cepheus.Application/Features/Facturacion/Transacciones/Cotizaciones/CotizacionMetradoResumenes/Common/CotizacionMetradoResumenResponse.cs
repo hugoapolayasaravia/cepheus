@@ -1,4 +1,4 @@
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoResumenes.Common
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoResumenes.Common
 {
     /// <summary>
     /// Nota general del módulo de Metrado (Resumen y Detalle): esta entrega

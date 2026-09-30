@@ -24,6 +24,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Co
         public decimal GlobalVolume { get; set; }
         public bool IsEditable { get; set; }
         public string Type { get; set; } = default!;
+        public string? MetradoCalculationSystem { get; set; }
         public int WorkDurationMonths { get; set; }
 
         public string? ClienteCode { get; set; }

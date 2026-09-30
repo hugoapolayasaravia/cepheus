@@ -1,11 +1,11 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.Common;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle;
 using Cepheus.Domain.Facturacion.Transacciones;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.UpdateCotizacionMetradoDetalle
 {
     public class UpdateCotizacionMetradoDetalleCommandHandler
         : IRequestHandler<UpdateCotizacionMetradoDetalleCommand, CotizacionMetradoDetalleResponse>

@@ -114,6 +114,14 @@ namespace Cepheus.Domain.Facturacion.Transacciones
 
         public TipoCotizacion Type { get; set; } = TipoCotizacion.Cotizacion;
 
+        /// <summary>
+        /// Motor de fórmulas de metrado (ver SistemaCalculoMetrado). Legacy:
+        /// Flag_Tipo — columna distinta de Tipo_Cot, ver nota en el enum.
+        /// Solo obligatorio en el legacy para el negocio 'PT'; nullable acá
+        /// porque el resto de negocios no usa metrado de bovedillas.
+        /// </summary>
+        public SistemaCalculoMetrado? MetradoCalculationSystem { get; set; }
+
         public int WorkDurationMonths { get; set; }
 
         public string? ClienteCode { get; set; }

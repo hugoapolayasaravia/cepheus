@@ -1,10 +1,10 @@
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.AnularCotizacionVenta;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.ApproveCotizacionVenta;
+using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.AnularCotizacion;
+using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.ApproveCotizacion;
 using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.ChangeCotizacionEstado;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CreateCotizacionVenta;
+using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CreateCotizacion;
+using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.GetCotizacionByCode;
 using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.GetCotizacionesPaginated;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.GetCotizacionVentaByCode;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.UpdateCotizacionVenta;
+using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.UpdateCotizacion;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Facturacion.Transacciones
@@ -17,7 +17,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 .WithTags("Cotizaciones (Facturación)")
                 .RequireAuthorization();
 
-            group.MapPost("/", async (CreateCotizacionVentaCommand command, ISender sender) =>
+            group.MapPost("/", async (CreateCotizacionCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
                 return Results.Created(
@@ -48,7 +48,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
             group.MapGet("/{negocio}/{anio}/{mes}/{codigo}", async (
                 string negocio, string anio, string mes, string codigo, ISender sender) =>
             {
-                var result = await sender.Send(new GetCotizacionVentaByCodeQuery(negocio, anio, mes, codigo));
+                var result = await sender.Send(new GetCotizacionByCodeQuery(negocio, anio, mes, codigo));
                 return Results.Ok(result);
             })
             .WithName("GetCotizacionVentaByCode")
@@ -56,7 +56,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
 
             group.MapPut("/{negocio}/{anio}/{mes}/{codigo}", async (
                 string negocio, string anio, string mes, string codigo,
-                UpdateCotizacionVentaCommand command, ISender sender) =>
+                UpdateCotizacionCommand command, ISender sender) =>
             {
                 if (negocio != command.NegocioCode || anio != command.Year || mes != command.Month || codigo != command.Code)
                 {
@@ -72,7 +72,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
             group.MapPatch("/{negocio}/{anio}/{mes}/{codigo}/aprobar", async (
                 string negocio, string anio, string mes, string codigo, ISender sender) =>
             {
-                var result = await sender.Send(new ApproveCotizacionVentaCommand(negocio, anio, mes, codigo));
+                var result = await sender.Send(new ApproveCotizacionCommand(negocio, anio, mes, codigo));
                 return Results.Ok(result);
             })
             .WithName("ApproveCotizacionVenta")
@@ -82,7 +82,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 string negocio, string anio, string mes, string codigo,
                 AnularCotizacionRequestBody body, ISender sender) =>
             {
-                var result = await sender.Send(new AnularCotizacionVentaCommand(negocio, anio, mes, codigo, body.Reason));
+                var result = await sender.Send(new AnularCotizacionCommand(negocio, anio, mes, codigo, body.Reason));
                 return Results.Ok(result);
             })
             .WithName("AnularCotizacionVenta")

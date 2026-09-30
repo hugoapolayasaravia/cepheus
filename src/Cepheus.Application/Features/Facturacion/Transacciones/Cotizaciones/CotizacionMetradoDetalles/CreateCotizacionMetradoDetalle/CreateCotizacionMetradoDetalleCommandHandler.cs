@@ -1,9 +1,9 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common;
 using Cepheus.Domain.Facturacion.Transacciones;
 using MediatR;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle
 {
     public class CreateCotizacionMetradoDetalleCommandHandler
         : IRequestHandler<CreateCotizacionMetradoDetalleCommand, CotizacionMetradoDetalleResponse>

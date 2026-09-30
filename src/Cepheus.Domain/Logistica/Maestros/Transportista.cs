@@ -24,6 +24,7 @@ namespace Cepheus.Domain.Logistica.Maestros
     ///   EsPropio            -> IsOwnFleet
     ///   Estado              -> reemplazado por IsActive estándar
     ///   Observaciones       -> Observations
+    ///   CertificationNumber -> Número de certificación del transportista.
     ///
     /// El legacy define UNIQUE(TipoDocumento, NumeroDocumento) — se replica
     /// como índice único compuesto. Además se valida unicidad de RazonSocial,
@@ -51,6 +52,7 @@ namespace Cepheus.Domain.Logistica.Maestros
         public string? Email { get; set; }
 
         public string? MtcRegistrationNumber { get; set; }
+        public string? CertificationNumber { get; set; }
 
         public bool IsOwnFleet { get; set; }
 

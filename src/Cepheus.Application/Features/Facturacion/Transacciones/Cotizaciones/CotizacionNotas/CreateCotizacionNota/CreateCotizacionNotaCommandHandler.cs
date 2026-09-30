@@ -1,9 +1,9 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
-using Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.Common;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.Common;
 using Cepheus.Domain.Facturacion.Transacciones;
 using MediatR;
 
-namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.CotizacionNotas.CreateCotizacionNota
+namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionNotas.CreateCotizacionNota
 {
     public class CreateCotizacionNotaCommandHandler : IRequestHandler<CreateCotizacionNotaCommand, CotizacionNotaResponse>
     {

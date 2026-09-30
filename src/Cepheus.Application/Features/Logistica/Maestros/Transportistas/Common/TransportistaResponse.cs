@@ -12,6 +12,7 @@
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public string? MtcRegistrationNumber { get; set; }
+        public string? CertificationNumber { get; set; }
         public bool IsOwnFleet { get; set; }
         public string? Observations { get; set; }
         public bool IsActive { get; set; }

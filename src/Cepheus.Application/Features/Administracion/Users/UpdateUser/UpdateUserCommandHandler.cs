@@ -61,7 +61,7 @@ namespace Cepheus.Application.Features.Administracion.Users.UpdateUser
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                TrabajadorCode = user.TrabajadorCode,
+                TrabajadorCode = user.TrabajadorCode!,
                 IsActive = user.IsActive,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
