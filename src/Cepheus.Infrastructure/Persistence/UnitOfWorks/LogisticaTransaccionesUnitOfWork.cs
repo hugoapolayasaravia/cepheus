@@ -45,5 +45,6 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<OrdenCompraPedidoOrigen>? _ordenCompraPedidoOrigenes;
         public IRepository<OrdenCompraPedidoOrigen> OrdenCompraPedidoOrigenes => _ordenCompraPedidoOrigenes ??= new Repository<OrdenCompraPedidoOrigen>(_context);
+
     }
 }

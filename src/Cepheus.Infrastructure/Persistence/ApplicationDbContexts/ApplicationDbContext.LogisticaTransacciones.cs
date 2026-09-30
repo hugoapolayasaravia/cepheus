@@ -19,4 +19,5 @@ public partial class ApplicationDbContext
     public DbSet<OrdenCompraDetalle> OrdenComprasDetalle => Set<OrdenCompraDetalle>();
     public DbSet<OrdenCompraPedidoOrigen> OrdenCompraPedidosOrigen => Set<OrdenCompraPedidoOrigen>();
 
+
 }
