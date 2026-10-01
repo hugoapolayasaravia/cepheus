@@ -9,5 +9,6 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivosDevol
         public string? Search { get; set; }
         public bool? IsActive { get; set; }
         public bool? AffectsStock { get; set; }
+        public bool? EsVenta { get; set; }
     }
 }

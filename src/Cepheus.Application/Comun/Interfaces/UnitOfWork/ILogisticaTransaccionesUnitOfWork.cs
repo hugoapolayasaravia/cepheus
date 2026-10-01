@@ -15,6 +15,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<OrdenCompra> OrdenesCompra { get; }
         IRepository<OrdenCompraDetalle> OrdenCompraDetalles { get; }
         IRepository<OrdenCompraPedidoOrigen> OrdenCompraPedidoOrigenes { get; }
+        IRepository<Guia> Guias { get; }
+        IRepository<GuiaDetalle> GuiaDetalles { get; }
 
 
     }

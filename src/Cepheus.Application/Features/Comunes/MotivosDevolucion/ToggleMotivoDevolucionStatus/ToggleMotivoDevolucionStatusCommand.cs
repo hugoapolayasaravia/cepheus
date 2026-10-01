@@ -2,5 +2,5 @@
 
 namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.ToggleMotivoDevolucionStatus
 {
-    public record ToggleMotivoDevolucionStatusCommand(int Id) : IRequest<bool>;
+    public record ToggleMotivoDevolucionStatusCommand(string Code) : IRequest<bool>;
 }

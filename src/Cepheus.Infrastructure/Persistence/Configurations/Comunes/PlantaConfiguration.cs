@@ -61,42 +61,42 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
             builder.Property(x => x.NumeroGve)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroFve)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroDve)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroBve)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroCve)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroLet)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.NumeroRet)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.GuiaNum)
                 .IsRequired()
                 .HasMaxLength(10)
-                .HasDefaultValue("000-000000");
+                .HasDefaultValue("001-000000");
 
             builder.Property(x => x.IsActive)
                 .IsRequired()

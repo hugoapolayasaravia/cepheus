@@ -6,6 +6,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.CreateMotivoDev
     public record CreateMotivoDevolucionCommand(
         string Code,
         string Name,
-        bool AffectsStock
+        bool AffectsStock,
+        bool EsVenta
     ) : IRequest<MotivoDevolucionResponse>;
 }

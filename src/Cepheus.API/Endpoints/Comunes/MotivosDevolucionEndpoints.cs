@@ -18,7 +18,7 @@ namespace Cepheus.API.Endpoints.Comunes
             group.MapPost("/", async (CreateMotivoDevolucionCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
-                return Results.Created($"/api/comunes/motivos-devolucion/{result.Id}", result);
+                return Results.Created($"/api/comunes/motivos-devolucion/{result.Code}", result);
             })
             .WithName("CreateMotivoDevolucion")
             .RequireAuthorization("MOTIVOSDEVOLUCION.CREATE");
@@ -43,19 +43,19 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("GetMotivosDevolucionPagedBody")
             .RequireAuthorization("MOTIVOSDEVOLUCION.VIEW");
 
-            group.MapGet("/{id:int}", async (int id, ISender sender) =>
+            group.MapGet("/{code}", async (string code, ISender sender) =>
             {
-                var result = await sender.Send(new GetMotivoDevolucionByIdQuery(id));
+                var result = await sender.Send(new GetMotivoDevolucionByIdQuery(code));
                 return Results.Ok(result);
             })
             .WithName("GetMotivoDevolucionById")
             .RequireAuthorization("MOTIVOSDEVOLUCION.VIEW");
 
-            group.MapPut("/{id:int}", async (int id, UpdateMotivoDevolucionCommand command, ISender sender) =>
+            group.MapPut("/{code}", async (string code, UpdateMotivoDevolucionCommand command, ISender sender) =>
             {
-                if (id != command.Id)
+                if (!string.Equals(code, command.Code, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Results.BadRequest("El Id de la ruta no coincide con el del cuerpo.");
+                    return Results.BadRequest("El código de la ruta no coincide con el del cuerpo.");
                 }
 
                 var result = await sender.Send(command);
@@ -64,9 +64,9 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("UpdateMotivoDevolucion")
             .RequireAuthorization("MOTIVOSDEVOLUCION.UPDATE");
 
-            group.MapPatch("/{id:int}/toggle-status", async (int id, ISender sender) =>
+            group.MapPatch("/{code}/toggle-status", async (string code, ISender sender) =>
             {
-                var isActive = await sender.Send(new ToggleMotivoDevolucionStatusCommand(id));
+                var isActive = await sender.Send(new ToggleMotivoDevolucionStatusCommand(code));
                 return Results.Ok(new { IsActive = isActive });
             })
             .WithName("ToggleMotivoDevolucionStatus")

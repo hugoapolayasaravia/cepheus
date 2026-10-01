@@ -12,20 +12,16 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.CreateMotivoDev
         {
             _uow = uow;
 
-            RuleFor(x => x.Code)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El código del motivo de devolución es obligatorio.")
-                .MaximumLength(2).WithMessage("El código no puede exceder los 2 caracteres.")
-                .MustAsync(BeUniqueCode).WithMessage("Ya existe un motivo de devolución con ese código.");
-
+        
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre del motivo de devolución es obligatorio.")
-                .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres.");
+                .MaximumLength(80).WithMessage("El nombre no puede exceder los 80 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe un motivo de devolucion con ese nombre."); ;
         }
 
-        private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
             => !await _uow.Comunes.MotivosDevolucion.Query()
-                .AnyAsync(m => m.Code == code.Trim().ToUpper(), cancellationToken);
+                .AnyAsync(m => m.Name == name.Trim().ToUpper(), cancellationToken);
     }
 }

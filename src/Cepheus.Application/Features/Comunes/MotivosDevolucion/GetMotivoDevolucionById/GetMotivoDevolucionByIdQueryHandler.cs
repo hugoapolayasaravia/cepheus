@@ -18,13 +18,13 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivoDevolu
         {
             var motivo = await _uow.Comunes.MotivosDevolucion.Query()
                 .AsNoTracking()
-                .Where(m => m.Id == request.Id)
+                .Where(m => m.Code == request.Code)
                 .Select(m => new MotivoDevolucionResponse
                 {
-                    Id = m.Id,
                     Code = m.Code,
                     Name = m.Name,
                     AffectsStock = m.AffectsStock,
+                    EsVenta = m.EsVenta,
                     IsActive = m.IsActive,
                     CreatedAt = m.CreatedAt,
                     UpdatedAt = m.UpdatedAt,
@@ -34,7 +34,7 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivoDevolu
 
             if (motivo is null)
             {
-                throw new KeyNotFoundException($"Motivo de devolución {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Motivo de devolución {request.Code} no encontrado.");
             }
 
             return motivo;

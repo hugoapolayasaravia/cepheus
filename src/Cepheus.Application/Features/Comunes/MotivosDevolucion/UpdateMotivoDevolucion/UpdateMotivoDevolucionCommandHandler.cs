@@ -19,19 +19,19 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.UpdateMotivoDev
         {
             var current = await _uow.Comunes.MotivosDevolucion.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(m => m.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Motivo de devolución {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Motivo de devolución {request.Code} no encontrado.");
             }
 
             var motivo = new MotivoDevolucion
             {
-                Id = request.Id,
                 Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 AffectsStock = request.AffectsStock,
+                EsVenta = request.EsVenta,
 
                 IsActive = current.IsActive,
                 CreatedAt = current.CreatedAt,
@@ -54,10 +54,10 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.UpdateMotivoDev
 
             return new MotivoDevolucionResponse
             {
-                Id = motivo.Id,
                 Code = motivo.Code,
                 Name = motivo.Name,
                 AffectsStock = motivo.AffectsStock,
+                EsVenta= motivo.EsVenta,
                 IsActive = motivo.IsActive,
                 CreatedAt = motivo.CreatedAt,
                 UpdatedAt = motivo.UpdatedAt,

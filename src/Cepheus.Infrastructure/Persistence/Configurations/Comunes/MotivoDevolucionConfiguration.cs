@@ -10,7 +10,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
         {
             builder.ToTable("MotivosDevolucion", schema: "comun");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Code);
 
             builder.Property(x => x.Code)
                 .IsRequired()
@@ -20,9 +20,12 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(80);
 
             builder.Property(x => x.AffectsStock)
+                .IsRequired();
+
+            builder.Property(x => x.EsVenta)
                 .IsRequired();
 
             builder.Property(x => x.IsActive)

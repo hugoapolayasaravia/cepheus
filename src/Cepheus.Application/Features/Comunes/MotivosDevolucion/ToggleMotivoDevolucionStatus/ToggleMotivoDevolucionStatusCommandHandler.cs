@@ -14,11 +14,11 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.ToggleMotivoDev
 
         public async Task<bool> Handle(ToggleMotivoDevolucionStatusCommand request, CancellationToken cancellationToken)
         {
-            var motivo = await _uow.Comunes.MotivosDevolucion.GetByIdAsync(request.Id, cancellationToken);
+            var motivo = await _uow.Comunes.MotivosDevolucion.GetByCodeAsync(request.Code, cancellationToken);
 
             if (motivo is null)
             {
-                throw new KeyNotFoundException($"Motivo de devolución {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Motivo de devolución {request.Code} no encontrado.");
             }
 
             motivo.IsActive = !motivo.IsActive;

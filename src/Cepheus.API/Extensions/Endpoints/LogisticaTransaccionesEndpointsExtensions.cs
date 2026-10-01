@@ -9,6 +9,7 @@ public static class LogisticaTransaccionesEndpointsExtensions
         app.MapPedidosEndpoints();
         app.MapCotizacionesEndpoints();
         app.MapOrdenesCompraEndpoints();
+        app.MapGuiasEndpoints();
 
         return app;
     }

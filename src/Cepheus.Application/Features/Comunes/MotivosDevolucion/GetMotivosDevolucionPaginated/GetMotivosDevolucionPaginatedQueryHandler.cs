@@ -40,6 +40,11 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivosDevol
                 query = query.Where(m => m.AffectsStock == request.AffectsStock.Value);
             }
 
+            if (request.EsVenta.HasValue)
+            {
+                query = query.Where(m => m.EsVenta == request.EsVenta.Value);
+            }
+
             var sortDesc = request.SortDesc ?? false;
             var pageNumber = request.PageNumber ?? 1;
             var pageSize = request.PageSize ?? 10;
@@ -50,10 +55,10 @@ namespace Cepheus.Application.Features.Comunes.MotivosDevolucion.GetMotivosDevol
 
             var projected = sortedQuery.Select(m => new MotivoDevolucionResponse
             {
-                Id = m.Id,
                 Code = m.Code,
                 Name = m.Name,
                 AffectsStock = m.AffectsStock,
+                EsVenta = m.EsVenta,
                 IsActive = m.IsActive,
                 CreatedAt = m.CreatedAt,
                 UpdatedAt = m.UpdatedAt,
