@@ -24,8 +24,11 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                 .MustAsync(TipoPedidoExists).WithMessage("El tipo de pedido indicado no existe.");
 
             RuleFor(x => x.TipoValeCode)
-                .MustAsync(TipoValeExists).WithMessage("El tipo de vale indicado no existe.")
-                .When(x => !string.IsNullOrWhiteSpace(x.TipoValeCode));
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Pedido por es obligatorio.")
+                .MustAsync(TipoValeExists)
+                .WithMessage("Pedido por indicado no existe.");
 
             RuleFor(x => x.TramiteCode)
                 .Cascade(CascadeMode.Stop)

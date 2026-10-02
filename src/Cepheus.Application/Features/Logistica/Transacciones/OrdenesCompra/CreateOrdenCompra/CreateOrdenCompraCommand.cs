@@ -7,7 +7,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Cre
     public record CreateOrdenCompraCommand(
         string PlantaCode,
         string TipoCompraCode,
-        int? ComprobantePagoId,
+        string ComprobantePagoCode,
         DateTime FechaEntrega,
         string ProveedorCode,
         string CompradorCode,

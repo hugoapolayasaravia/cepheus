@@ -9,13 +9,15 @@ namespace Cepheus.Domain.Logistica.Enum
     ///   01 Pendiente -> Pendiente
     ///   04 Anulado   -> Anulado
     ///   16 En Compra -> EnCompra
+    ///   17 CompraParcial  -> cantidad parcialmente tomada por OC
     ///
     /// Toda línea nueva nace en Pendiente.
     /// </summary>
     public enum EstadoPedidoDetalle
     {
-        Pendiente = 0,
-        Anulado = 1,
-        EnCompra = 2
+        Pendiente = 1,
+        Anulado = 4,
+        EnCompra = 16,
+        CompraParcial = 17
     }
 }

@@ -19,16 +19,15 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
         {
             var current = await _uow.Comunes.ComprobantesPago.Query()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Code == request.Code, cancellationToken);
 
             if (current is null)
             {
-                throw new KeyNotFoundException($"Comprobante de pago {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Comprobante de pago {request.Code} no encontrado.");
             }
 
             var comprobante = new ComprobantePago
             {
-                Id = request.Id,
                 Code = request.Code.Trim().ToUpperInvariant(),
                 SunatCode = request.SunatCode.Trim(),
                 Name = request.Name.Trim(),
@@ -65,7 +64,6 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
 
             return new ComprobantePagoResponse
             {
-                Id = comprobante.Id,
                 Code = comprobante.Code,
                 SunatCode = comprobante.SunatCode,
                 Name = comprobante.Name,

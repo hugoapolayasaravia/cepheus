@@ -13,7 +13,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
     public record CreatePedidoCommand(
         string PlantaCode,
         string TipoPedidoCode,
-        string? TipoValeCode,
+        string TipoValeCode,
         string TramiteCode,
         string SubCentroCostoCode,
         string TrabajadorCode,

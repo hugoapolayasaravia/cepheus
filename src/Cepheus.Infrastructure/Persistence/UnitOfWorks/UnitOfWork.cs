@@ -52,6 +52,12 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
             => _context.SaveChangesAsync(cancellationToken);
+
+        public void ClearTracking()
+        {
+            _context.ChangeTracker.Clear();
+        }
+
     }
 
 

@@ -23,6 +23,7 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<TipoTransaccion> TiposTransaccion { get; }
         IRepository<RangoAprobacion> RangosAprobacion { get; }
         IRepository<AprobadorAsignado> AprobadoresAsignados { get; }
+        IRepository<MotivoDevolucionArticulo> MotivosDevolucionArticulo { get; }
 
     }
 }

@@ -52,15 +52,15 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.ChangeEst
                 throw new KeyNotFoundException($"Pedido {plantaCode}/{code} no encontrado.");
             }
 
-            if (!ValidTransitions[pedido.Estado].Contains(nuevoEstado))
+            if (!ValidTransitions[pedido.EstadoPedido].Contains(nuevoEstado))
             {
                 throw new InvalidOperationException(
-                    $"No se puede pasar de '{pedido.Estado}' a '{nuevoEstado}'. " +
-                    $"Transiciones válidas desde '{pedido.Estado}': " +
-                    $"{string.Join(", ", ValidTransitions[pedido.Estado])}.");
+                    $"No se puede pasar de '{pedido.EstadoPedido}' a '{nuevoEstado}'. " +
+                    $"Transiciones válidas desde '{pedido.EstadoPedido}': " +
+                    $"{string.Join(", ", ValidTransitions[pedido.EstadoPedido])}.");
             }
 
-            pedido.Estado = nuevoEstado;
+            pedido.EstadoPedido = nuevoEstado;
 
             if (nuevoEstado == EstadoPedido.Aprobado)
             {

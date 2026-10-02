@@ -1,4 +1,5 @@
-﻿using Cepheus.API.Endpoints.Logistica.Catalogos;
+﻿using Cepheus.API.Endpoints.Comunes;
+using Cepheus.API.Endpoints.Logistica.Catalogos;
 using Cepheus.API.Endpoints.Logistica.Maestros;
 
 namespace Cepheus.API.Extensions.Endpoints;
@@ -26,6 +27,7 @@ public static class LogisticaCatalogosEndpointsExtensions
         app.MapTiposTransaccionEndpoints();
         app.MapRangosAprobacionEndpoints();
         app.MapAprobadoresAsignadosEndpoints();
+        app.MapMotivosDevolucionArticuloEndpoints();
 
         return app;
     }

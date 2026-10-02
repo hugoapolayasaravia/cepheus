@@ -32,10 +32,10 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.PedidoDet
                 throw new KeyNotFoundException($"Pedido {plantaCode}/{pedidoCode} no encontrado.");
             }
 
-            if (pedido.Estado != EstadoPedido.Pendiente)
+            if (pedido.EstadoPedido != EstadoPedido.Pendiente)
             {
                 throw new InvalidOperationException(
-                    $"El Pedido está en estado '{pedido.Estado}' y ya no admite agregar líneas.");
+                    $"El Pedido está en estado '{pedido.EstadoPedido}' y ya no admite agregar líneas.");
             }
 
             var nextItem = pedido.Detalles.Count == 0 ? 1 : pedido.Detalles.Max(d => d.ItemNumber) + 1;
@@ -51,7 +51,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.PedidoDet
                 PrecioArticulo = request.PrecioArticulo,
                 CantidadArticulo = request.CantidadArticulo,
                 TotalArticulo = PedidoTotalsCalculator.CalculateLineTotal(request.PrecioArticulo, request.CantidadArticulo),
-                Estado = EstadoPedidoDetalle.Pendiente,
+                EstadoPedidoDetalle = EstadoPedidoDetalle.Pendiente,
                 ProveedorCode = string.IsNullOrWhiteSpace(request.ProveedorCode) ? null : request.ProveedorCode.Trim().ToUpperInvariant()
             };
 

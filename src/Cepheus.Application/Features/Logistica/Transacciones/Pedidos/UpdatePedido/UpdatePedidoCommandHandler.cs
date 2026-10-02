@@ -38,14 +38,14 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.UpdatePed
                 throw new KeyNotFoundException($"Pedido {plantaCode}/{code} no encontrado.");
             }
 
-            if (pedido.Estado != EstadoPedido.Pendiente)
+            if (pedido.EstadoPedido != EstadoPedido.Pendiente)
             {
                 throw new InvalidOperationException(
-                    $"El Pedido está en estado '{pedido.Estado}' y ya no admite edición de cabecera.");
+                    $"El Pedido está en estado '{pedido.EstadoPedido}' y ya no admite edición de cabecera.");
             }
 
             pedido.TipoPedidoCode = request.TipoPedidoCode.Trim().ToUpperInvariant();
-            pedido.TipoValeCode = string.IsNullOrWhiteSpace(request.TipoValeCode) ? null : request.TipoValeCode.Trim().ToUpperInvariant();
+            pedido.TipoValeCode = request.TipoValeCode.Trim().ToUpperInvariant();
             pedido.TramiteCode = request.TramiteCode.Trim().ToUpperInvariant();
             pedido.SubCentroCostoCode = request.SubCentroCostoCode.Trim().ToUpperInvariant();
             pedido.TrabajadorCode = request.TrabajadorCode.Trim().ToUpperInvariant();
@@ -55,7 +55,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.UpdatePed
             pedido.Observaciones = request.Observaciones?.Trim() ?? string.Empty;
 
             pedido.RowVersion = request.RowVersion;
-            _uow.Logistica.Transacciones.Pedidos.Update(pedido);
+            //_uow.Logistica.Transacciones.Pedidos.Update(pedido);
 
             try
             {

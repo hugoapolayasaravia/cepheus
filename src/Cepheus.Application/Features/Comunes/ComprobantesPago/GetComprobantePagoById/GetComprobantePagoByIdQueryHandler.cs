@@ -18,10 +18,9 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantePa
         {
             var comprobante = await _uow.Comunes.ComprobantesPago.Query()
                 .AsNoTracking()
-                .Where(c => c.Id == request.Id)
+                .Where(c => c.Code == request.Code)
                 .Select(c => new ComprobantePagoResponse
                 {
-                    Id = c.Id,
                     Code = c.Code,
                     SunatCode = c.SunatCode,
                     Name = c.Name,
@@ -45,7 +44,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantePa
 
             if (comprobante is null)
             {
-                throw new KeyNotFoundException($"Comprobante de pago {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Comprobante de pago {request.Code} no encontrado.");
             }
 
             return comprobante;

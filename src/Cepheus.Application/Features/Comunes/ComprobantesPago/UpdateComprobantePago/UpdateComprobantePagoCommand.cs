@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobantePago
 {
     public record UpdateComprobantePagoCommand(
-        int Id,
         string Code,
         string SunatCode,
         string Name,

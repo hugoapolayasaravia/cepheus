@@ -4,7 +4,6 @@ using MediatR;
 namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobantePago
 {
     public record CreateComprobantePagoCommand(
-       string Code,
        string SunatCode,
        string Name,
        string ShortName,

@@ -1,10 +1,12 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using Cepheus.Infrastructure.Authorization;
 using Cepheus.Infrastructure.Identity;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
 using Cepheus.Infrastructure.Persistence.UnitOfWorks;
 using Cepheus.Infrastructure.Services;
+using Cepheus.Infrastructure.Services.StockArticulos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,7 @@ namespace Cepheus.Infrastructure
             // Autorización dinámica por Permission/permisos_roles (ver Cepheus.Infrastructure.Authorization)
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddScoped<IArticuloStockMovementService, ArticuloStockMovementService>();
 
             return services;
         }

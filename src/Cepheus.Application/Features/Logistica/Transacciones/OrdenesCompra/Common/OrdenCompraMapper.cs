@@ -10,7 +10,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Com
             PlantaCode = o.PlantaCode,
             Code = o.Code,
             TipoCompraCode = o.TipoCompraCode,
-            ComprobantePagoId = o.ComprobantePagoId,
+            ComprobantePagoCode = o.ComprobantePagoCode,
             FechaEntrega = o.FechaEntrega,
             ProveedorCode = o.ProveedorCode,
             CompradorCode = o.CompradorCode,

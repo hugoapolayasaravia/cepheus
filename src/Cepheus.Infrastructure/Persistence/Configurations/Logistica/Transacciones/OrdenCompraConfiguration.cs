@@ -23,7 +23,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Transaccio
             builder.HasOne(x => x.TipoCompra).WithMany().HasForeignKey(x => x.TipoCompraCode)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(x => x.ComprobantePago).WithMany().HasForeignKey(x => x.ComprobantePagoId)
+            builder.HasOne(x => x.ComprobantePago).WithMany().HasForeignKey(x => x.ComprobantePagoCode)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.FechaEntrega).IsRequired();

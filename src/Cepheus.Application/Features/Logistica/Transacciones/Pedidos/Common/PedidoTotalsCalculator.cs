@@ -23,7 +23,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.Common
                 .FirstOrDefaultAsync(cancellationToken);
 
             var neto = pedido.Detalles
-                .Where(d => d.Estado != EstadoPedidoDetalle.Anulado)
+                .Where(d => d.EstadoPedidoDetalle != EstadoPedidoDetalle.Anulado)
                 .Sum(d => d.TotalArticulo);
 
             neto = Math.Round(neto, 2, MidpointRounding.AwayFromZero);

@@ -51,7 +51,7 @@ namespace Cepheus.Domain.Logistica.Transacciones
         public decimal CantidadArticulo { get; set; }
         public decimal TotalArticulo { get; set; }
 
-        public EstadoPedidoDetalle Estado { get; set; } = EstadoPedidoDetalle.Pendiente;
+        public EstadoPedidoDetalle EstadoPedidoDetalle { get; set; } = EstadoPedidoDetalle.Pendiente;
 
         /// <summary>Pendiente de FK real: módulo de Compras (Orden de Compra) aún no existe.</summary>
         public string? OrdenCompraCode { get; set; }

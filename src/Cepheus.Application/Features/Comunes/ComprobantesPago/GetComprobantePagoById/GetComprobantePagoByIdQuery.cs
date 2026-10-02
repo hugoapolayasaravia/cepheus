@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantePagoById
 {
-    public record GetComprobantePagoByIdQuery(int Id) : IRequest<ComprobantePagoResponse>;
+    public record GetComprobantePagoByIdQuery(string Code) : IRequest<ComprobantePagoResponse>;
 }

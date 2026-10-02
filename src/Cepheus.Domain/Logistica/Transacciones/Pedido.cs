@@ -63,7 +63,7 @@ namespace Cepheus.Domain.Logistica.Transacciones
         public string TipoPedidoCode { get; set; } = default!;
         public TipoPedido TipoPedido { get; set; } = default!;
 
-        public string? TipoValeCode { get; set; }
+        public string TipoValeCode { get; set; } = default!;
         public TipoVale? TipoVale { get; set; }
 
         public string TramiteCode { get; set; } = default!;
@@ -88,7 +88,7 @@ namespace Cepheus.Domain.Logistica.Transacciones
         public decimal IgvPedido { get; set; }
         public decimal TotalPedido { get; set; }
 
-        public EstadoPedido Estado { get; set; } = EstadoPedido.Pendiente;
+        public EstadoPedido EstadoPedido { get; set; } = EstadoPedido.Pendiente;
 
         public string Observaciones { get; set; } = string.Empty;
 

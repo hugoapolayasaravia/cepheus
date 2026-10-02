@@ -15,7 +15,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.Common
         public decimal CantidadArticulo { get; set; }
         public decimal TotalArticulo { get; set; }
 
-        public string Estado { get; set; } = default!;
+        public string EstadoPedidoDetalle { get; set; } = default!;
 
         public string? OrdenCompraCode { get; set; }
         public string? ProveedorCode { get; set; }

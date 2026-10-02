@@ -34,14 +34,15 @@ namespace Cepheus.Domain.Logistica.Enum
     /// </summary>
     public enum EstadoPedido
     {
-        Pendiente = 0,
-        AprobacionProvisional = 1,
-        Aprobado = 2,
-        EnCompra = 3,
-        CompraParcial = 4,
-        Comprado = 5,
-        EntregaParcial = 6,
-        Cerrado = 7,
-        Anulado = 8
+        Pendiente = 1,
+        Anulado = 4,
+        AprobacionProvisional = 30,
+        Aprobado = 9,
+        EnCompra = 16,
+        CompraParcial = 17,
+        Comprado = 10,
+        EntregaParcial = 12,
+        Cerrado = 11
+        
     }
 }

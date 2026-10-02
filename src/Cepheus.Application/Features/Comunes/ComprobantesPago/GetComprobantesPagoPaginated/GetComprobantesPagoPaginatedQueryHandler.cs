@@ -45,7 +45,6 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.GetComprobantesP
 
             var projected = sortedQuery.Select(c => new ComprobantePagoResponse
             {
-                Id = c.Id,
                 Code = c.Code,
                 SunatCode = c.SunatCode,
                 Name = c.Name,

@@ -1,4 +1,5 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Helpers;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Comunes.ComprobantesPago.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
@@ -16,9 +17,14 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
 
         public async Task<ComprobantePagoResponse> Handle(CreateComprobantePagoCommand request, CancellationToken cancellationToken)
         {
+
+            var code = await SequentialCodeGenerator.NextAsync(
+            _uow.Comunes.ComprobantesPago.Query().Select(b => b.Code), length: 2, entityLabel: "Comprobantes", cancellationToken);
+
+
             var comprobante = new ComprobantePago
             {
-                Code = request.Code.Trim().ToUpperInvariant(),
+                Code = code,
                 SunatCode = request.SunatCode.Trim(),
                 Name = request.Name.Trim(),
                 ShortName = request.ShortName.Trim().ToUpperInvariant(),
@@ -43,7 +49,6 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
 
         internal static ComprobantePagoResponse Map(ComprobantePago comprobante) => new()
         {
-            Id = comprobante.Id,
             Code = comprobante.Code,
             SunatCode = comprobante.SunatCode,
             Name = comprobante.Name,

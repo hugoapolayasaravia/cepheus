@@ -1,5 +1,6 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Logistica.Catalogos;
 using Cepheus.Domain.Logistica.Maestros;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
@@ -67,6 +68,9 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         public IRepository<RangoAprobacion> RangosAprobacion => _rangosAprobacion ??= new Repository<RangoAprobacion>(_context);
         private IRepository<AprobadorAsignado>? _aprobadoresAsignados;
         public IRepository<AprobadorAsignado> AprobadoresAsignados => _aprobadoresAsignados ??= new Repository<AprobadorAsignado>(_context);
+
+        private IRepository<MotivoDevolucionArticulo>? _motivosDevolucionArticulo;
+        public IRepository<MotivoDevolucionArticulo> MotivosDevolucionArticulo => _motivosDevolucionArticulo ??= new Repository<MotivoDevolucionArticulo>(_context);
 
     }
 }

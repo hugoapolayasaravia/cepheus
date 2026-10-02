@@ -21,7 +21,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.Common
         public decimal IgvPedido { get; set; }
         public decimal TotalPedido { get; set; }
 
-        public string Estado { get; set; } = default!;
+        public string EstadoPedido { get; set; } = default!;
         public string Observaciones { get; set; } = default!;
 
         public string? AprobadoPor { get; set; }

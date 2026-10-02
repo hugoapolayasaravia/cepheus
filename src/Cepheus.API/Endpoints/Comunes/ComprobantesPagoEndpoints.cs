@@ -18,7 +18,7 @@ namespace Cepheus.API.Endpoints.Comunes
             group.MapPost("/", async (CreateComprobantePagoCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
-                return Results.Created($"/api/comunes/comprobantes-pago/{result.Id}", result);
+                return Results.Created($"/api/comunes/comprobantes-pago/{result.Code}", result);
             })
             .WithName("CreateComprobantePago")
             .RequireAuthorization("COMPROBANTESPAGO.CREATE");
@@ -43,19 +43,19 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("GetComprobantesPagoPagedBody")
             .RequireAuthorization("COMPROBANTESPAGO.VIEW");
 
-            group.MapGet("/{id:int}", async (int id, ISender sender) =>
+            group.MapGet("/{code}", async (string code, ISender sender) =>
             {
-                var result = await sender.Send(new GetComprobantePagoByIdQuery(id));
+                var result = await sender.Send(new GetComprobantePagoByIdQuery(code));
                 return Results.Ok(result);
             })
             .WithName("GetComprobantePagoById")
             .RequireAuthorization("COMPROBANTESPAGO.VIEW");
 
-            group.MapPut("/{id:int}", async (int id, UpdateComprobantePagoCommand command, ISender sender) =>
+            group.MapPut("/{code}", async (string code, UpdateComprobantePagoCommand command, ISender sender) =>
             {
-                if (id != command.Id)
+                if (!string.Equals(code, command.Code, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Results.BadRequest("El Id de la ruta no coincide con el del cuerpo.");
+                    return Results.BadRequest("El código de la ruta no coincide con el del cuerpo.");
                 }
 
                 var result = await sender.Send(command);
@@ -64,9 +64,9 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("UpdateComprobantePago")
             .RequireAuthorization("COMPROBANTESPAGO.UPDATE");
 
-            group.MapPatch("/{id:int}/toggle-status", async (int id, ISender sender) =>
+            group.MapPatch("/{code}/toggle-status", async (string code, ISender sender) =>
             {
-                var isActive = await sender.Send(new ToggleComprobantePagoStatusCommand(id));
+                var isActive = await sender.Send(new ToggleComprobantePagoStatusCommand(code));
                 return Results.Ok(new { IsActive = isActive });
             })
             .WithName("ToggleComprobantePagoStatus")

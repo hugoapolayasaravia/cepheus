@@ -44,7 +44,7 @@ namespace Cepheus.Domain.Logistica.Transacciones
         public string TipoCompraCode { get; set; } = default!;
         public TipoCompra TipoCompra { get; set; } = default!;
 
-        public int? ComprobantePagoId { get; set; }
+        public string ComprobantePagoCode { get; set; } = default!;
         public ComprobantePago? ComprobantePago { get; set; }
 
         public DateTime FechaEntrega { get; set; }

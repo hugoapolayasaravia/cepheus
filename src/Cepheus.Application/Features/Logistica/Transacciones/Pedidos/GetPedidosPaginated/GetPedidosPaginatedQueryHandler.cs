@@ -52,7 +52,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.GetPedido
                     out var estado))
             {
                 query = query.Where(p =>
-                    p.Estado == estado);
+                    p.EstadoPedido == estado);
             }
 
             if (!string.IsNullOrWhiteSpace(request.TrabajadorCode))

@@ -8,7 +8,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.UpdatePed
         string PlantaCode,
         string Code,
         string TipoPedidoCode,
-        string? TipoValeCode,
+        string TipoValeCode,
         string TramiteCode,
         string SubCentroCostoCode,
         string TrabajadorCode,

@@ -25,6 +25,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Transaccio
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CantidadTomada).IsRequired().HasColumnType("decimal(18,2)");
+            builder.Property(x => x.CantidadEntregada).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0m);
 
             builder.Property(x => x.CreatedBy).HasMaxLength(250);
             builder.Property(x => x.UpdatedBy).HasMaxLength(250);

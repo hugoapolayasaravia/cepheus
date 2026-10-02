@@ -14,11 +14,11 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.ToggleComprobant
 
         public async Task<bool> Handle(ToggleComprobantePagoStatusCommand request, CancellationToken cancellationToken)
         {
-            var comprobante = await _uow.Comunes.ComprobantesPago.GetByIdAsync(request.Id, cancellationToken);
+            var comprobante = await _uow.Comunes.ComprobantesPago.GetByCodeAsync(request.Code, cancellationToken);
 
             if (comprobante is null)
             {
-                throw new KeyNotFoundException($"Comprobante de pago {request.Id} no encontrado.");
+                throw new KeyNotFoundException($"Comprobante de pago {request.Code} no encontrado.");
             }
 
             comprobante.IsActive = !comprobante.IsActive;

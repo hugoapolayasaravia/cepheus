@@ -52,5 +52,11 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<GuiaDetalle>? _guiaDetalles;
         public IRepository<GuiaDetalle> GuiaDetalles => _guiaDetalles ??= new Repository<GuiaDetalle>(_context);
 
+        private IRepository<NotaIngreso>? _notaIngresos;
+        public IRepository<NotaIngreso> NotaIngresos => _notaIngresos ??= new Repository<NotaIngreso>(_context);
+
+        private IRepository<NotaIngresoDetalle>? _notaIngresoDetalles;
+        public IRepository<NotaIngresoDetalle> NotaIngresoDetalles => _notaIngresoDetalles ??= new Repository<NotaIngresoDetalle>(_context);
+
     }
 }

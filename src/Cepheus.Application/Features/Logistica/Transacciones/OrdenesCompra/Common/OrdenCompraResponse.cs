@@ -26,7 +26,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Com
         public string PlantaCode { get; set; } = default!;
         public string Code { get; set; } = default!;
         public string TipoCompraCode { get; set; } = default!;
-        public int? ComprobantePagoId { get; set; }
+        public string ComprobantePagoCode { get; set; } = default!;
         public DateTime FechaEntrega { get; set; }
         public string ProveedorCode { get; set; } = default!;
         public string CompradorCode { get; set; } = default!;

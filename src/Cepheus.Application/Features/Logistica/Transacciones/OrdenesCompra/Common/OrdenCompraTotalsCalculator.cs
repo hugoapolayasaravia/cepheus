@@ -31,10 +31,12 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Com
                 .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
-            var comprobante = orden.ComprobantePagoId.HasValue
+            var comprobante = !string.IsNullOrWhiteSpace(orden.ComprobantePagoCode)
                 ? await uow.Comunes.ComprobantesPago.Query()
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.Id == orden.ComprobantePagoId.Value, cancellationToken)
+                    .FirstOrDefaultAsync(
+                        c => c.Code == orden.ComprobantePagoCode,
+                        cancellationToken)
                 : null;
 
             var igvPercentage = control?.IgvPercentage ?? 0;

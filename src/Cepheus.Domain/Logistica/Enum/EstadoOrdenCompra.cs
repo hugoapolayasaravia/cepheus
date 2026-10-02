@@ -22,10 +22,10 @@ namespace Cepheus.Domain.Logistica.Enum
     /// </summary>
     public enum EstadoOrdenCompra
     {
-        Pendiente = 0,
-        Aprobado = 1,
-        EntregaParcial = 2,
-        Cerrado = 3,
+        Pendiente = 1,
+        Aprobado = 9,
+        EntregaParcial = 12,
+        Cerrado = 11,
         Anulado = 4
     }
 }

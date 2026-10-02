@@ -8,7 +8,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Upd
         string PlantaCode,
         string Code,
         string TipoCompraCode,
-        int? ComprobantePagoId,
+        string ComprobantePagoCode,
         DateTime FechaEntrega,
         string ProveedorCode,
         string CompradorCode,

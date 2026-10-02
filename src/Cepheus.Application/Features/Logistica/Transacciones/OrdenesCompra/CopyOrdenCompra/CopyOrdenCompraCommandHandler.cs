@@ -50,7 +50,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Cop
                     PlantaCode = plantaCode,
                     Code = nextCode,
                     TipoCompraCode = source.TipoCompraCode,
-                    ComprobantePagoId = source.ComprobantePagoId,
+                    ComprobantePagoCode = source.ComprobantePagoCode,
                     FechaEntrega = request.NuevaFechaEntrega,
                     ProveedorCode = source.ProveedorCode,
                     CompradorCode = source.CompradorCode,

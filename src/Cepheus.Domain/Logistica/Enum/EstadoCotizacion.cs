@@ -19,9 +19,9 @@ namespace Cepheus.Domain.Logistica.Enum
     /// </summary>
     public enum EstadoCotizacion
     {
-        Pendiente = 0,
-        EnEvaluacion = 1,
-        Cerrado = 2,
-        Anulado = 3
+        Pendiente = 1,
+        EnEvaluacion = 20,
+        Cerrado = 11,
+        Anulado = 4
     }
 }

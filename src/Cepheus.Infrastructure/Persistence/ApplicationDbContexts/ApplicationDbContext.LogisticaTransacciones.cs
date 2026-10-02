@@ -22,4 +22,7 @@ public partial class ApplicationDbContext
     public DbSet<Guia> Guias => Set<Guia>();
     public DbSet<GuiaDetalle> GuiaDetalles => Set<GuiaDetalle>();
 
+    public DbSet<NotaIngreso> NotaIngresos => Set<NotaIngreso>();
+    public DbSet<NotaIngresoDetalle> NotaIngresoDetalles => Set<NotaIngresoDetalle>();
+
 }

@@ -21,6 +21,13 @@ namespace Cepheus.Domain.Logistica.Transacciones
 
         public decimal CantidadTomada { get; set; }
 
+        /// <summary>
+        /// Cantidad ya recibida de este pedido de origen mediante Notas de Ingreso (legacy: Cantidad_Ent,
+        /// que en la OC se lleva por pedido). Nunca supera a CantidadTomada. La actualiza la Nota de Ingreso
+        /// al registrarse (suma) y al anularse (resta); pendiente del origen = CantidadTomada - CantidadEntregada.
+        /// </summary>
+        public decimal CantidadEntregada { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

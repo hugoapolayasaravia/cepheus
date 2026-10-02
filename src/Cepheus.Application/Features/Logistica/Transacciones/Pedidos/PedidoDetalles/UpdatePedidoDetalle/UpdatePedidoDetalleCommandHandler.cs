@@ -31,10 +31,10 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.PedidoDet
                 throw new KeyNotFoundException($"Pedido {plantaCode}/{pedidoCode} no encontrado.");
             }
 
-            if (pedido.Estado != EstadoPedido.Pendiente)
+            if (pedido.EstadoPedido != EstadoPedido.Pendiente)
             {
                 throw new InvalidOperationException(
-                    $"El Pedido está en estado '{pedido.Estado}' y ya no admite editar líneas.");
+                    $"El Pedido está en estado '{pedido.EstadoPedido}' y ya no admite editar líneas.");
             }
 
             var linea = pedido.Detalles.FirstOrDefault(d => d.ItemNumber == request.ItemNumber);

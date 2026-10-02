@@ -36,7 +36,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                     CodPlanta = plantaCode,
 
                     TipoPedidoCode = request.TipoPedidoCode.Trim().ToUpperInvariant(),
-                    TipoValeCode = Normalize(request.TipoValeCode),
+                    TipoValeCode = request.TipoValeCode,
                     TramiteCode = request.TramiteCode.Trim().ToUpperInvariant(),
                     SubCentroCostoCode = request.SubCentroCostoCode.Trim().ToUpperInvariant(),
                     TrabajadorCode = request.TrabajadorCode.Trim().ToUpperInvariant(),
@@ -44,7 +44,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                     UnidadNegocioCode = request.UnidadNegocioCode.Trim().ToUpperInvariant(),
 
                     FechaEntrega = request.FechaEntrega,
-                    Estado = EstadoPedido.Pendiente,
+                    EstadoPedido = EstadoPedido.Pendiente,
                     Observaciones = request.Observaciones?.Trim() ?? string.Empty
                 };
 
@@ -62,7 +62,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                         PrecioArticulo = line.PrecioArticulo,
                         CantidadArticulo = line.CantidadArticulo,
                         TotalArticulo = PedidoTotalsCalculator.CalculateLineTotal(line.PrecioArticulo, line.CantidadArticulo),
-                        Estado = EstadoPedidoDetalle.Pendiente,
+                        EstadoPedidoDetalle = EstadoPedidoDetalle.Pendiente,
                         ProveedorCode = Normalize(line.ProveedorCode)
                     });
                 }
@@ -78,8 +78,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                 }
                 catch (DbUpdateException) when (attempt < MaxConcurrencyRetries)
                 {
-                    // Colisión de correlativo por creación simultánea en la misma
-                    // planta: se reintenta generando el siguiente código.
+                    _uow.ClearTracking();
                 }
             }
 
@@ -90,6 +89,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
         private async Task<string> NextCodeAsync(string plantaCode, CancellationToken cancellationToken)
         {
             var lastCode = await _uow.Logistica.Transacciones.Pedidos.Query()
+                .AsNoTracking()
                 .Where(p => p.PlantaCode == plantaCode && p.Code.StartsWith(CodePrefix))
                 .OrderByDescending(p => p.Code)
                 .Select(p => p.Code)
@@ -123,7 +123,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
             NetoPedido = p.NetoPedido,
             IgvPedido = p.IgvPedido,
             TotalPedido = p.TotalPedido,
-            Estado = p.Estado.ToString(),
+            EstadoPedido = p.EstadoPedido.ToString(),
             Observaciones = p.Observaciones,
             AprobadoPor = p.AprobadoPor,
             FechaAprobacion = p.FechaAprobacion,
@@ -140,7 +140,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.CreatePed
                 PrecioArticulo = d.PrecioArticulo,
                 CantidadArticulo = d.CantidadArticulo,
                 TotalArticulo = d.TotalArticulo,
-                Estado = d.Estado.ToString(),
+                EstadoPedidoDetalle = d.EstadoPedidoDetalle.ToString(),
                 OrdenCompraCode = d.OrdenCompraCode,
                 ProveedorCode = d.ProveedorCode,
                 CreatedAt = d.CreatedAt,

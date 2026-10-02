@@ -62,7 +62,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Transaccio
             builder.Property(x => x.IgvPedido).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0);
             builder.Property(x => x.TotalPedido).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0);
 
-            builder.Property(x => x.Estado).IsRequired().HasConversion<int>();
+            builder.Property(x => x.EstadoPedido).IsRequired().HasConversion<int>();
 
             builder.Property(x => x.Observaciones).IsRequired().HasMaxLength(200).HasDefaultValue(string.Empty);
 

@@ -17,14 +17,22 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Upd
                 .MustAsync(async (c, ct) => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == c.Trim().ToUpper(), ct))
                 .WithMessage("La planta indicada no existe.");
 
+            RuleFor(x => x.Code)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("El código de la Orden de Compra es obligatorio.");
+
             RuleFor(x => x.TipoCompraCode).Cascade(CascadeMode.Stop).NotEmpty()
                 .MustAsync(async (c, ct) => await _uow.Logistica.Catalogos.TiposCompra.Query().AnyAsync(t => t.Code == c.Trim().ToUpper(), ct))
                 .WithMessage("El tipo de compra indicado no existe.");
 
-            RuleFor(x => x.ComprobantePagoId)
-                .MustAsync(async (id, ct) => await _uow.Comunes.ComprobantesPago.Query().AnyAsync(c => c.Id == id!.Value, ct))
+            RuleFor(x => x.ComprobantePagoCode)
+                .MustAsync(async (code, ct) =>
+                    await _uow.Comunes.ComprobantesPago
+                        .Query()
+                        .AnyAsync(c => c.Code == code, ct))
                 .WithMessage("El comprobante de pago indicado no existe.")
-                .When(x => x.ComprobantePagoId.HasValue);
+                .When(x => !string.IsNullOrWhiteSpace(x.ComprobantePagoCode));
 
             RuleFor(x => x.ProveedorCode).Cascade(CascadeMode.Stop).NotEmpty()
                 .MustAsync(async (c, ct) => await _uow.Logistica.Maestros.Proveedores.Query().AnyAsync(p => p.Code == c.Trim().ToUpper(), ct))
@@ -62,6 +70,10 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Upd
             RuleFor(x => x.FechaEntrega).GreaterThanOrEqualTo(DateTime.Today)
                 .WithMessage("La fecha de entrega no puede ser anterior a la fecha del sistema.");
 
+            RuleFor(x => x.RowVersion)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("La versión de la Orden de Compra es obligatoria.");
 
         }        
     }
