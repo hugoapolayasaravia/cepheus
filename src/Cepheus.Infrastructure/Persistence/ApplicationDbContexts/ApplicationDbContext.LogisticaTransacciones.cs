@@ -25,4 +25,10 @@ public partial class ApplicationDbContext
     public DbSet<NotaIngreso> NotaIngresos => Set<NotaIngreso>();
     public DbSet<NotaIngresoDetalle> NotaIngresoDetalles => Set<NotaIngresoDetalle>();
 
+    public DbSet<Importacion> Importaciones => Set<Importacion>();
+    public DbSet<ImportacionDetalle> ImportacionDetalles => Set<ImportacionDetalle>();
+    public DbSet<ImportacionGasto> ImportacionGastos => Set<ImportacionGasto>();
+
+
+
 }

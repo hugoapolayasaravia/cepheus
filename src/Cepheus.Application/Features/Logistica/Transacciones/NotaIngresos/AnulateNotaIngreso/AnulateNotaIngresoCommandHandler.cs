@@ -1,4 +1,4 @@
-using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.Common;
 using Cepheus.Domain.Logistica.Enum;
@@ -48,9 +48,9 @@ public sealed class AnulateNotaIngresoCommandHandler
 
         if (note.Condicion != CondicionNotaIngreso.OrdenCompra)
             throw new InvalidOperationException("La anulación de notas con guías anexadas aún no está disponible.");
-        if (note.Origen != OrigenNotaIngreso.Compra)
+        if (note.Origen is not (OrigenNotaIngreso.Compra or OrigenNotaIngreso.Importacion))
             throw new InvalidOperationException(
-                "La anulación de notas de importación o transferencia aún no está disponible.");
+                "La anulación de notas de transferencia aún no está disponible.");
 
         await NotaIngresoRules.EnsurePeriodOpenAsync(
             _uow, planta, note.FechaRecepcion,
@@ -58,7 +58,9 @@ public sealed class AnulateNotaIngresoCommandHandler
 
         var lineas = note.Detalles.Where(d => d.Estado == EstadoNotaIngresoDetalle.Procesado).ToList();
 
-        if (note.ComprobantePago.Code == NotaIngresoRules.ComprobanteNotaCredito)
+        if (note.Origen == OrigenNotaIngreso.Importacion)
+            await AnularImportacionAsync(note, lineas, planta, ct);
+        else if (note.ComprobantePago.Code == NotaIngresoRules.ComprobanteNotaCredito)
             await AnularNotaCreditoAsync(note, lineas, planta, ct);
         else
             await AnularRecepcionAsync(note, lineas, planta, ct);
@@ -70,6 +72,46 @@ public sealed class AnulateNotaIngresoCommandHandler
         await _uow.SaveChangesAsync(ct);
 
         return await NotaIngresoReader.GetAsync(_uow, planta, code, ct);
+    }
+
+    /// <summary>
+    /// Nota de Ingreso de Importación: resta el stock ingresado (el servicio central rechaza si el stock ya
+    /// no alcanza, que es el caso de "el stock se movió") y devuelve a Pendiente las líneas de la importación
+    /// que originaron la nota y la importación misma, para poder regenerarla.
+    /// </summary>
+    private async Task AnularImportacionAsync(
+        NotaIngreso note,
+        List<NotaIngresoDetalle> lineas,
+        string planta,
+        CancellationToken ct)
+    {
+        var importacionCode = note.ImportacionCode
+            ?? throw new InvalidOperationException("La Nota de Ingreso no tiene Importación asociada.");
+
+        var importacion = await _uow.Logistica.Transacciones.Importaciones.Query()
+            .Include(x => x.Detalles)
+            .FirstOrDefaultAsync(x => x.PlantaCode == planta && x.Code == importacionCode, ct)
+            ?? throw new KeyNotFoundException($"La Importación {importacionCode} no existe en la planta {planta}.");
+
+        if (importacion.Estado == EstadoImportacion.Anulado)
+            throw new InvalidOperationException("La Importación asociada está anulada.");
+
+        foreach (var linea in lineas)
+        {
+            await _stock.ApplyAsync(
+                planta, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
+                increment: false, recalculateAverage: false, ct);
+
+            var detalle = importacion.Detalles.FirstOrDefault(d =>
+                d.ProveedorCode == note.ProveedorCode
+                && d.ArticuloCode == linea.ArticuloCode
+                && d.Estado == EstadoImportacion.Procesado);
+
+            if (detalle is not null)
+                detalle.Estado = EstadoImportacion.Pendiente;
+        }
+
+        importacion.Estado = EstadoImportacion.Pendiente;
     }
 
     /// <summary>

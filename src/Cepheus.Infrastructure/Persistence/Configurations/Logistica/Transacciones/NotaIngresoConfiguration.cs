@@ -30,6 +30,14 @@ public sealed class NotaIngresoConfiguration : IEntityTypeConfiguration<NotaIngr
             .HasForeignKey(x => new { x.PlantaCode, x.OrdenCompraCode })
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Property(x => x.ImportacionCode).HasColumnType("char(6)");
+        builder.HasOne(x => x.Importacion)
+            .WithMany()
+            .HasForeignKey(x => new { x.PlantaCode, x.ImportacionCode })
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.PlantaCode, x.ImportacionCode });
+
         // Comprobante de pago y motivo de devolución: Comunes, FK por Id (igual que la OC).
         builder.HasOne(x => x.ComprobantePago)
             .WithMany()

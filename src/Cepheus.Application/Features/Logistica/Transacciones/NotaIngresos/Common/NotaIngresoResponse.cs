@@ -1,4 +1,4 @@
-using Cepheus.Domain.Logistica.Enum;
+﻿using Cepheus.Domain.Logistica.Enum;
 
 namespace Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.Common;
 
@@ -24,6 +24,7 @@ public sealed class NotaIngresoResponse
     public CondicionNotaIngreso Condicion { get; set; }
     public OrigenNotaIngreso Origen { get; set; }
     public string? OrdenCompraCode { get; set; }
+    public string? ImportacionCode { get; set; }
 
     public string ComprobantePagoCode { get; set; } = default!;
     public string ComprobantePagoName { get; set; } = default!;

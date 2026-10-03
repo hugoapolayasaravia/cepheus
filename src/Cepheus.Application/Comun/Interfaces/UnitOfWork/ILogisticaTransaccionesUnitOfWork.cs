@@ -19,6 +19,9 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<GuiaDetalle> GuiaDetalles { get; }
         IRepository<NotaIngreso> NotaIngresos { get; }
         IRepository<NotaIngresoDetalle> NotaIngresoDetalles { get; }
+        IRepository<Importacion> Importaciones { get; }
+        IRepository<ImportacionDetalle> ImportacionDetalles { get; }
+        IRepository<ImportacionGasto> ImportacionGastos { get; }
 
 
     }

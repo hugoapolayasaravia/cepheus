@@ -1,4 +1,4 @@
-using Cepheus.Domain.Logistica.Transacciones;
+﻿using Cepheus.Domain.Logistica.Transacciones;
 
 namespace Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.Common;
 
@@ -11,6 +11,7 @@ public static class NotaIngresoMapper
         Condicion = n.Condicion,
         Origen = n.Origen,
         OrdenCompraCode = n.OrdenCompraCode,
+        ImportacionCode = n.ImportacionCode,
         ComprobantePagoCode = n.ComprobantePagoCode,
         ComprobantePagoName = n.ComprobantePago.Name,
         MotivoDevolucionCode = n.MotivoDevolucionCode,

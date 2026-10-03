@@ -55,6 +55,9 @@ public class NotaIngreso : IAuditableEntity
     public OrigenNotaIngreso Origen { get; set; } = OrigenNotaIngreso.Compra;
 
     public string? OrdenCompraCode { get; set; }
+    /// <summary>Importación de origen (Origen = Importacion). Legacy: Codigo_com con Origen_Noi = 'I'.</summary>
+    public string? ImportacionCode { get; set; }
+    public Importacion? Importacion { get; set; }
     public OrdenCompra? OrdenCompra { get; set; }
 
     public string ComprobantePagoCode { get; set; } = default!;
