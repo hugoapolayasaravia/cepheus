@@ -1,4 +1,5 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common;
 using Cepheus.Domain.Facturacion.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,9 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
 
             _uow.Facturacion.Transacciones.CotizacionesMetradoDetalle.Remove(detalle);
             await _uow.SaveChangesAsync(cancellationToken);
+
+            await CotizacionMetradoResumenRecalculator.RecalculateAsync(
+                _uow, negocio, request.Year, request.Month, code, request.LevelNumber, cancellationToken);
         }
     }
 }

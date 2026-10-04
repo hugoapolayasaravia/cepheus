@@ -88,7 +88,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
                 WastePercentageP = request.WastePercentageP,
                 QuantityP = request.QuantityP,
 
-                HasAnchorage = request.HasAnchorage,
+                Anchorage = System.Enum.Parse<Cepheus.Domain.Facturacion.Enum.TipoAnclaje>(request.Anchorage, true),
                 Spacing = request.Spacing,
 
                 CreatedAt = current.CreatedAt,
@@ -96,6 +96,13 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
 
                 RowVersion = request.RowVersion
             };
+
+            var cotizacion = await _uow.Facturacion.Transacciones.Cotizaciones.Query()
+                .AsNoTracking()
+                .FirstAsync(c => c.NegocioCode == negocio && c.Year == request.Year
+                              && c.Month == request.Month && c.Code == code, cancellationToken);
+
+            CotizacionMetradoDetalleCalculator.Apply(detalle, cotizacion.MetradoCalculationSystem);
 
             _uow.Facturacion.Transacciones.CotizacionesMetradoDetalle.Update(detalle);
 
@@ -108,6 +115,9 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
                 throw new InvalidOperationException(
                     "La línea de metrado fue modificada por otro proceso. Recargue los datos e intente nuevamente.");
             }
+
+            await CotizacionMetradoResumenRecalculator.RecalculateAsync(
+                _uow, negocio, request.Year, request.Month, code, request.LevelNumber, cancellationToken);
 
             return CreateCotizacionMetradoDetalleCommandHandler.Map(detalle);
         }

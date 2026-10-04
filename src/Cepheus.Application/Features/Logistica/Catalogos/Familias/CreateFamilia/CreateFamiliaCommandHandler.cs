@@ -17,12 +17,12 @@ namespace Cepheus.Application.Features.Logistica.Catalogos.Familias.CreateFamili
 
         public async Task<FamiliaResponse> Handle(CreateFamiliaCommand request, CancellationToken cancellationToken)
         {
-            var code = await SequentialCodeGenerator.NextAsync(
-                _uow.Logistica.Catalogos.Familias.Query().Select(f => f.Code), length: 2, entityLabel: "Familias", cancellationToken);
+            //var code = await SequentialCodeGenerator.NextAsync(
+            //    _uow.Logistica.Catalogos.Familias.Query().Select(f => f.Code), length: 2, entityLabel: "Familias", cancellationToken);
 
             var familia = new Familia
             {
-                Code = code,
+                Code = request.Code.Trim().ToUpperInvariant(),
                 Name = request.Name.Trim(),
                 IsActive = true
             };

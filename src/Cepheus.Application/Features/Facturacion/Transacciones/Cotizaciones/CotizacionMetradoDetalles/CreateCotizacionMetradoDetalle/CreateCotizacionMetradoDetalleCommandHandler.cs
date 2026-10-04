@@ -2,6 +2,7 @@ using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.Common;
 using Cepheus.Domain.Facturacion.Transacciones;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetradoDetalles.CreateCotizacionMetradoDetalle
 {
@@ -70,12 +71,22 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
                 WastePercentageP = request.WastePercentageP,
                 QuantityP = request.QuantityP,
 
-                HasAnchorage = request.HasAnchorage,
+                Anchorage = System.Enum.Parse<Cepheus.Domain.Facturacion.Enum.TipoAnclaje>(request.Anchorage, true),
                 Spacing = request.Spacing
             };
 
+            var cotizacion = await _uow.Facturacion.Transacciones.Cotizaciones.Query()
+                .AsNoTracking()
+                .FirstAsync(c => c.NegocioCode == detalle.NegocioCode && c.Year == detalle.Year
+                              && c.Month == detalle.Month && c.Code == detalle.Code, cancellationToken);
+
+            CotizacionMetradoDetalleCalculator.Apply(detalle, cotizacion.MetradoCalculationSystem);
+
             await _uow.Facturacion.Transacciones.CotizacionesMetradoDetalle.AddAsync(detalle, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
+
+            await CotizacionMetradoResumenRecalculator.RecalculateAsync(
+                _uow, detalle.NegocioCode, detalle.Year, detalle.Month, detalle.Code, detalle.LevelNumber, cancellationToken);
 
             return Map(detalle);
         }
@@ -124,7 +135,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
             SupportP = d.SupportP,
             WastePercentageP = d.WastePercentageP,
             QuantityP = d.QuantityP,
-            HasAnchorage = d.HasAnchorage,
+            Anchorage = d.Anchorage.ToString(),
             Spacing = d.Spacing,
             CreatedAt = d.CreatedAt,
             UpdatedAt = d.UpdatedAt,

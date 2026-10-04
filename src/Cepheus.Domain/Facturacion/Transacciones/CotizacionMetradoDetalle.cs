@@ -1,4 +1,5 @@
 using Cepheus.Domain.Comun;
+using Cepheus.Domain.Facturacion.Enum;
 using Cepheus.Domain.Facturacion.Maestros;
 
 namespace Cepheus.Domain.Facturacion.Transacciones
@@ -58,7 +59,9 @@ namespace Cepheus.Domain.Facturacion.Transacciones
     ///   ApoyoP_Cot       -> SupportP (variante poliestireno de Support)
     ///   PDesperdicioP_Cot -> WastePercentageP
     ///   CantidadP_Cot    -> QuantityP
-    ///   Anclaje_Cot      -> HasAnchorage (char(1) S/N -> bool)
+    ///   Anclaje_Cot      -> Anchorage (enum TipoAnclaje: ver esa clase,
+    ///                     CORREGIDO de un bool HasAnchorage anterior:
+    ///                     son 3 valores S/N/L, no 2)
     ///   Espaciamiento_Cot -> Spacing
     /// </summary>
     public class CotizacionMetradoDetalle : IAuditableEntity
@@ -118,7 +121,7 @@ namespace Cepheus.Domain.Facturacion.Transacciones
         public decimal WastePercentageP { get; set; }
         public decimal QuantityP { get; set; }
 
-        public bool HasAnchorage { get; set; } = true;
+        public TipoAnclaje Anchorage { get; set; } = TipoAnclaje.Si;
         public decimal Spacing { get; set; }
 
         // Auditoría (IAuditableEntity)

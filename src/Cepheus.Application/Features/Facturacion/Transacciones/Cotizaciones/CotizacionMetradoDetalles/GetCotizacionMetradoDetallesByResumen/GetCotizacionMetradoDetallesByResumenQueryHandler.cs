@@ -72,7 +72,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
                 SupportP = d.SupportP,
                 WastePercentageP = d.WastePercentageP,
                 QuantityP = d.QuantityP,
-                HasAnchorage = d.HasAnchorage,
+                Anchorage = d.Anchorage.ToString(),
                 Spacing = d.Spacing,
                 CreatedAt = d.CreatedAt,
                 UpdatedAt = d.UpdatedAt,

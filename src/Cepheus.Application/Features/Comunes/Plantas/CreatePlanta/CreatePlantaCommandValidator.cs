@@ -15,13 +15,14 @@ namespace Cepheus.Application.Features.Comunes.Plantas.CreatePlanta
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código de la planta es obligatorio.")
-                .MaximumLength(10).WithMessage("El código no puede exceder los 10 caracteres.")
+                .MaximumLength(2).WithMessage("El código no puede exceder los 10 caracteres.")
                 .MustAsync(BeUniqueCode).WithMessage("Ya existe una planta con ese código.");
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre de la planta es obligatorio.")
-                .MaximumLength(100).WithMessage("El nombre no puede exceder los 100 caracteres.");
+                .MaximumLength(100).WithMessage("El nombre no puede exceder los 100 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe una familia con ese nombre.");
 
             RuleFor(x => x.LegalName)
                 .MaximumLength(150).WithMessage("La razón social no puede exceder los 150 caracteres.");
@@ -48,5 +49,9 @@ namespace Cepheus.Application.Features.Comunes.Plantas.CreatePlanta
         private async Task<bool> BeUniqueCode(string code, CancellationToken cancellationToken)
             => !await _uow.Comunes.Plantas.Query()
                 .AnyAsync(p => p.Code == code.Trim().ToUpper(), cancellationToken);
+
+        private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
+            => !await _uow.Comunes.Plantas.Query()
+                .AnyAsync(f => f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

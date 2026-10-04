@@ -28,7 +28,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Transacc
             builder.Property(x => x.Discount).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0m);
             builder.Property(x => x.GlobalVolume).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0m);
             builder.Property(x => x.IsEditable).IsRequired().HasDefaultValue(true);
-            builder.Property(x => x.Type).IsRequired().HasConversion<int>().HasDefaultValue(TipoCotizacion.Cotizacion).HasSentinel(default(TipoCotizacion));
+            builder.Property(x => x.Type).IsRequired().HasConversion<int>().HasDefaultValue(TipoCotizacion.Nueva).HasSentinel(default(TipoCotizacion));
             builder.Property(x => x.MetradoCalculationSystem).HasConversion<int?>();
             builder.Property(x => x.WorkDurationMonths).IsRequired().HasDefaultValue(0);
 

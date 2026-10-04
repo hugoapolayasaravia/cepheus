@@ -23,6 +23,11 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<ImportacionDetalle> ImportacionDetalles { get; }
         IRepository<ImportacionGasto> ImportacionGastos { get; }
 
+        IRepository<OrdenServicio> OrdenesServicio { get; }
+        IRepository<OrdenServicioDetalle> OrdenServicioDetalles { get; }
+        IRepository<OrdenServicioSalida> OrdenesServicioSalida { get; }
+        IRepository<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles { get; }
+
 
     }
 }

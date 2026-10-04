@@ -43,7 +43,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 return Results.Ok(result);
             })
             .WithName("GetCotizacionesVentaPagedBody")
-            .RequireAuthorization("COTIZACIONESVENTA.VIEW");
+            .RequireAuthorization("COTIZACIONES.VIEW");
 
             group.MapGet("/{negocio}/{anio}/{mes}/{codigo}", async (
                 string negocio, string anio, string mes, string codigo, ISender sender) =>

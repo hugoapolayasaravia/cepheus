@@ -37,7 +37,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 var result = await sender.Send(new GetCotizacionMetradoResumenesByCotizacionQuery(negocio, anio, mes, codigo));
                 return Results.Ok(result);
             })
-            .WithName("GetCotizacionMetradoResumenesByCotizacion")
+            .WithName("GetCotizacionMetradoVentaResumenesByCotizacion")
             .RequireAuthorization("COTIZACIONESVENTA.VIEW");
 
             group.MapPut("/{nivel:int}", async (
@@ -62,7 +62,7 @@ namespace Cepheus.API.Endpoints.Facturacion.Transacciones
                 return Results.NoContent();
             })
             .WithName("DeleteCotizacionVentaMetradoResumen")
-            .RequireAuthorization("COTIZACIONESVENTA.UPDATE");
+            .RequireAuthorization("COTIZACCOTIZACIONESVENTAIONES.UPDATE");
         }
     }
 }

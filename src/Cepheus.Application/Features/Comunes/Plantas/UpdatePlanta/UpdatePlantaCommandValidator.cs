@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Logistica.Catalogos.Familias.UpdateFamilia;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,13 +16,14 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
             RuleFor(x => x.Code)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El código de la planta es obligatorio.")
-                .MaximumLength(10)
+                .MaximumLength(2)
                 .MustAsync(BeUniqueCode).WithMessage("Ya existe una planta con ese código.");
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre de la planta es obligatorio.")
-                .MaximumLength(100);
+                .MaximumLength(100).WithMessage("El nombre no puede exceder los 100 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe otra planta con ese nombre.");
 
             RuleFor(x => x.Address)
                 .Cascade(CascadeMode.Stop)
@@ -36,5 +38,10 @@ namespace Cepheus.Application.Features.Comunes.Plantas.UpdatePlanta
         private async Task<bool> BeUniqueCode(UpdatePlantaCommand command, string code, CancellationToken cancellationToken)
             => !await _uow.Comunes.Plantas.Query()
                 .AnyAsync(p => p.Code == code.Trim().ToUpper() && p.Code != command.Code, cancellationToken);
+
+        private async Task<bool> BeUniqueName(UpdatePlantaCommand command, string name, CancellationToken cancellationToken)
+                => !await _uow.Comunes.Plantas.Query()
+                    .AnyAsync(f => f.Code != command.Code && f.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
+
     }
 }

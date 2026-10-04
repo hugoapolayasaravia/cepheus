@@ -66,5 +66,17 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<ImportacionGasto>? _importacionGastos;
         public IRepository<ImportacionGasto> ImportacionGastos => _importacionGastos ??= new Repository<ImportacionGasto>(_context);
+
+        private IRepository<OrdenServicio>? _ordenesServicio;
+        public IRepository<OrdenServicio> OrdenesServicio => _ordenesServicio ??= new Repository<OrdenServicio>(_context);
+
+        private IRepository<OrdenServicioDetalle>? _ordenServicioDetalles;
+        public IRepository<OrdenServicioDetalle> OrdenServicioDetalles => _ordenServicioDetalles ??= new Repository<OrdenServicioDetalle>(_context);
+
+        private IRepository<OrdenServicioSalida>? _ordenesServicioSalida;
+        public IRepository<OrdenServicioSalida> OrdenesServicioSalida => _ordenesServicioSalida ??= new Repository<OrdenServicioSalida>(_context);
+
+        private IRepository<OrdenServicioSalidaDetalle>? _ordenServicioSalidaDetalles;
+        public IRepository<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles => _ordenServicioSalidaDetalles ??= new Repository<OrdenServicioSalidaDetalle>(_context);
     }
 }

@@ -12,14 +12,8 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Transacc
 
             builder.HasKey(x => new
             {
-                x.NegocioCode,
-                x.Year,
-                x.Month,
-                x.Code,
-                x.LevelNumber,
-                x.Order,
-                x.ProductoTipoCode,
-                x.ProductoCode
+                x.NegocioCode, x.Year, x.Month, x.Code, x.LevelNumber, x.Order,
+                x.ProductoTipoCode, x.ProductoCode
             });
 
             builder.Property(x => x.NegocioCode).IsRequired().HasColumnType("char(2)");
@@ -86,7 +80,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Transacc
             builder.Property(x => x.Spacing).IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0m);
 
             builder.Property(x => x.Times).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.HasAnchorage).IsRequired().HasDefaultValue(true);
+            builder.Property(x => x.Anchorage).IsRequired().HasConversion<int>().HasDefaultValue(Cepheus.Domain.Facturacion.Enum.TipoAnclaje.Si).HasSentinel(default(Cepheus.Domain.Facturacion.Enum.TipoAnclaje));
 
             builder.Property(x => x.CreatedBy).HasMaxLength(250);
             builder.Property(x => x.UpdatedBy).HasMaxLength(250);

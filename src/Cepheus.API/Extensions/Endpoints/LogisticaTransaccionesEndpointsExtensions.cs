@@ -12,6 +12,8 @@ public static class LogisticaTransaccionesEndpointsExtensions
         app.MapGuiasEndpoints();
         app.MapNotaIngresosEndpoints();
         app.MapImportacionesEndpoints();
+        app.MapOrdenesServicioEndpoints();
+        app.MapOrdenesServicioSalidaEndpoints();
 
         return app;
     }

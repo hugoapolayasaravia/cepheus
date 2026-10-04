@@ -42,7 +42,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
         decimal SupportP,
         decimal WastePercentageP,
         decimal QuantityP,
-        bool HasAnchorage,
+        string Anchorage,
         decimal Spacing
     ) : IRequest<CotizacionMetradoDetalleResponse>;
 }

@@ -53,7 +53,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
         public decimal WastePercentageP { get; set; }
         public decimal QuantityP { get; set; }
 
-        public bool HasAnchorage { get; set; }
+        public string Anchorage { get; set; } = default!;
         public decimal Spacing { get; set; }
 
         public DateTime CreatedAt { get; set; }

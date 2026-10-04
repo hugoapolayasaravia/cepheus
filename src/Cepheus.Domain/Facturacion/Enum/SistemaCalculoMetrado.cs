@@ -17,9 +17,9 @@ namespace Cepheus.Domain.Facturacion.Enum
     /// (Apoyo_Cot) al capturar LongitudInt_Cot, y cuáles fórmulas de
     /// Quantity/Row/QuantityP se recalculan en cada edición de línea (ver
     /// ue_actualizavalores vs. ue_actualizavalores1 en el código original):
-    ///   V1 (Flag_Tipo <> '1'): dbo.Apoyo_Vigueta(); recalcula Quantity y
+    ///   V1 (Flag_Tipo <> '1'): dbo.Apoyo_Vigueta_v2(); recalcula Quantity y
     ///                          Row en cada cambio de línea.
-    ///   V2 (Flag_Tipo =  '1'): dbo.Apoyo_Vigueta_v2(); Quantity y Row NO se
+    ///   V2 (Flag_Tipo =  '1'): dbo.Apoyo_Vigueta(); Quantity y Row NO se
     ///                          recalculan (quedan al valor que ya tenían).
     /// </summary>
     public enum SistemaCalculoMetrado

@@ -29,6 +29,10 @@ public partial class ApplicationDbContext
     public DbSet<ImportacionDetalle> ImportacionDetalles => Set<ImportacionDetalle>();
     public DbSet<ImportacionGasto> ImportacionGastos => Set<ImportacionGasto>();
 
+    public DbSet<OrdenServicio> OrdenesServicio => Set<OrdenServicio>();
+    public DbSet<OrdenServicioDetalle> OrdenServicioDetalles => Set<OrdenServicioDetalle>();
 
+    public DbSet<OrdenServicioSalida> OrdenesServicioSalida => Set<OrdenServicioSalida>();
+    public DbSet<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles => Set<OrdenServicioSalidaDetalle>();
 
 }

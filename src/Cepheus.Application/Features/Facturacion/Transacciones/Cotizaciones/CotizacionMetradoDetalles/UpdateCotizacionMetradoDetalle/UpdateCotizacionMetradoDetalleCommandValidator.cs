@@ -20,6 +20,12 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.CotizacionMetra
             RuleFor(x => x.SortOrder).NotEmpty().MaximumLength(3);
             RuleFor(x => x.Times).GreaterThanOrEqualTo(0);
 
+            RuleFor(x => x.Anchorage)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("El anclaje es obligatorio.")
+                .Must(v => System.Enum.TryParse<Cepheus.Domain.Facturacion.Enum.TipoAnclaje>(v, true, out _))
+                .WithMessage("El anclaje debe ser uno de: Si, No, Medio.");
+
             RuleFor(x => x.InnerLength).GreaterThanOrEqualTo(0);
             RuleFor(x => x.OuterLength).GreaterThanOrEqualTo(0);
             RuleFor(x => x.Support).GreaterThanOrEqualTo(0);
