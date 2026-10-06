@@ -21,6 +21,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Up
         bool AppliesIgv,
         decimal Discount,
         decimal GlobalVolume,
+        string Type,
         string? MetradoCalculationSystem,
         int WorkDurationMonths,
         string? ClienteCode,

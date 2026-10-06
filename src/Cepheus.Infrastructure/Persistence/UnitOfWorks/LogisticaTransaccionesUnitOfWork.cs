@@ -78,5 +78,17 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<OrdenServicioSalidaDetalle>? _ordenServicioSalidaDetalles;
         public IRepository<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles => _ordenServicioSalidaDetalles ??= new Repository<OrdenServicioSalidaDetalle>(_context);
+
+        private IRepository<Vale>? _vales;
+        public IRepository<Vale> Vales => _vales ??= new Repository<Vale>(_context);
+
+        private IRepository<ValeDetalle>? _valeDetalles;
+        public IRepository<ValeDetalle> ValeDetalles => _valeDetalles ??= new Repository<ValeDetalle>(_context);
+
+        private IRepository<AjusteInventario>? _ajustesInventario;
+        public IRepository<AjusteInventario> AjustesInventario => _ajustesInventario ??= new Repository<AjusteInventario>(_context);
+
+        private IRepository<AjusteInventarioDetalle>? _ajusteInventarioDetalles;
+        public IRepository<AjusteInventarioDetalle> AjusteInventarioDetalles => _ajusteInventarioDetalles ??= new Repository<AjusteInventarioDetalle>(_context);
     }
 }

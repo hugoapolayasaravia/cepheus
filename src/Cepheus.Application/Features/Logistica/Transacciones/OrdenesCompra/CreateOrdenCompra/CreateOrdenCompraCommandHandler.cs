@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.CreateOrdenCompra
 {
-    public class CreateOrdenCompraCommandHandler
-        : IRequestHandler<CreateOrdenCompraCommand, OrdenCompraResponse>
+    public class CreateOrdenCompraCommandHandler : IRequestHandler<CreateOrdenCompraCommand, OrdenCompraResponse>
     {
         private const int MaxConcurrencyRetries = 3;
         private const int CorrelativeLength = 5;
@@ -18,112 +17,53 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Cre
         private readonly IUnitOfWork _uow;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateOrdenCompraCommandHandler(
-            IUnitOfWork uow,
-            ICurrentUserService currentUserService)
+        public CreateOrdenCompraCommandHandler(IUnitOfWork uow, ICurrentUserService currentUserService)
         {
             _uow = uow;
             _currentUserService = currentUserService;
         }
 
-        public async Task<OrdenCompraResponse> Handle(
-            CreateOrdenCompraCommand request,
-            CancellationToken cancellationToken)
+        public async Task<OrdenCompraResponse> Handle(CreateOrdenCompraCommand request, CancellationToken cancellationToken)
         {
-            var plantaCode = request.PlantaCode
-                .Trim()
-                .ToUpperInvariant();
+            var plantaCode = request.PlantaCode.Trim().ToUpperInvariant();
 
-            var proveedorCode = request.ProveedorCode
-                .Trim()
-                .ToUpperInvariant();
+            var proveedorCode = request.ProveedorCode.Trim().ToUpperInvariant();
 
-            var compradorCode = request.CompradorCode
-                .Trim()
-                .ToUpperInvariant();
+            var compradorCode = request.CompradorCode.Trim().ToUpperInvariant();
 
             // Login del usuario autenticado.
             // NO utilizar CompradorCode para CompradoPor.
             var usuarioLogin = _currentUserService.FullName;
 
-            for (var attempt = 1;
-                 attempt <= MaxConcurrencyRetries;
-                 attempt++)
+            for (var attempt = 1;  attempt <= MaxConcurrencyRetries;  attempt++)
             {
-                var nextCode = await NextCodeAsync(
-                    plantaCode,
-                    cancellationToken);
+                var nextCode = await NextCodeAsync( plantaCode, cancellationToken);
 
                 var orden = new OrdenCompra
                 {
                     PlantaCode = plantaCode,
                     Code = nextCode,
-
-                    TipoCompraCode = request.TipoCompraCode
-                        .Trim()
-                        .ToUpperInvariant(),
-
-                    ComprobantePagoCode =
-                        request.ComprobantePagoCode,
-
-                    FechaEntrega =
-                        request.FechaEntrega,
-
-                    ProveedorCode =
-                        proveedorCode,
-
-                    CompradorCode =
-                        compradorCode,
-
-                    MonedaCode = request.MonedaCode
-                        .Trim()
-                        .ToUpperInvariant(),
-
-                    LugarEnvioCode = request.LugarEnvioCode
-                        .Trim()
-                        .ToUpperInvariant(),
-
-                    FormaPagoCode = request.FormaPagoCode
-                        .Trim()
-                        .ToUpperInvariant(),
-
-                    TramiteCode = request.TramiteCode
-                        .Trim()
-                        .ToUpperInvariant(),
-
-                    Observaciones1 =
-                        request.Observaciones1?.Trim(),
-
-                    Observaciones2 =
-                        request.Observaciones2?.Trim(),
-
+                    TipoCompraCode = request.TipoCompraCode.Trim().ToUpperInvariant(),
+                    ComprobantePagoCode = request.ComprobantePagoCode,
+                    FechaEntrega = request.FechaEntrega,
+                    ProveedorCode = proveedorCode,
+                    CompradorCode =  compradorCode,
+                    MonedaCode = request.MonedaCode.Trim().ToUpperInvariant(),
+                    LugarEnvioCode = request.LugarEnvioCode.Trim().ToUpperInvariant(),
+                    FormaPagoCode = request.FormaPagoCode.Trim().ToUpperInvariant(),
+                    TramiteCode = request.TramiteCode.Trim().ToUpperInvariant(),
+                    Observaciones1 = request.Observaciones1?.Trim(),
+                    Observaciones2 = request.Observaciones2?.Trim(),
                     NotaCompraCode =
-                        string.IsNullOrWhiteSpace(
-                            request.NotaCompraCode)
+                        string.IsNullOrWhiteSpace(request.NotaCompraCode)
                             ? null
-                            : request.NotaCompraCode
-                                .Trim()
-                                .ToUpperInvariant(),
-
-                    UnidadNegocioCode =
-                        request.UnidadNegocioCode
-                            .Trim()
-                            .ToUpperInvariant(),
-
-                    EnviarCorreoProveedor =
-                        request.EnviarCorreoProveedor,
-
-                    Estado =
-                        EstadoOrdenCompra.Pendiente,
-
-                    NoGravableCompra =
-                        request.NoGravableCompra,
-
-                    ServicioCompra =
-                        request.ServicioCompra,
-
-                    IgvExteriorCompra =
-                        request.IgvExteriorCompra
+                            : request.NotaCompraCode.Trim().ToUpperInvariant(),
+                    UnidadNegocioCode = request.UnidadNegocioCode.Trim().ToUpperInvariant(),
+                    EnviarCorreoProveedor = request.EnviarCorreoProveedor,
+                    Estado = EstadoOrdenCompra.Pendiente,
+                    NoGravableCompra = request.NoGravableCompra,
+                    ServicioCompra = request.ServicioCompra,
+                    IgvExteriorCompra = request.IgvExteriorCompra
                 };
 
                 var item = 1;
@@ -139,9 +79,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Cre
 
                 foreach (var line in request.Detalles)
                 {
-                    var articuloCode = line.ArticuloCode
-                        .Trim()
-                        .ToUpperInvariant();
+                    var articuloCode = line.ArticuloCode.Trim().ToUpperInvariant();
 
                     var detalle = new OrdenCompraDetalle
                     {
@@ -150,14 +88,9 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Cre
                         ArticuloCode = articuloCode,
                         ItemNumber = item++,
 
-                        CantidadArticulo =
-                            line.CantidadArticulo,
-
-                        PrecioArticulo =
-                            line.PrecioArticulo,
-
-                        DescuentoArticulo =
-                            line.DescuentoArticulo,
+                        CantidadArticulo = line.CantidadArticulo,
+                        PrecioArticulo = line.PrecioArticulo,
+                        DescuentoArticulo = line.DescuentoArticulo,
 
                         TotalArticulo =
                             OrdenCompraTotalsCalculator.CalculateLineTotal(

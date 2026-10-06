@@ -38,6 +38,8 @@ namespace Cepheus.Domain.Logistica.Maestros
     ///                          inertes (sin FK ni validación), reservados
     ///                          para cuando exista el módulo de Ventas
     ///   IND_CONVENIO        -> IsAgreement (bool, 'S'/'N' -> true/false)
+    ///   Propiedad01         -> RequiresHorometro (bool, 'S' -> true): el artículo exige registrar
+    ///                          el horómetro (Propiedad01 de la línea) al salir en un Vale de Salida
     ///   Codigo_Cta, Codigo_Tip  -> AccountingAccountCode,
     ///                          AccountingAttachmentTypeCode: campos inertes,
     ///                          reservados para el módulo de Contabilidad.
@@ -87,6 +89,9 @@ namespace Cepheus.Domain.Logistica.Maestros
         public string? SalesProductCode { get; set; }
 
         public bool IsAgreement { get; set; }
+
+        /// <summary>Exige el dato de horómetro al entregarlo en un Vale de Salida (legacy: MArticulos.Propiedad01 = 'S').</summary>
+        public bool RequiresHorometro { get; set; }
 
         // Reservados para el módulo de Contabilidad (sin FK/lógica todavía)
         public string? AccountingAccountCode { get; set; }

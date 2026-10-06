@@ -65,8 +65,7 @@ namespace Cepheus.Application.Features.Mantenimiento.Transacciones.OrdenesTrabaj
                 }
                 catch (DbUpdateException) when (attempt < MaxConcurrencyRetries)
                 {
-                    // Colisión de correlativo por creación simultánea en la misma
-                    // planta: se reintenta generando el siguiente código.
+                    _uow.ClearTracking();
                 }
             }
 

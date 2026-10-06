@@ -27,9 +27,9 @@ namespace Cepheus.Application.Features.Mantenimiento.Transacciones.OrdenesTrabaj
                 .NotEmpty().WithMessage("La fecha de servicio es obligatoria.");
 
             RuleFor(x => x.ResponsableCode)
-                .NotEmpty().WithMessage("El responsable es obligatorio.");
-            // Sin validación de existencia: Trabajador aún no existe como tabla.
-
+                .NotEmpty().WithMessage("El responsable es obligatorio.")
+                .MustAsync(ResponsableExists).WithMessage("El Responsable no existe.");
+            
             RuleFor(x => x.EspecialidadCode)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("La especialidad es obligatoria.")
@@ -84,6 +84,10 @@ namespace Cepheus.Application.Features.Mantenimiento.Transacciones.OrdenesTrabaj
 
         private async Task<bool> PlantaExists(string code, CancellationToken ct)
             => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+
+        private async Task<bool> ResponsableExists(string code, CancellationToken ct)
+            => await _uow.Rrhh.Maestros.Trabajadores.Query().AnyAsync(p => p.Code == code.Trim().ToUpper(), ct);
+
 
         private async Task<bool> EspecialidadExists(string code, CancellationToken ct)
             => await _uow.Mantenimiento.Catalogos.Especialidades.Query().AnyAsync(e => e.Code == code.Trim().ToUpper(), ct);

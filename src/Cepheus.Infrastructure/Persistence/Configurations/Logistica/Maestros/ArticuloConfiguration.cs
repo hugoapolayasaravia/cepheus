@@ -79,6 +79,10 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
                 .IsRequired()
                 .HasDefaultValue(false);
 
+            builder.Property(x => x.RequiresHorometro)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             builder.Property(x => x.AccountingAccountCode)
                 .HasMaxLength(8);
 

@@ -1,8 +1,10 @@
 ﻿using Cepheus.Application.Comun.Helpers;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.Articulos.Common;
+using Cepheus.Domain.Logistica.Catalogos;
 using Cepheus.Domain.Logistica.Maestros;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticulo
 {
@@ -51,6 +53,25 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.CreateArticu
             };
 
             await _uow.Logistica.Maestros.Articulos.AddAsync(articulo, cancellationToken);
+
+            //var tiposVale = await _uow.Logistica.Catalogos.TiposVale
+            //    .Query()
+            //    .Where(tv => tv.IsActive)
+            //    .ToListAsync(cancellationToken);
+
+            //// 3. Crear la relación Artículo <-> TipoVale
+            //foreach (var tipoVale in tiposVale)
+            //{
+            //    var tipoValeArticulo = new TipoValeArticulo
+            //    {
+            //        TipoValeCode = tipoVale.Code,
+            //        ArticuloCode = articulo.Code
+            //    };
+
+            //    await _uow.Logistica.Catalogos.TiposValeArticulo
+            //        .AddAsync(tipoValeArticulo, cancellationToken);
+            //}
+
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(articulo);

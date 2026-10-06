@@ -98,8 +98,8 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Cr
 
             RuleFor(x => x.FleteCode)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("El flete es obligatorio.")
-                .MustAsync(FleteExists).WithMessage("El flete indicado no existe.");
+                .NotEmpty().WithMessage("La Zona es obligatorio.")
+                .MustAsync(FleteExists).WithMessage("El flete / Zona indicado no existe.");
         }
 
         private async Task<bool> NegocioExists(string code, CancellationToken ct)

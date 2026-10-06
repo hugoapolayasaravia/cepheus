@@ -35,4 +35,9 @@ public partial class ApplicationDbContext
     public DbSet<OrdenServicioSalida> OrdenesServicioSalida => Set<OrdenServicioSalida>();
     public DbSet<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles => Set<OrdenServicioSalidaDetalle>();
 
+    public DbSet<Vale> Vales => Set<Vale>();
+    public DbSet<ValeDetalle> ValeDetalles => Set<ValeDetalle>();
+
+    public DbSet<AjusteInventario> AjustesInventario => Set<AjusteInventario>();
+    public DbSet<AjusteInventarioDetalle> AjusteInventarioDetalles => Set<AjusteInventarioDetalle>();
 }

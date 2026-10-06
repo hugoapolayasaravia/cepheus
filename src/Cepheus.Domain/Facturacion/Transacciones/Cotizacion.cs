@@ -112,7 +112,7 @@ namespace Cepheus.Domain.Facturacion.Transacciones
         public decimal GlobalVolume { get; set; }
         public bool IsEditable { get; set; } = true;
 
-        public TipoCotizacion Type { get; set; } = TipoCotizacion.Nueva;
+        public TipoCotizacion Type { get; set; } = TipoCotizacion.Cotizacion;
 
         /// <summary>
         /// Motor de fórmulas de metrado (ver SistemaCalculoMetrado). Legacy:

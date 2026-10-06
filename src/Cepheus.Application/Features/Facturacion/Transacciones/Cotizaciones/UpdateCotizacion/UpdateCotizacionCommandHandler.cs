@@ -40,7 +40,6 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Up
                 Year = current.Year,
                 Month = current.Month,
                 Code = current.Code,
-                Type = current.Type,
                 MetradoCalculationSystem = string.IsNullOrWhiteSpace(request.MetradoCalculationSystem)
                     ? null
                     : System.Enum.Parse<Cepheus.Domain.Facturacion.Enum.SistemaCalculoMetrado>(request.MetradoCalculationSystem, true),
@@ -69,6 +68,7 @@ namespace Cepheus.Application.Features.Facturacion.Transacciones.Cotizaciones.Up
                 AppliesIgv = request.AppliesIgv,
                 Discount = request.Discount,
                 GlobalVolume = request.GlobalVolume,
+                Type = System.Enum.Parse<TipoCotizacion>(request.Type, ignoreCase: true),
                 WorkDurationMonths = request.WorkDurationMonths,
                 ClienteCode = Normalize(request.ClienteCode),
                 Ruc = request.Ruc?.Trim(),

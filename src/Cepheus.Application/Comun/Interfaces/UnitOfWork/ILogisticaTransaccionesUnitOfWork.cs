@@ -27,7 +27,10 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<OrdenServicioDetalle> OrdenServicioDetalles { get; }
         IRepository<OrdenServicioSalida> OrdenesServicioSalida { get; }
         IRepository<OrdenServicioSalidaDetalle> OrdenServicioSalidaDetalles { get; }
-
+        IRepository<Vale> Vales { get; }
+        IRepository<ValeDetalle> ValeDetalles { get; }
+        IRepository<AjusteInventario> AjustesInventario { get; }
+        IRepository<AjusteInventarioDetalle> AjusteInventarioDetalles { get; }
 
     }
 }

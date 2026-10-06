@@ -72,5 +72,7 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<MotivoDevolucionArticulo>? _motivosDevolucionArticulo;
         public IRepository<MotivoDevolucionArticulo> MotivosDevolucionArticulo => _motivosDevolucionArticulo ??= new Repository<MotivoDevolucionArticulo>(_context);
 
+        private IRepository<TipoValeArticulo>? _tiposValeArticulo;
+        public IRepository<TipoValeArticulo> TiposValeArticulo => _tiposValeArticulo ??= new Repository<TipoValeArticulo>(_context);
     }
 }

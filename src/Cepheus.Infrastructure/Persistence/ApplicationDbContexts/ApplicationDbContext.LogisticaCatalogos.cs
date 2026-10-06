@@ -41,4 +41,6 @@ public partial class ApplicationDbContext
     public DbSet<AprobadorAsignado> AprobadoresAsignados => Set<AprobadorAsignado>();
 
     public DbSet<MotivoDevolucionArticulo> MotivoDevolucionArticulos => Set<MotivoDevolucionArticulo>();
+
+    public DbSet<TipoValeArticulo> TiposValeArticulo => Set<TipoValeArticulo>();
 }

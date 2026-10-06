@@ -96,7 +96,7 @@ public class ExceptionHandlingMiddleware
         return exception;
     }
 
-    private static (int StatusCode, string Title, string Detail, object? Errors) MapException(Exception exception)
+    private (int StatusCode, string Title, string Detail, object? Errors) MapException(Exception exception)
         => exception switch
         {
             ValidationException validationEx => (
@@ -192,7 +192,48 @@ public class ExceptionHandlingMiddleware
     ///   547         -> violación de FK (referencia inexistente o registro dependiente)
     ///   -2 (timeout)-> timeout de comando/conexión
     /// </summary>
-    private static (int, string, string, object?) MapDbUpdateException(DbUpdateException dbEx)
+    //private static (int, string, string, object?) MapDbUpdateException(DbUpdateException dbEx)
+    //{
+    //    if (dbEx.InnerException is SqlException sqlEx)
+    //    {
+    //        return sqlEx.Number switch
+    //        {
+    //            2601 or 2627 => (
+    //                StatusCodes.Status409Conflict,
+    //                "Registro duplicado",
+    //                "Ya existe un registro con esos datos (violación de restricción única).",
+    //                null
+    //            ),
+    //            547 => (
+    //                StatusCodes.Status409Conflict,
+    //                "Violación de integridad referencial",
+    //                "La operación viola una relación con otra tabla (registro referenciado o del cual depende otro registro).",
+    //                null
+    //            ),
+    //            -2 => (
+    //                StatusCodes.Status504GatewayTimeout,
+    //                "Tiempo de espera agotado",
+    //                "La operación contra la base de datos tardó demasiado. Intente nuevamente.",
+    //                null
+    //            ),
+    //            _ => (
+    //                StatusCodes.Status500InternalServerError,
+    //                "Error de base de datos",
+    //                "Ocurrió un error al acceder a la base de datos.",
+    //                null
+    //            )
+    //        };
+    //    }
+
+    //    return (
+    //        StatusCodes.Status500InternalServerError,
+    //        "Error de base de datos",
+    //        "Ocurrió un error al guardar los cambios.",
+    //        null
+    //    );
+    //}
+
+    private (int, string, string, object?) MapDbUpdateException(DbUpdateException dbEx)
     {
         if (dbEx.InnerException is SqlException sqlEx)
         {
@@ -201,25 +242,34 @@ public class ExceptionHandlingMiddleware
                 2601 or 2627 => (
                     StatusCodes.Status409Conflict,
                     "Registro duplicado",
-                    "Ya existe un registro con esos datos (violación de restricción única).",
+                    _environment.IsDevelopment()
+                        ? sqlEx.Message
+                        : "Ya existe un registro con esos datos (violación de restricción única).",
                     null
                 ),
+
                 547 => (
                     StatusCodes.Status409Conflict,
                     "Violación de integridad referencial",
-                    "La operación viola una relación con otra tabla (registro referenciado o del cual depende otro registro).",
+                    _environment.IsDevelopment()
+                        ? sqlEx.Message
+                        : "La operación viola una relación con otra tabla (registro referenciado o del cual depende otro registro).",
                     null
                 ),
+
                 -2 => (
                     StatusCodes.Status504GatewayTimeout,
                     "Tiempo de espera agotado",
                     "La operación contra la base de datos tardó demasiado. Intente nuevamente.",
                     null
                 ),
+
                 _ => (
                     StatusCodes.Status500InternalServerError,
                     "Error de base de datos",
-                    "Ocurrió un error al acceder a la base de datos.",
+                    _environment.IsDevelopment()
+                        ? sqlEx.Message
+                        : "Ocurrió un error al acceder a la base de datos.",
                     null
                 )
             };
@@ -228,11 +278,15 @@ public class ExceptionHandlingMiddleware
         return (
             StatusCodes.Status500InternalServerError,
             "Error de base de datos",
-            "Ocurrió un error al guardar los cambios.",
+            _environment.IsDevelopment()
+                ? dbEx.InnerException?.Message ?? dbEx.Message
+                : "Ocurrió un error al guardar los cambios.",
             null
         );
     }
 }
+
+
 
 public static class ExceptionHandlingMiddlewareExtensions
 {
