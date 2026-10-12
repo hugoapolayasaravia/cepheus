@@ -23,7 +23,8 @@ namespace Cepheus.Application.Features.Facturacion.Maestros.Productos.CreateProd
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("La descripción es obligatoria.")
-                .MaximumLength(255).WithMessage("La descripción no puede exceder los 255 caracteres.");
+                .MaximumLength(255).WithMessage("La descripción no puede exceder los 255 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe un producto con ese nombre.");
 
             RuleFor(x => x.ShortName).MaximumLength(255).WithMessage("La descripción abreviada no puede exceder los 255 caracteres.");
 
@@ -97,6 +98,10 @@ namespace Cepheus.Application.Features.Facturacion.Maestros.Productos.CreateProd
 
         private async Task<bool> UnitExists(string code, CancellationToken ct)
             => await _uow.Facturacion.Catalogos.UnidadesMedidaVenta.Query().AnyAsync(u => u.Code == code.Trim().ToUpper(), ct);
+
+        private async Task<bool> BeUniqueName(string? name, CancellationToken ct)
+            => !await _uow.Facturacion.Maestros.Productos.Query()
+                .AnyAsync(c => c.Name != null && c.Name.ToLower() == name!.Trim().ToLower(), ct);
 
         private async Task<bool> CategoryExists(string? code, CancellationToken ct)
             => await _uow.Facturacion.Catalogos.CategoriasProducto.Query().AnyAsync(c => c.Code == code!.Trim().ToUpper(), ct);

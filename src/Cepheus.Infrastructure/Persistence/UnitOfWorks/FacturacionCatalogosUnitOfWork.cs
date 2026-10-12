@@ -71,5 +71,11 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<NotaCotizacionPlantilla>? _notasCotizacionPlantilla;
         public IRepository<NotaCotizacionPlantilla> NotasCotizacionPlantilla => _notasCotizacionPlantilla ??= new Repository<NotaCotizacionPlantilla>(_context);
 
+        private IRepository<ResponsableObra>? _responsablesObra;
+        public IRepository<ResponsableObra> ResponsablesObra => _responsablesObra ??= new Repository<ResponsableObra>(_context);
+
+        private IRepository<TipoHojaCorte>? _tiposHojaCorte;
+        public IRepository<TipoHojaCorte> TiposHojaCorte => _tiposHojaCorte ??= new Repository<TipoHojaCorte>(_context);
+
     }
 }

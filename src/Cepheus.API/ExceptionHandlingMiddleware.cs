@@ -134,7 +134,8 @@ public class ExceptionHandlingMiddleware
             JsonException jsonEx => (
                 StatusCodes.Status400BadRequest,
                 "Solicitud inválida",
-                $"El cuerpo de la solicitud contiene datos no válidos: {jsonEx.Message}",
+               BuildJsonErrorDetail(jsonEx),
+                //$"El cuerpo de la solicitud contiene datos no válidos: {jsonEx.Message}",
                 null
             ),
 
@@ -142,7 +143,8 @@ public class ExceptionHandlingMiddleware
             Microsoft.AspNetCore.Http.BadHttpRequestException { InnerException: JsonException jsonEx } => (
                 StatusCodes.Status400BadRequest,
                 "Solicitud inválida",
-                $"El cuerpo de la solicitud contiene datos no válidos: {jsonEx.Message}",
+                BuildJsonErrorDetail(jsonEx),
+                //$"El cuerpo de la solicitud contiene datos no válidos: {jsonEx.Message}",
                 null
             ),
 
@@ -183,6 +185,43 @@ public class ExceptionHandlingMiddleware
         }
 
         return (statusCode, title, detail, errors);
+    }
+
+    private static string BuildJsonErrorDetail(JsonException jsonEx)
+    {
+        // Path viene como "$.detalles[0].tipo": se muestra sin el "$."
+        var campo = string.IsNullOrWhiteSpace(jsonEx.Path)
+            ? null
+            : jsonEx.Path.TrimStart('$', '.');
+
+        var match = System.Text.RegularExpressions.Regex.Match(
+            jsonEx.Message,
+            @"could not be converted to ([\w\.\+]+)");
+
+        if (match.Success)
+        {
+            var typeName = match.Groups[1].Value.TrimEnd('.');
+
+            var type = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(a => a.GetType(typeName, throwOnError: false))
+                .FirstOrDefault(t => t is not null);
+
+            if (type is not null && type.IsEnum)
+            {
+                return $"El valor enviado en '{campo}' no es válido. " +
+                       $"Valores permitidos: {string.Join(", ", Enum.GetNames(type))}.";
+            }
+
+            if (campo is not null)
+            {
+                var tipoAmigable = type is not null ? type.Name : typeName;
+                return $"El campo '{campo}' tiene un formato no válido (se esperaba {tipoAmigable}).";
+            }
+        }
+
+        return campo is not null
+            ? $"El campo '{campo}' contiene datos no válidos."
+            : "El cuerpo de la solicitud contiene datos no válidos.";
     }
 
     /// <summary>

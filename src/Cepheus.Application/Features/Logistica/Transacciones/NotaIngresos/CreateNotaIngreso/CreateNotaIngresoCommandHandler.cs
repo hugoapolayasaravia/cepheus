@@ -96,14 +96,19 @@ public sealed class CreateNotaIngresoCommandHandler
             request.FechaRecepcion,
             ct);
 
+        // Movimientos de Kardex generados por las líneas; el documento aún no tiene correlativo.
+        var movimientos = new List<MovimientoArticulo>();
+
         var note = esNotaCredito
             ? await BuildNotaCreditoAsync(
                 request,
                 planta,
+                movimientos,
                 ct)
             : await BuildDesdeOrdenCompraAsync(
                 request,
                 planta,
+                movimientos,
                 ct);
 
         note.PlantaCode = planta;
@@ -158,6 +163,11 @@ public sealed class CreateNotaIngresoCommandHandler
                 planta,
                 ct);
 
+        foreach (var movimiento in movimientos)
+        {
+            movimiento.DocumentoCode = note.Code;
+        }
+
         foreach (var detalle in note.Detalles)
         {
             detalle.NotaIngresoCode = note.Code;
@@ -201,6 +211,7 @@ public sealed class CreateNotaIngresoCommandHandler
     private async Task<NotaIngreso> BuildDesdeOrdenCompraAsync(
         CreateNotaIngresoCommand request,
         string planta,
+        List<MovimientoArticulo> movimientos,
         CancellationToken ct)
     {
         var ocCode =
@@ -334,7 +345,7 @@ public sealed class CreateNotaIngresoCommandHandler
                     linea.Precio,
                     tipoCambio);
 
-            await _stock.ApplyAsync(
+            var resultado = await _stock.ApplyAsync(
                 planta,
                 articulo,
                 linea.Cantidad,
@@ -343,7 +354,14 @@ public sealed class CreateNotaIngresoCommandHandler
                 linea.Descuento,
                 increment: true,
                 recalculateAverage: true,
-                ct);
+                context: new StockMovementContext(
+                    OrigenMovimientoArticulo.NotaIngreso,
+                    DocumentoCode: null, // se asigna al generar el correlativo de la nota
+                    ItemNumber: item,
+                    FechaMovimiento: request.FechaRecepcion),
+                cancellationToken: ct);
+
+            movimientos.Add(resultado.Movimiento);
 
             // ========================================================
             // ARTÍCULO - PROVEEDOR
@@ -392,6 +410,7 @@ public sealed class CreateNotaIngresoCommandHandler
     private async Task<NotaIngreso> BuildNotaCreditoAsync(
         CreateNotaIngresoCommand request,
         string planta,
+        List<MovimientoArticulo> movimientos,
         CancellationToken ct)
     {
         var proveedorCode =
@@ -561,7 +580,15 @@ public sealed class CreateNotaIngresoCommandHandler
             // Motivo 01: ajuste, no mueve stock.
             if (descuentaStock)
             {
-                await _stock.ApplyAsync(
+                // Costo con el que sale: el de la línea de la nota referenciada, neto y en soles
+                // (el legacy valoriza la devolución como ingreso negativo a ese precio).
+                var precioSolesNc = NotaIngresoRules.ConvertPrices(
+                    note.MonedaCode, precio, note.TipoCambio).Soles;
+                var costoNetoNc = Math.Round(
+                    precioSolesNc - (precioSolesNc * (descuento / 100m)),
+                    6, MidpointRounding.AwayFromZero);
+
+                var resultado = await _stock.ApplyAsync(
                     planta,
                     articulo,
                     cantidad,
@@ -570,7 +597,15 @@ public sealed class CreateNotaIngresoCommandHandler
                     0m,
                     increment: false,
                     recalculateAverage: false,
-                    ct);
+                    context: new StockMovementContext(
+                        OrigenMovimientoArticulo.NotaCredito,
+                        DocumentoCode: null, // se asigna al generar el correlativo de la nota
+                        ItemNumber: item,
+                        FechaMovimiento: request.FechaRecepcion,
+                        CostoReferencia: costoNetoNc),
+                    cancellationToken: ct);
+
+                movimientos.Add(resultado.Movimiento);
             }
         }
 

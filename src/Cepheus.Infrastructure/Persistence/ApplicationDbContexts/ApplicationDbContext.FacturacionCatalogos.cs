@@ -21,11 +21,13 @@ public partial class ApplicationDbContext
     public DbSet<UnidadMedidaVenta> UnidadesMedidaVenta => Set<UnidadMedidaVenta>();
     public DbSet<ListaPrecio> ListasPrecio => Set<ListaPrecio>();
     public DbSet<StockProducto> StockProductos => Set<StockProducto>();
-
     public DbSet<Flete> Fletes => Set<Flete>();
     public DbSet<AlturaLosa> AlturasLosa => Set<AlturaLosa>();
     public DbSet<PrecioProducto> PreciosProducto => Set<PrecioProducto>();
     public DbSet<NotaCotizacionPlantilla> NotasCotizacionPlantilla => Set<NotaCotizacionPlantilla>();
 
+    public DbSet<ResponsableObra> ResponsablesObra => Set<ResponsableObra>();
+
+    public DbSet<TipoHojaCorte> TiposHojaCorte => Set<TipoHojaCorte>();
 
 }

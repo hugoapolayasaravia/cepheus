@@ -27,16 +27,16 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
 
             builder.Property(x => x.UnitCost)
                 .IsRequired()
-                .HasColumnType("decimal(18,4)")
+                .HasColumnType("decimal(18,6)")
                 .HasDefaultValue(0);
 
             builder.Property(x => x.UnitCostUsd)
                 .IsRequired()
-                .HasColumnType("decimal(18,4)")
+                .HasColumnType("decimal(18,6)")
                 .HasDefaultValue(0);
 
             builder.Property(x => x.AverageCost)
-                .HasColumnType("decimal(18,4)");
+                .HasColumnType("decimal(18,6)");
 
             builder.Property(x => x.MinStock)
                 .IsRequired()

@@ -15,5 +15,6 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
 
         IRepository<Permission> Permissions { get; }
         IRepository<PermissionRole> PermissionRoles { get; }
+        IRepository<PasswordResetToken> PasswordResetTokens { get; }
     }
 }

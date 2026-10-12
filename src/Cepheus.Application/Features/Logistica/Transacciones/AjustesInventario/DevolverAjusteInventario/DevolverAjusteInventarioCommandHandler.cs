@@ -92,19 +92,22 @@ public sealed class DevolverAjusteInventarioCommandHandler
 
         foreach (var linea in seleccion.OrderBy(l => l.ItemNumber))
         {
-            // Reversa: un sobrante había sumado (ahora resta) y un faltante había restado (ahora suma).
             var eraSobrante = linea.Tipo == TipoAjusteInventario.Sobrante;
 
+            var contexto = new StockMovementContext(
+                Origen: eraSobrante ? OrigenMovimientoArticulo.AjusteIngreso : OrigenMovimientoArticulo.AjusteSalida,
+                DocumentoCode: code,
+                ItemNumber: linea.ItemNumber,
+                FechaMovimiento: ajuste.FechaEntrega,
+                EsReversion: true);
+
             await _stock.ApplyAsync(
-                planta,
-                linea.ArticuloCode,
-                linea.Cantidad,
-                0m,
-                0m,
-                0m,
+                planta, linea.ArticuloCode, linea.Cantidad,
+                0m, 0m, 0m,
                 increment: !eraSobrante,
                 recalculateAverage: false,
-                ct);
+                context: contexto,
+                cancellationToken: ct);
 
             linea.Estado = EstadoAjusteInventarioDetalle.Devuelto;
         }

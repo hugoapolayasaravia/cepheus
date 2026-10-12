@@ -1,6 +1,7 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
+using Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.Common;
 using Cepheus.Infrastructure.Authorization;
 using Cepheus.Infrastructure.Identity;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
@@ -35,10 +36,21 @@ namespace Cepheus.Infrastructure
             services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
+            services.Configure<EmailSettings>(configuration.GetSection("Email"));
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+
+            services.Configure<PasswordResetSettings>(configuration.GetSection("PasswordReset"));
+            services.AddScoped<IPasswordResetSettings>(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<PasswordResetSettings>>().Value);
+
             // Autorización dinámica por Permission/permisos_roles (ver Cepheus.Infrastructure.Authorization)
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddScoped<IArticuloStockMovementService, ArticuloStockMovementService>();
+
+            // Revaluadores del cierre mensual: uno por tipo de documento de salida.
+            // Al migrar Vales de Salida y Ajustes de Inventario, agregar aquí su ICierreRevaluador.
+            services.AddScoped<ICierreRevaluador, OrdenServicioSalidaRevaluador>();
+
 
             return services;
         }

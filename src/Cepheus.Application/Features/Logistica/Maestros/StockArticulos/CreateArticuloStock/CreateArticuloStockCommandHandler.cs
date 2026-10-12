@@ -8,10 +8,12 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.CreateA
     public class CreateArticuloStockCommandHandler : IRequestHandler<CreateArticuloStockCommand, ArticuloStockResponse>
     {
         private readonly IUnitOfWork _uow;
+        private readonly IArticuloStockMovementService _stock;
 
-        public CreateArticuloStockCommandHandler(IUnitOfWork uow)
+        public CreateArticuloStockCommandHandler(IUnitOfWork uow, IArticuloStockMovementService stock)
         {
             _uow = uow;
+            _stock = stock;
         }
 
         public async Task<ArticuloStockResponse> Handle(CreateArticuloStockCommand request, CancellationToken cancellationToken)
@@ -29,6 +31,10 @@ namespace Cepheus.Application.Features.Logistica.Maestros.StockArticulos.CreateA
             };
 
             await _uow.Logistica.Maestros.StockArticulos.AddAsync(stock, cancellationToken);
+
+            // El saldo inicial entra al Kardex como Apertura (misma transacción que el alta del stock).
+            await _stock.RecordOpeningAsync(stock, DateTime.Today, cancellationToken);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
             return Map(stock);

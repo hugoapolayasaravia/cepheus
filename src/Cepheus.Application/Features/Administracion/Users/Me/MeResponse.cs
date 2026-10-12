@@ -8,9 +8,18 @@
         public string LastName { get; set; } = default!;
         public List<string> Roles { get; set; } = new();
 
-        // TODO: cuando se complete el patrón de Role/Permission/Modulo/Submodulo/Programa/Acceso,
-        // acá se agrega el árbol completo de permisos (Modulo -> Submodulo -> Programa -> Acceso),
-        // armado con una sola consulta proyectada. Deliberadamente NO va en el JWT (ver Authenticate).
-    }
+        /// <summary>
+        /// Menú del usuario: Módulo -> Submódulo -> Programa. Solo incluye lo activo y los
+        /// programas donde el usuario tiene el permiso VIEW. Deliberadamente NO va en el JWT
+        /// (ver Authenticate): se calcula en cada consulta, así los cambios de permisos se
+        /// reflejan de inmediato.
+        /// </summary>
+        public List<MenuModuloResponse> Menu { get; set; } = new();
 
+        /// <summary>
+        /// Lista plana de permisos con el mismo formato de las políticas de los endpoints,
+        /// por ejemplo "USERS.VIEW" o "ROLES.UPDATE".
+        /// </summary>
+        public List<string> Permissions { get; set; } = new();
+    }
 }

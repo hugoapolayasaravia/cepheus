@@ -24,7 +24,9 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<AlturaLosa> AlturasLosa { get; }
         IRepository<PrecioProducto> PreciosProducto { get; }
         IRepository<NotaCotizacionPlantilla> NotasCotizacionPlantilla { get; }
+        IRepository<ResponsableObra> ResponsablesObra { get; }
 
+        IRepository<TipoHojaCorte> TiposHojaCorte { get; }
 
     }
 }

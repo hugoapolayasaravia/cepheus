@@ -40,4 +40,9 @@ public partial class ApplicationDbContext
 
     public DbSet<AjusteInventario> AjustesInventario => Set<AjusteInventario>();
     public DbSet<AjusteInventarioDetalle> AjusteInventarioDetalles => Set<AjusteInventarioDetalle>();
+
+    public DbSet<MovimientoArticulo> MovimientosArticulo => Set<MovimientoArticulo>();
+    public DbSet<SaldoMensualArticulo> SaldosMensualesArticulo => Set<SaldoMensualArticulo>();
+    public DbSet<CierreIncidencia> CierreIncidencias => Set<CierreIncidencia>();
+    public DbSet<CierreRevaluacion> CierreRevaluaciones => Set<CierreRevaluacion>();
 }

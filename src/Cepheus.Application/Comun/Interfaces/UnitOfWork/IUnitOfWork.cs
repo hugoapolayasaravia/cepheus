@@ -27,13 +27,30 @@
         IRrhhUnitOfWork Rrhh { get; }
 
         // Facturacion
-        IFacturacionUnitOfWork Facturacion {  get; }
+        IFacturacionUnitOfWork Facturacion { get; }
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
 
         void ClearTracking();
+
+        /// <summary>
+        /// Ejecuta el trabajo dentro de una única transacción de base de datos con el aislamiento indicado.
+        /// Si el trabajo lanza una excepción, se revierte todo. Pensado para procesos largos y críticos como el
+        /// cierre mensual. Si la conexión reintenta (estrategia de ejecución), el trabajo se vuelve a ejecutar
+        /// desde cero con el seguimiento de cambios limpio.
+        /// </summary>
+        Task<T> ExecuteInTransactionAsync<T>(
+            Func<CancellationToken, Task<T>> work,
+            System.Data.IsolationLevel isolationLevel,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Toma un bloqueo exclusivo de aplicación (SQL Server sp_getapplock) ligado a la transacción actual.
+        /// Se libera solo al confirmar o revertir. Lanza InvalidOperationException si no se obtiene a tiempo.
+        /// </summary>
+        Task AcquireAppLockAsync(string resource, int timeoutMilliseconds, CancellationToken cancellationToken = default);
     }
 
 

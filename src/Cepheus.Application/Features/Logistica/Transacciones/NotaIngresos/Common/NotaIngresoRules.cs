@@ -65,14 +65,9 @@ public static class NotaIngresoRules
     public static async Task EnsurePeriodOpenAsync(
         IUnitOfWork uow, string plantaCode, DateTime fechaRecepcion, string mensaje, CancellationToken ct)
     {
-        var period = fechaRecepcion.ToString("yyyyMM");
-
-        var closed = await uow.Logistica.Maestros.ControlCierres.Query()
-            .AsNoTracking()
-            .AnyAsync(c => c.PlantaCode == plantaCode && string.Compare(c.PeriodCode, period) >= 0, ct);
-
-        if (closed)
-            throw new InvalidOperationException(mensaje);
+        // Regla única de período cerrado (la misma que aplica el servicio central de stock).
+        await Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common.ControlCierreRules
+            .EnsurePeriodOpenAsync(uow, plantaCode, fechaRecepcion, mensaje, ct);
     }
 
     /// <summary>

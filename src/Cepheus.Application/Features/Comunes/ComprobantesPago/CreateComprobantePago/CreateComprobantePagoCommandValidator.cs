@@ -41,7 +41,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.CreateComprobant
                 .AnyAsync(c => c.SunatCode == sunatCode.Trim(), cancellationToken);
 
         private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
-    => !await _uow.Comunes.Bancos.Query()
-        .AnyAsync(b => b.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
+            => !await _uow.Comunes.Bancos.Query()
+                .AnyAsync(b => b.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
     }
 }

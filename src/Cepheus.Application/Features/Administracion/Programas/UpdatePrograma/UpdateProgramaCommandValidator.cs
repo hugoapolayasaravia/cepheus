@@ -24,7 +24,7 @@ namespace Cepheus.Application.Features.Administracion.Programas.UpdatePrograma
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre del programa es obligatorio.")
-                .MaximumLength(150)
+                .MaximumLength(50).WithMessage("El nombre del programa no puede exceder los 50 caracteres.")
                 .MustAsync(BeUniqueName).WithMessage("Ya existe un programa con ese nombre dentro de este submódulo.");
 
             RuleFor(x => x.DisplayOrder)

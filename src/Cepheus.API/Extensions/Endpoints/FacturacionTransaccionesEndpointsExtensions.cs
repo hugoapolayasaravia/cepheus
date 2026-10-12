@@ -12,7 +12,7 @@ public static class FacturacionTransaccionesEndpointsExtensions
         app.MapCotizacionNotasEndpoints();
         app.MapCotizacionMetradoResumenesEndpoints();
         app.MapCotizacionMetradoDetallesEndpoints();
-
+        app.MapHojasCorteEndpoints();
 
         return app;
     }

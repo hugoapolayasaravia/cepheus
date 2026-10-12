@@ -14,4 +14,5 @@ public partial class ApplicationDbContext
     public DbSet<Programa> Programas => Set<Programa>();
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<PermissionRole> PermissionRoles => Set<PermissionRole>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 }

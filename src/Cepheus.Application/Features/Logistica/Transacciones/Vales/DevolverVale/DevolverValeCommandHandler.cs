@@ -91,20 +91,22 @@ public sealed class DevolverValeCommandHandler
 
         foreach (var linea in seleccion.OrderBy(l => l.ItemNumber))
         {
-            // Devolución: suma stock a costo 0 sin recalcular el promedio (Calculo 'N').
+            var contexto = new StockMovementContext(
+                Origen: OrigenMovimientoArticulo.ValeSalida,
+                DocumentoCode: code,
+                ItemNumber: linea.ItemNumber,
+                FechaMovimiento: vale.FechaEntrega,
+                EsReversion: true);
+
             await _stock.ApplyAsync(
-                planta,
-                linea.ArticuloCode,
-                linea.Cantidad,
-                0m,
-                0m,
-                0m,
+                planta, linea.ArticuloCode, linea.Cantidad,
+                0m, 0m, 0m,
                 increment: true,
                 recalculateAverage: false,
-                ct);
+                context: contexto,
+                cancellationToken: ct);
 
             linea.Estado = EstadoValeDetalle.Devuelto;
-
             await ValeOrdenTrabajo.ReturnAsync(_uow, vale, linea, ct);
         }
 

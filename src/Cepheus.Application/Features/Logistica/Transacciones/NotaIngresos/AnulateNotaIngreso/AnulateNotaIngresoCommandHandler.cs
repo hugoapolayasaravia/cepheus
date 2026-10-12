@@ -100,7 +100,9 @@ public sealed class AnulateNotaIngresoCommandHandler
         {
             await _stock.ApplyAsync(
                 planta, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
-                increment: false, recalculateAverage: false, ct);
+                increment: false, recalculateAverage: false,
+                context: Reversion(OrigenMovimientoArticulo.Importacion, note, linea),
+                cancellationToken: ct);
 
             var detalle = importacion.Detalles.FirstOrDefault(d =>
                 d.ProveedorCode == note.ProveedorCode
@@ -131,7 +133,9 @@ public sealed class AnulateNotaIngresoCommandHandler
         {
             await _stock.ApplyAsync(
                 planta, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
-                increment: true, recalculateAverage: false, ct);
+                increment: true, recalculateAverage: false,
+                context: Reversion(OrigenMovimientoArticulo.NotaCredito, note, linea),
+                cancellationToken: ct);
         }
     }
 
@@ -159,7 +163,9 @@ public sealed class AnulateNotaIngresoCommandHandler
             // Si el stock no alcanza (ya se consumió), el servicio lanza InvalidOperationException (409).
             await _stock.ApplyAsync(
                 planta, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
-                increment: false, recalculateAverage: false, ct);
+                increment: false, recalculateAverage: false,
+                context: Reversion(OrigenMovimientoArticulo.NotaIngreso, note, linea),
+                cancellationToken: ct);
 
             var ocDetalle = oc.Detalles.FirstOrDefault(d => d.ArticuloCode == linea.ArticuloCode);
             if (ocDetalle is not null)
@@ -168,4 +174,12 @@ public sealed class AnulateNotaIngresoCommandHandler
 
         NotaIngresoOrdenCompraUpdater.RecalculateEstado(oc);
     }
+
+    /// <summary>
+    /// Contexto de Kardex de una anulación: deshace el movimiento original de la línea (mismo documento,
+    /// ítem y origen) con la fecha de recepción de la nota, que es la que define su período.
+    /// </summary>
+    private static StockMovementContext Reversion(
+        OrigenMovimientoArticulo origen, NotaIngreso note, NotaIngresoDetalle linea) =>
+        new(origen, note.Code, linea.ItemNumber, note.FechaRecepcion, EsReversion: true);
 }

@@ -18,7 +18,8 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Administracion
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(150);
+                .HasMaxLength(50);
+            //Se mostrará en el sidebar
 
             builder.Property(x => x.Icon)
                 .HasMaxLength(50);

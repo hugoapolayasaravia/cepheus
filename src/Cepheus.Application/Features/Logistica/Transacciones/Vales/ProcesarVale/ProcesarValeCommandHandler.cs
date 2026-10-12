@@ -96,19 +96,21 @@ public sealed class ProcesarValeCommandHandler
 
         foreach (var linea in seleccion.OrderBy(l => l.ItemNumber))
         {
+            var contexto = new StockMovementContext(
+                Origen: OrigenMovimientoArticulo.ValeSalida,
+                DocumentoCode: code,
+                ItemNumber: linea.ItemNumber,
+                FechaMovimiento: vale.FechaEntrega);
+
             await _stock.ApplyAsync(
-                planta,
-                linea.ArticuloCode,
-                linea.Cantidad,
-                0m,
-                0m,
-                0m,
+                planta, linea.ArticuloCode, linea.Cantidad,
+                0m, 0m, 0m,
                 increment: false,
                 recalculateAverage: false,
-                ct);
+                context: contexto,
+                cancellationToken: ct);
 
             linea.Estado = EstadoValeDetalle.Procesado;
-
             await ValeOrdenTrabajo.ConsumeAsync(_uow, vale, linea, ct);
         }
 

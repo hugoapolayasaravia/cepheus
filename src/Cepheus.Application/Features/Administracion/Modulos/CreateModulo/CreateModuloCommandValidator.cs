@@ -18,7 +18,7 @@ namespace Cepheus.Application.Features.Administracion.Modulos.CreateModulo
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre del módulo es obligatorio.")
-                .MaximumLength(100).WithMessage("El nombre del módulo no puede exceder los 100 caracteres.")
+                .MaximumLength(50).WithMessage("El nombre del módulo no puede exceder los 50 caracteres.")
                 .MustAsync(BeUniqueName).WithMessage("Ya existe un módulo con ese nombre.");
 
             RuleFor(x => x.DisplayOrder)

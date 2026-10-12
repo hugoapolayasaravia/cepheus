@@ -85,15 +85,20 @@ public sealed class ProcesarOrdenServicioCommandHandler
             var (precioSoles, precioDolares) = NotaIngresoRules.ConvertPrices(os.MonedaCode, linea.Precio, os.TipoCambio);
 
             // 1) Entrada con recálculo de costo promedio (Logi_sp_Actualiza_Stock_Planta_Articulo, @wOpe='+', @Calculo='S').
+            var contextoOs = new StockMovementContext(
+                OrigenMovimientoArticulo.OrdenServicio, os.Code, linea.ItemNumber, os.FechaRecepcion);
+
             await _stock.ApplyAsync(
                 planta, linea.ArticuloCode, linea.Cantidad,
                 precioSoles, precioDolares, linea.Descuento,
-                increment: true, recalculateAverage: true, cancellationToken: ct);
+                increment: true, recalculateAverage: true,
+                context: contextoOs, cancellationToken: ct);
 
             // 2) Salida de la misma cantidad (@wOpe='-', @Calculo='N'): deja la cantidad como estaba.
             await _stock.ApplyAsync(
                 planta, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
-                increment: false, recalculateAverage: false, cancellationToken: ct);
+                increment: false, recalculateAverage: false,
+                context: contextoOs, cancellationToken: ct);
 
             // Logi_sp_AgregaMArticulo_Proveedor: relaciona el artículo con el proveedor si aún no existe.
             if (articulosProveedor.Add(linea.ArticuloCode))

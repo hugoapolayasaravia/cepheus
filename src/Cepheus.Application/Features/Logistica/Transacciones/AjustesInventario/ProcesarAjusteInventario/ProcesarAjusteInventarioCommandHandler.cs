@@ -90,17 +90,20 @@ public sealed class ProcesarAjusteInventarioCommandHandler
         {
             var esSobrante = linea.Tipo == TipoAjusteInventario.Sobrante;
 
-            // Logi_sp_Actualiza_Stock_Planta_Articulo con Calculo 'N': solo cambia la cantidad.
+            var contexto = new StockMovementContext(
+                Origen: esSobrante ? OrigenMovimientoArticulo.AjusteIngreso : OrigenMovimientoArticulo.AjusteSalida,
+                DocumentoCode: code,
+                ItemNumber: linea.ItemNumber,
+                FechaMovimiento: ajuste.FechaEntrega,
+                CostoReferencia: linea.Precio);
+
             await _stock.ApplyAsync(
-                planta,
-                linea.ArticuloCode,
-                linea.Cantidad,
-                linea.Precio,
-                0m,
-                0m,
+                planta, linea.ArticuloCode, linea.Cantidad,
+                linea.Precio, 0m, 0m,
                 increment: esSobrante,
                 recalculateAverage: false,
-                ct);
+                context: contexto,
+                cancellationToken: ct);
 
             linea.Estado = EstadoAjusteInventarioDetalle.Procesado;
         }

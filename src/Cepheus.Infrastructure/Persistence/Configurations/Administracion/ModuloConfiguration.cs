@@ -20,7 +20,9 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Administracion
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(50);
+            //Se mostrará en el sidebar
+
 
             builder.HasIndex(x => x.Name).IsUnique();
 

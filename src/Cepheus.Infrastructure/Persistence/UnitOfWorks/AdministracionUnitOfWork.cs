@@ -41,4 +41,7 @@ public sealed class AdministracionUnitOfWork : IAdministracionUnitOfWork
 
     private IRepository<PermissionRole>? _permissionRoles;
     public IRepository<PermissionRole> PermissionRoles => _permissionRoles ??= new Repository<PermissionRole>(_context);
+
+    private IRepository<PasswordResetToken>? _passwordResetTokens;
+    public IRepository<PasswordResetToken> PasswordResetTokens => _passwordResetTokens ??= new Repository<PasswordResetToken>(_context);
 }

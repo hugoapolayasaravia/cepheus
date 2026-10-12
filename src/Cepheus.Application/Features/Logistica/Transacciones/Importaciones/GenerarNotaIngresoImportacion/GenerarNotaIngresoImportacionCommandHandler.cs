@@ -168,7 +168,10 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Gen
 
                 await _stock.ApplyAsync(
                     planta, linea.ArticuloCode, linea.Cantidad, precioSoles, precioDolares, 0m,
-                    increment: true, recalculateAverage: true, ct);
+                    increment: true, recalculateAverage: true,
+                    context: new StockMovementContext(
+                        OrigenMovimientoArticulo.Importacion, note.Code, item, note.FechaRecepcion),
+                    cancellationToken: ct);
 
                 linea.Estado = EstadoImportacion.Procesado;
             }

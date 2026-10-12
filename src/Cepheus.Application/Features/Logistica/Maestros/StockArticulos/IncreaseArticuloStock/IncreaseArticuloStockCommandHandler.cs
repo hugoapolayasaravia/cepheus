@@ -1,5 +1,6 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.StockArticulos.Common;
+using Cepheus.Domain.Logistica.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,13 +26,21 @@ public class IncreaseArticuloStockCommandHandler : IRequestHandler<IncreaseArtic
                 .AnyAsync(s => s.PlantaCode == plantaCode && s.ArticuloCode == articuloCode, cancellationToken);
             if (!exists) throw new KeyNotFoundException($"No hay registro de stock para artículo {articuloCode} en planta {plantaCode}.");
 
-            var stock = await _stock.ApplyAsync(plantaCode, articuloCode, request.Quantity, 0, 0, 0, true, false, cancellationToken);
+            // Ajuste manual: queda en el Kardex como AjusteManual (sin documento) y respeta el período cerrado.
+            var resultado = await _stock.ApplyAsync(
+                plantaCode, articuloCode, request.Quantity, 0, 0, 0, true, false,
+                new StockMovementContext(OrigenMovimientoArticulo.AjusteManual, "MANUAL", null, DateTime.Today),
+                cancellationToken);
             try
             {
                 await _uow.SaveChangesAsync(cancellationToken);
-                return CreateArticuloStock.CreateArticuloStockCommandHandler.Map(stock);
+                return CreateArticuloStock.CreateArticuloStockCommandHandler.Map(resultado.Stock);
             }
-            catch (DbUpdateConcurrencyException) when (attempt < MaxConcurrencyRetries) { }
+            catch (DbUpdateConcurrencyException) when (attempt < MaxConcurrencyRetries)
+            {
+                // Descarta el stock y el movimiento pendientes: el reintento los vuelve a leer y a generar.
+                _uow.ClearTracking();
+            }
         }
         throw new InvalidOperationException($"No se pudo actualizar el stock de {articuloCode} en {plantaCode} por alta concurrencia. Intente nuevamente.");
     }

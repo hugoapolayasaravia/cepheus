@@ -1,5 +1,8 @@
-﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+﻿using System.Data;
+using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 {
@@ -37,7 +40,6 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         //Comunes
         public IComunesUnitOfWork Comunes => _comunes ??= new ComunesUnitOfWork(_context);
 
-
         // Logistica
         public ILogisticaUnitOfWork Logistica => _logistica ??= new LogisticaUnitOfWork(_context);
 
@@ -47,6 +49,7 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         // Recursos Humanos
         public IRrhhUnitOfWork Rrhh => _rrhh ??= new RrhhUnitOfWork(_context);
 
+        // Facturacion
         public IFacturacionUnitOfWork Facturacion => _facturacion ??= new FacturacionUnitOfWork(_context);
 
 
@@ -58,10 +61,52 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
             _context.ChangeTracker.Clear();
         }
 
+        public async Task<T> ExecuteInTransactionAsync<T>(
+            Func<CancellationToken, Task<T>> work,
+            IsolationLevel isolationLevel,
+            CancellationToken cancellationToken = default)
+        {
+            var strategy = _context.Database.CreateExecutionStrategy();
+
+            return await strategy.ExecuteAsync(async () =>
+            {
+                // Si la estrategia reintenta, no deben quedar entidades de un intento fallido.
+                _context.ChangeTracker.Clear();
+
+                await using var transaction = await _context.Database
+                    .BeginTransactionAsync(isolationLevel, cancellationToken);
+
+                var result = await work(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+                return result;
+            });
+        }
+
+        public async Task AcquireAppLockAsync(
+            string resource, int timeoutMilliseconds, CancellationToken cancellationToken = default)
+        {
+            var result = new SqlParameter("@result", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC @result = sp_getapplock @Resource = @resource, @LockMode = 'Exclusive', " +
+                "@LockOwner = 'Transaction', @LockTimeout = @timeout;",
+                new object[]
+                {
+                    result,
+                    new SqlParameter("@resource", resource),
+                    new SqlParameter("@timeout", timeoutMilliseconds)
+                },
+                cancellationToken);
+
+            // 0 / 1 = concedido; negativo = timeout, cancelado, deadlock o error.
+            if (result.Value is int code && code < 0)
+            {
+                throw new InvalidOperationException(
+                    "Otro usuario está ejecutando este proceso para la misma planta. Intente nuevamente en unos minutos.");
+            }
+        }
+
     }
-
-
-
-
 
 }

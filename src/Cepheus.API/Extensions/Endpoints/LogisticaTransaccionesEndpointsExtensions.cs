@@ -17,6 +17,11 @@ public static class LogisticaTransaccionesEndpointsExtensions
         app.MapValesEndpoints();
         app.MapAjustesInventarioEndpoints();
 
+        app.MapKardexEndpoints();
+        app.MapCierresMensualesEndpoints();
+        app.MapReporteCierreEndpoints();
+
+
         return app;
     }
 }

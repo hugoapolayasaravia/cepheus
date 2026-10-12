@@ -13,4 +13,6 @@ public partial class ApplicationDbContext
     public DbSet<CotizacionMetradoResumen> CotizacionesMetradoResumen => Set<CotizacionMetradoResumen>();
     public DbSet<CotizacionMetradoDetalle> CotizacionesMetradoDetalle => Set<CotizacionMetradoDetalle>();
 
+    public DbSet<HojaCorte> HojasCorte => Set<HojaCorte>();
+    public DbSet<HojaCorteDetalle> HojasCorteDetalle => Set<HojaCorteDetalle>();
 }

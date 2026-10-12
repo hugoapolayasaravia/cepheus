@@ -28,7 +28,8 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("El nombre del comprobante es obligatorio.")
-                .MaximumLength(100);
+                .MaximumLength(100).WithMessage("El nombre no puede exceder los 100 caracteres.")
+                .MustAsync(BeUniqueName).WithMessage("Ya existe un comprobante con ese nombre.");
 
             RuleFor(x => x.ShortName)
                 .Cascade(CascadeMode.Stop)
@@ -36,7 +37,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
                 .MaximumLength(10);
 
             RuleFor(x => x.Description)
-                .MaximumLength(255);
+                .MaximumLength(255).WithMessage("El nombre no puede exceder los 255 caracteres.");
         }
 
         private async Task<bool> BeUniqueCode(UpdateComprobantePagoCommand command, string code, CancellationToken cancellationToken)
@@ -46,7 +47,7 @@ namespace Cepheus.Application.Features.Comunes.ComprobantesPago.UpdateComprobant
         private async Task<bool> BeUniqueSunatCode(UpdateComprobantePagoCommand command, string sunatCode, CancellationToken cancellationToken)
             => !await _uow.Comunes.ComprobantesPago.Query()
                 .AnyAsync(c => c.SunatCode == sunatCode.Trim() && c.Code != command.Code, cancellationToken);
-        private async Task<bool> BeUniqueName(UpdateBancoCommand command, string name, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueName(UpdateComprobantePagoCommand command, string name, CancellationToken cancellationToken)
                  => !await _uow.Comunes.ComprobantesPago.Query()
                      .AnyAsync(b => b.Code != command.Code && b.Name.ToLower() == name.Trim().ToLower(), cancellationToken);
 

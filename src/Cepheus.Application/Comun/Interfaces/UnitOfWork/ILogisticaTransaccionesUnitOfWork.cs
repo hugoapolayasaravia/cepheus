@@ -32,5 +32,11 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<AjusteInventario> AjustesInventario { get; }
         IRepository<AjusteInventarioDetalle> AjusteInventarioDetalles { get; }
 
+        IRepository<MovimientoArticulo> MovimientosArticulo { get; }
+        IRepository<SaldoMensualArticulo> SaldosMensualesArticulo { get; }
+        IRepository<CierreIncidencia> CierreIncidencias { get; }
+        IRepository<CierreRevaluacion> CierreRevaluaciones { get; }
+
+
     }
 }

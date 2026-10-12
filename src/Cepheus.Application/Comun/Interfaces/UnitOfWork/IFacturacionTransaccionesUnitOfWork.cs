@@ -13,7 +13,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<CotizacionMetradoResumen> CotizacionesMetradoResumen { get; }
         IRepository<CotizacionMetradoDetalle> CotizacionesMetradoDetalle { get; }
 
-
+        IRepository<HojaCorte> HojasCorte { get; }
+        IRepository<HojaCorteDetalle> HojasCorteDetalle { get; }
 
     }
 }

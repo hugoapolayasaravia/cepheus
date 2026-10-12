@@ -90,5 +90,17 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<AjusteInventarioDetalle>? _ajusteInventarioDetalles;
         public IRepository<AjusteInventarioDetalle> AjusteInventarioDetalles => _ajusteInventarioDetalles ??= new Repository<AjusteInventarioDetalle>(_context);
+
+        private IRepository<MovimientoArticulo>? _movimientosArticulo;
+        public IRepository<MovimientoArticulo> MovimientosArticulo => _movimientosArticulo ??= new Repository<MovimientoArticulo>(_context);
+
+        private IRepository<SaldoMensualArticulo>? _saldosMensualesArticulo;
+        public IRepository<SaldoMensualArticulo> SaldosMensualesArticulo => _saldosMensualesArticulo ??= new Repository<SaldoMensualArticulo>(_context);
+
+        private IRepository<CierreIncidencia>? _cierreIncidencias;
+        public IRepository<CierreIncidencia> CierreIncidencias => _cierreIncidencias ??= new Repository<CierreIncidencia>(_context);
+
+        private IRepository<CierreRevaluacion>? _cierreRevaluaciones;
+        public IRepository<CierreRevaluacion> CierreRevaluaciones => _cierreRevaluaciones ??= new Repository<CierreRevaluacion>(_context);
     }
 }
