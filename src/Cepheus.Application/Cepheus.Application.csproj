@@ -18,6 +18,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.18" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Contabilidad\Catalogos\" />
+    <Folder Include="Features\Contabilidad\Maestros\" />
+    <Folder Include="Features\Contabilidad\Transacciones\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

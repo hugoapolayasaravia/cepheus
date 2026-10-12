@@ -28,6 +28,8 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         // Facturacion
         private IFacturacionUnitOfWork? _facturacion;
 
+        // Contabilidad
+        private IContabilidadUnitOfWork? _contabilidad;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -51,6 +53,9 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         // Facturacion
         public IFacturacionUnitOfWork Facturacion => _facturacion ??= new FacturacionUnitOfWork(_context);
+
+        // Contabilidad
+        public IContabilidadUnitOfWork Contabilidad => _contabilidad ??= new ContabilidadUnitOfWork(_context);
 
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

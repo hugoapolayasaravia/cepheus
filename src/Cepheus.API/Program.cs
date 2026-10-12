@@ -202,4 +202,10 @@ app.MapFacturacionCatalogosEndpoints();
 app.MapFacturacionMaestrosEndpoints();
 app.MapFacturacionTransaccionesEndpoints();
 
+
+// Contabilidad
+app.MapContabilidadCatalogosEndpoints();
+app.MapContabilidadMaestrosEndpoints();
+app.MapContabilidadTransaccionesEndpoints();
+
 app.Run();

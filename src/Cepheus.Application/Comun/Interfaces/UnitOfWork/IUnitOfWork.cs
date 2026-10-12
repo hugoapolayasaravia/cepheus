@@ -28,7 +28,9 @@
 
         // Facturacion
         IFacturacionUnitOfWork Facturacion { get; }
-
+        
+        // Contabilidad
+        IContabilidadUnitOfWork Contabilidad { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

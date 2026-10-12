@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Contabilidad\Catalogos\" />
+    <Folder Include="Contabilidad\Maestros\" />
+    <Folder Include="Contabilidad\Transacciones\" />
+  </ItemGroup>
+
 </Project>
