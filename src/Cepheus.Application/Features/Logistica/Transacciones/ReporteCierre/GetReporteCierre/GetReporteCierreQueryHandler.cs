@@ -1,5 +1,6 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common;
+using Cepheus.Application.Features.Logistica.Transacciones.Kardex.Common;
 using Cepheus.Application.Features.Logistica.Transacciones.ReporteCierre.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -95,14 +96,15 @@ public sealed class GetReporteCierreQueryHandler : IRequestHandler<GetReporteCie
             {
                 a.Code, a.Name, a.UnidadMedidaCode,
                 FamiliaCode = a.SubFamilia.FamiliaCode, a.SubFamiliaCode,
-                s.PeriodCode, s.Quantity, s.AverageCost, s.Amount
+                s.PeriodCode, s.Quantity, s.AverageCost
             })
             .ToListAsync(ct);
 
         var (reporte, totales) = ReporteCierreBuilder.Armar(
             filas.Select(f => new SaldoLeido(
                 f.Code, f.Name, f.UnidadMedidaCode, f.FamiliaCode, f.SubFamiliaCode,
-                f.PeriodCode, f.Quantity, f.AverageCost, f.Amount)),
+                f.PeriodCode, f.Quantity, f.AverageCost,
+                KardexValorizador.Importe(f.Quantity, f.AverageCost))),
             actual, comparacion, request.IncluirSaldoCero);
 
         var incidencias = await _uow.Logistica.Transacciones.CierreIncidencias.Query().AsNoTracking()

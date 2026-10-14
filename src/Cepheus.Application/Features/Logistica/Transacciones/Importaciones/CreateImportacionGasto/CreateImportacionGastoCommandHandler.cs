@@ -66,7 +66,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Cre
                 NetoGastoInafecto = request.NetoGastoInafecto
             };
 
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, request.FechaEmision, cancellationToken);
             ImportacionGastoCalculator.Apply(gasto, comprobante, igvPercentage, request.Igv);
 
             importacion.Gastos.Add(gasto);

@@ -36,6 +36,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<SaldoMensualArticulo> SaldosMensualesArticulo { get; }
         IRepository<CierreIncidencia> CierreIncidencias { get; }
         IRepository<CierreRevaluacion> CierreRevaluaciones { get; }
+        IRepository<CierreBloqueo> CierreBloqueos { get; }
+
 
 
     }

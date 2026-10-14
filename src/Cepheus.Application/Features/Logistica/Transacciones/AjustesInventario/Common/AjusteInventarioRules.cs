@@ -1,4 +1,5 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Enum;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
@@ -34,20 +35,9 @@ public static class AjusteInventarioRules
         string mensaje,
         CancellationToken ct)
     {
-        var period = fechaEntrega.ToString("yyyyMM");
-
-        var closed = await uow.Logistica.Maestros.ControlCierres
-            .Query()
-            .AsNoTracking()
-            .AnyAsync(
-                c => c.PlantaCode == plantaCode &&
-                     string.Compare(c.PeriodCode, period) >= 0,
-                ct);
-
-        if (closed)
-        {
-            throw new InvalidOperationException(mensaje);
-        }
+        // Regla única de período cerrado (la misma que aplica el servicio central de stock).
+        await Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common.ControlCierreRules
+            .EnsurePeriodOpenAsync(uow, plantaCode, fechaEntrega, mensaje, ct);
     }
 
     /// <summary>La fecha de entrega no puede ser mayor a la del sistema ni caer en un período cerrado.</summary>
@@ -122,10 +112,7 @@ public static class AjusteInventarioRules
         AjusteInventario ajuste,
         CancellationToken ct)
     {
-        var control = await uow.Comunes.ControlesVentas
-            .Query()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(ct);
+        var igvPercentage = await PeriodoIgvRules.GetPorcentajeAsync(uow, ajuste.FechaEntrega, ct);
 
         var suma = ajuste.Detalles
             .Where(d => d.Estado == EstadoAjusteInventarioDetalle.Pendiente ||
@@ -135,7 +122,7 @@ public static class AjusteInventarioRules
         suma = Math.Round(suma, 2, MidpointRounding.AwayFromZero);
 
         var igv = Math.Round(
-            suma * (control?.IgvPercentage ?? 0) / 100m,
+            suma * igvPercentage / 100m,
             2,
             MidpointRounding.AwayFromZero);
 
@@ -147,9 +134,9 @@ public static class AjusteInventarioRules
     // ---------------------------------------------------------------- reservado
 
     /// <summary>
-    /// Reservado por ajustes: cantidad de las líneas FALTANTES pendientes de un artículo en el almacén
-    /// (las salidas que todavía no restaron stock). El legacy (Logi_sp_Consulta_Pendiente_Articulos) suma también
-    /// los sobrantes; no tiene sentido reservar por un ingreso, por eso acá solo cuentan los faltantes.
+    /// Reservado de un artículo en el almacén: FALTANTES de ajustes pendientes MÁS líneas de vales pendientes
+    /// (las salidas que todavía no restaron stock; Logi_sp_Consulta_Pendiente_Articulos suma ambos). Los sobrantes
+    /// no reservan: son un ingreso.
     /// </summary>
     public static async Task<decimal> GetReservedAsync(
         IUnitOfWork uow,
@@ -157,7 +144,7 @@ public static class AjusteInventarioRules
         string articuloCode,
         CancellationToken ct)
     {
-        return await uow.Logistica.Transacciones.AjusteInventarioDetalles
+        var enAjustes = await uow.Logistica.Transacciones.AjusteInventarioDetalles
             .Query()
             .AsNoTracking()
             .Where(d => d.PlantaCode == plantaCode &&
@@ -165,6 +152,16 @@ public static class AjusteInventarioRules
                         d.Tipo == TipoAjusteInventario.Faltante &&
                         d.Estado == EstadoAjusteInventarioDetalle.Pendiente)
             .SumAsync(d => (decimal?)d.Cantidad, ct) ?? 0m;
+
+        var enVales = await uow.Logistica.Transacciones.ValeDetalles
+            .Query()
+            .AsNoTracking()
+            .Where(d => d.PlantaCode == plantaCode &&
+                        d.ArticuloCode == articuloCode &&
+                        d.Estado == EstadoValeDetalle.Pendiente)
+            .SumAsync(d => (decimal?)d.Cantidad, ct) ?? 0m;
+
+        return enAjustes + enVales;
     }
 
     // ---------------------------------------------------------------- parseo de filtros

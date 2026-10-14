@@ -91,22 +91,24 @@ public sealed class DevolverValeCommandHandler
 
         foreach (var linea in seleccion.OrderBy(l => l.ItemNumber))
         {
-            var contexto = new StockMovementContext(
-                Origen: OrigenMovimientoArticulo.ValeSalida,
-                DocumentoCode: code,
-                ItemNumber: linea.ItemNumber,
-                FechaMovimiento: vale.FechaEntrega,
-                EsReversion: true);
-
+            // Devolución: suma stock a costo 0 sin recalcular el promedio (Calculo 'N').
+            // Kardex: deshace la salida original de la línea (mismo vale e ítem) al costo con que salió.
             await _stock.ApplyAsync(
-                planta, linea.ArticuloCode, linea.Cantidad,
-                0m, 0m, 0m,
+                planta,
+                linea.ArticuloCode,
+                linea.Cantidad,
+                0m,
+                0m,
+                0m,
                 increment: true,
                 recalculateAverage: false,
-                context: contexto,
+                context: new StockMovementContext(
+                    OrigenMovimientoArticulo.ValeSalida, vale.Code, linea.ItemNumber, vale.FechaEntrega,
+                    EsReversion: true),
                 cancellationToken: ct);
 
             linea.Estado = EstadoValeDetalle.Devuelto;
+
             await ValeOrdenTrabajo.ReturnAsync(_uow, vale, linea, ct);
         }
 

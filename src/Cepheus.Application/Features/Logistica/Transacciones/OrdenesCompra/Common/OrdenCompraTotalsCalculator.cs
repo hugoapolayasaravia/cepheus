@@ -1,5 +1,6 @@
 ﻿// Cepheus.Application/Features/Logistica/Transacciones/OrdenesCompra/Common/OrdenCompraTotalsCalculator.cs
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +40,10 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.OrdenesCompra.Com
                         cancellationToken)
                 : null;
 
-            var igvPercentage = control?.IgvPercentage ?? 0;
+            // IGV% del período vigente en la fecha de entrega de la orden (solo si el comprobante afecta IGV).
+            var igvPercentage = (comprobante?.AffectsIgv ?? false)
+                ? await PeriodoIgvRules.GetPorcentajeAsync(uow, orden.FechaEntrega, cancellationToken)
+                : 0m;
             var withholdingPercentage = control?.WithholdingPercentage ?? 0;
             var fonaviPercentage = control?.FonaviPercentage ?? 0;
             var withholdingCap = control?.WithholdingCap ?? 0;

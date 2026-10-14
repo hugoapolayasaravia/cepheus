@@ -1,10 +1,16 @@
-﻿namespace Cepheus.API.Extensions.Endpoints;
+﻿using Cepheus.API.Endpoints.Contabilidad.Maestros;
+
+namespace Cepheus.API.Extensions.Endpoints;
 
 public static class ContabilidadMaestrosEndpointsExtensions
 {
     public static WebApplication MapContabilidadMaestrosEndpoints(
         this WebApplication app)
     {
+        app.MapCuentasContablesEndpoints();
+        app.MapAnexosEndpoints();
+        app.MapCuentasBancariasEndpoints();
+
 
         return app;
     }

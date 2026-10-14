@@ -102,5 +102,9 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<CierreRevaluacion>? _cierreRevaluaciones;
         public IRepository<CierreRevaluacion> CierreRevaluaciones => _cierreRevaluaciones ??= new Repository<CierreRevaluacion>(_context);
+
+        private IRepository<CierreBloqueo>? _cierreBloqueos;
+        public IRepository<CierreBloqueo> CierreBloqueos => _cierreBloqueos ??= new Repository<CierreBloqueo>(_context);
+
     }
 }

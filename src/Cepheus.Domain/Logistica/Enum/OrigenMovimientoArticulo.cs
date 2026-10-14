@@ -39,5 +39,12 @@ public enum OrigenMovimientoArticulo
     /// Evento de valorización SIN movimiento de stock: Nota de Crédito por ajuste de precio (motivo 01).
     /// Solo existe en memoria durante el cálculo del cierre; nunca se guarda en MovimientosArticulo.
     /// </summary>
-    AjustePrecio = 10
+    AjustePrecio = 10,
+
+    /// <summary>
+    /// Ingreso en el almacén destino de una transferencia entre almacenes (Nota de Ingreso de origen Transferencia).
+    /// La salida en el origen se registra como ValeSalida (el vale de transferencia). En el Kardex legacy ambas
+    /// aparecen como 'NI' en el destino y 'VS' en el origen.
+    /// </summary>
+    TransferenciaIngreso = 11
 }

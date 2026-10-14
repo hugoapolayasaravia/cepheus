@@ -50,7 +50,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Upd
 
             // El tipo de cambio sigue a la fecha de póliza; Advalorem/Sobretasa afectan el IGV.
             importacion.TipoCambio = await ImportacionTotalsCalculator.ResolveTipoCambioAsync(_uow, importacion.FechaPoliza, cancellationToken);
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, importacion.FechaPoliza, cancellationToken);
 
             // Los totales Fob/Flete/Seguro provienen del detalle.
             ImportacionTotalsCalculator.Recalculate(importacion, igvPercentage);

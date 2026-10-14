@@ -24,15 +24,34 @@ namespace Cepheus.Infrastructure.Authorization
         }
 
         protected override async Task HandleRequirementAsync(
-            AuthorizationHandlerContext context, PermissionRequirement requirement)
+                AuthorizationHandlerContext context,
+                PermissionRequirement requirement)
         {
-            var userIdValue = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // 1. Verificar si el usuario está autenticado
+            var isAuthenticated =
+                context.User.Identity?.IsAuthenticated ?? false;
+
+            Console.WriteLine($"Autenticado: {isAuthenticated}");
+
+            if (!isAuthenticated)
+            {
+                return;
+            }
+
+            // 2. Obtener el identificador del usuario
+            var userIdValue = context.User.FindFirstValue(
+                ClaimTypes.NameIdentifier);
+
+            Console.WriteLine($"NameIdentifier: {userIdValue}");
+            Console.WriteLine($"ProgramaCode: {requirement.ProgramaCode}");
+            Console.WriteLine($"PermissionCode: {requirement.PermissionCode}");
 
             if (!int.TryParse(userIdValue, out var userId))
             {
-                return; // no autenticado / claim inválido -> no Succeed (falla)
+                return;
             }
 
+            // 3. Validar los permisos en la base de datos
             var hasPermission = await _context.Users
                 .Where(u => u.Id == userId && u.IsActive)
                 .SelectMany(u => u.UserRoles)
@@ -42,6 +61,8 @@ namespace Cepheus.Infrastructure.Authorization
                     pr.Permission.IsActive &&
                     pr.Permission.Programa.Code == requirement.ProgramaCode &&
                     pr.Permission.Code == requirement.PermissionCode);
+
+            Console.WriteLine($"Tiene permiso: {hasPermission}");
 
             if (hasPermission)
             {

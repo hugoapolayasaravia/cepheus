@@ -16,5 +16,11 @@ public enum TipoIncidenciaCierre
     DiferenciaConStock = 3,
 
     /// <summary>Una salida quedó valorizada a costo cero.</summary>
-    SalidaSinCosto = 4
+    SalidaSinCosto = 4,
+
+    /// <summary>
+    /// El cierre del origen revalorizó una transferencia pero el período del destino ya estaba cerrado: el ingreso
+    /// del destino conserva el costo anterior.
+    /// </summary>
+    TransferenciaDestinoCerrado = 5
 }

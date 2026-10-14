@@ -90,19 +90,24 @@ public sealed class ProcesarAjusteInventarioCommandHandler
         {
             var esSobrante = linea.Tipo == TipoAjusteInventario.Sobrante;
 
-            var contexto = new StockMovementContext(
-                Origen: esSobrante ? OrigenMovimientoArticulo.AjusteIngreso : OrigenMovimientoArticulo.AjusteSalida,
-                DocumentoCode: code,
-                ItemNumber: linea.ItemNumber,
-                FechaMovimiento: ajuste.FechaEntrega,
-                CostoReferencia: linea.Precio);
-
+            // Logi_sp_Actualiza_Stock_Planta_Articulo con Calculo 'N': solo cambia la cantidad.
+            // Kardex: el sobrante entra al precio del ajuste (el cierre lo promedia, como el legacy);
+            // el faltante sale al costo promedio vigente (el cierre lo revaloriza).
             await _stock.ApplyAsync(
-                planta, linea.ArticuloCode, linea.Cantidad,
-                linea.Precio, 0m, 0m,
+                planta,
+                linea.ArticuloCode,
+                linea.Cantidad,
+                linea.Precio,
+                0m,
+                0m,
                 increment: esSobrante,
                 recalculateAverage: false,
-                context: contexto,
+                context: new StockMovementContext(
+                    esSobrante ? OrigenMovimientoArticulo.AjusteIngreso : OrigenMovimientoArticulo.AjusteSalida,
+                    ajuste.Code,
+                    linea.ItemNumber,
+                    ajuste.FechaEntrega,
+                    CostoReferencia: esSobrante ? linea.Precio : null),
                 cancellationToken: ct);
 
             linea.Estado = EstadoAjusteInventarioDetalle.Procesado;

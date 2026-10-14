@@ -14,7 +14,8 @@ namespace Cepheus.Domain.Logistica.Transacciones;
 /// Equivalencias:
 ///   D{AAAAMM}S -> Quantity      (saldo en cantidad)
 ///   D{AAAAMM}P -> AverageCost   (costo promedio, 6 decimales como el legacy)
-///   S * P      -> Amount        (importe valorizado; columna calculada)
+///   S * P      -> importe valorizado: no se guarda; se calcula como ROUND(Quantity * AverageCost, 2)
+///                 (KardexValorizador.Importe), así no depende de columnas calculadas propias de un motor.
 ///
 /// Solo lo escribe el cierre mensual, en la misma transacción que registra el ControlCierre.
 /// </summary>
@@ -37,9 +38,6 @@ public class SaldoMensualArticulo : IAuditableEntity
 
     /// <summary>Total retirado durante el período (informativo, para conciliar).</summary>
     public decimal OutgoingQuantity { get; set; }
-
-    /// <summary>Columna calculada en base de datos: ROUND(Quantity * AverageCost, 2).</summary>
-    public decimal Amount { get; private set; }
 
     public DateTime CreatedAt { get; set; }
     public string? CreatedBy { get; set; }

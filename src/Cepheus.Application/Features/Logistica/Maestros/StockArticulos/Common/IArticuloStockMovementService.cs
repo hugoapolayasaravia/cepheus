@@ -33,4 +33,14 @@ public interface IArticuloStockMovementService
         ArticuloStock stock,
         DateTime fecha,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Igual que el anterior pero con la cantidad de apertura indicada: cuando el artículo ya tiene movimientos en el
+    /// Kardex, la apertura es solo la parte del stock que el Kardex todavía no explica (stock − movimientos).
+    /// </summary>
+    Task<MovimientoArticulo?> RecordOpeningAsync(
+        ArticuloStock stock,
+        decimal cantidad,
+        DateTime fecha,
+        CancellationToken cancellationToken = default);
 }

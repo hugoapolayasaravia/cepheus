@@ -1,5 +1,6 @@
 ﻿// src/Cepheus.Application/Features/Logistica/Transacciones/Importaciones/Common/ImportacionTotalsCalculator.cs
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +15,8 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Com
     ///   TipoCambio            = venta de TipoCambio en FechaPoliza (error si no existe)
     ///
     /// Advalorem, Sobretasa y OtrosGastos son digitados: nunca se derivan acá.
-    /// IGV%: el legacy usaba fg_igv(fecha_pol); acá se toma ControlVentas.IgvPercentage
-    /// vigente, igual que OrdenCompraTotalsCalculator.
+    /// IGV%: fg_igv(fecha_pol) del legacy; acá se toma el porcentaje del período de IGV (Comunes.PeriodoIgv)
+    /// que contiene la fecha de póliza.
     /// </summary>
     public static class ImportacionTotalsCalculator
     {
@@ -44,14 +45,12 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Com
                 importacion.Detalles.Sum(d => d.Seguro),
                 igvPercentage);
 
-        public static async Task<decimal> GetIgvPercentageAsync(IUnitOfWork uow, CancellationToken cancellationToken)
-        {
-            var control = await uow.Comunes.ControlesVentas.Query()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(cancellationToken);
-
-            return control?.IgvPercentage ?? 0;
-        }
+        /// <summary>
+        /// IGV% vigente en la fecha indicada (fg_igv(fecha) del legacy), desde Comunes.PeriodoIgv.
+        /// Cabecera y líneas: fecha de póliza. Gastos: fecha de emisión del gasto.
+        /// </summary>
+        public static Task<decimal> GetIgvPercentageAsync(IUnitOfWork uow, DateTime fecha, CancellationToken cancellationToken)
+            => PeriodoIgvRules.GetPorcentajeAsync(uow, fecha, cancellationToken);
 
         /// <summary>Tipo de cambio venta del día indicado; falla si no está registrado (mismo criterio legacy).</summary>
         public static async Task<decimal> ResolveTipoCambioAsync(IUnitOfWork uow, DateTime fecha, CancellationToken cancellationToken)

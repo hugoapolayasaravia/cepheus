@@ -1,4 +1,6 @@
-﻿using Cepheus.Domain.Logistica.Maestros;
+﻿using Cepheus.Domain.Contabilidad.Catalogos;
+using Cepheus.Domain.Contabilidad.Maestros;
+using Cepheus.Domain.Logistica.Maestros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -65,6 +67,19 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
                 .WithMany(x => x.Children)
                 .HasForeignKey(x => x.ParentCode)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<CuentaContable>()
+                .WithMany()
+                .HasForeignKey(x => x.AccountingAccountCode)
+                .HasPrincipalKey(c => c.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<TipoAnexo>()
+                .WithMany()
+                .HasForeignKey(x => x.AccountingAttachmentTypeCode)
+                .HasPrincipalKey(a => a.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

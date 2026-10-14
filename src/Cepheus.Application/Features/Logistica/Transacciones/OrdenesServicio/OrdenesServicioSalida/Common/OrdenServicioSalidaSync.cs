@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.Common;
 using Cepheus.Domain.Logistica.Enum;
 using Cepheus.Domain.Logistica.Transacciones;
@@ -95,7 +96,7 @@ public static class OrdenServicioSalidaSync
     /// </summary>
     public static async Task RecalculateAsync(IUnitOfWork uow, OrdenServicioSalida vale, CancellationToken ct)
     {
-        var control = await uow.Comunes.ControlesVentas.Query().AsNoTracking().FirstOrDefaultAsync(ct);
+        var igvPercentage = await PeriodoIgvRules.GetPorcentajeAsync(uow, vale.FechaEntrega, ct);
 
         var suma = Math.Round(
             vale.Detalles
@@ -105,7 +106,7 @@ public static class OrdenServicioSalidaSync
             2, MidpointRounding.AwayFromZero);
 
         vale.Neto = suma;
-        vale.Igv = Math.Round(suma * (control?.IgvPercentage ?? 0) / 100m, 2, MidpointRounding.AwayFromZero);
+        vale.Igv = Math.Round(suma * igvPercentage / 100m, 2, MidpointRounding.AwayFromZero);
         vale.Total = vale.Neto + vale.Igv;
     }
 

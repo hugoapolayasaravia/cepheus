@@ -104,7 +104,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Gen
             await NotaIngresoRules.ValidateDatesAsync(_uow, planta, request.FechaEmision, request.FechaRecepcion, ct);
 
             // Legacy: Generar ejecuta Logi_sp_Actualiza_Importacion antes de leer los precios.
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, ct);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, importacion.FechaPoliza, ct);
             ImportacionTotalsCalculator.Recalculate(importacion, igvPercentage);
             ImportacionProrrateoCalculator.Calculate(importacion, igvPercentage);
 

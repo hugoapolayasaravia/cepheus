@@ -171,7 +171,8 @@ public sealed class GetKardexQueryHandler : IRequestHandler<GetKardexQuery, Kard
         {
             OrigenMovimientoArticulo.NotaIngreso,
             OrigenMovimientoArticulo.NotaCredito,
-            OrigenMovimientoArticulo.Importacion
+            OrigenMovimientoArticulo.Importacion,
+            OrigenMovimientoArticulo.TransferenciaIngreso
         };
 
         var codigosNi = lineas

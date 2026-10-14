@@ -1,4 +1,5 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Enum;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
@@ -59,20 +60,9 @@ public static class ValeRules
         string mensaje,
         CancellationToken ct)
     {
-        var period = fechaEntrega.ToString("yyyyMM");
-
-        var closed = await uow.Logistica.Maestros.ControlCierres
-            .Query()
-            .AsNoTracking()
-            .AnyAsync(
-                c => c.PlantaCode == plantaCode &&
-                     string.Compare(c.PeriodCode, period) >= 0,
-                ct);
-
-        if (closed)
-        {
-            throw new InvalidOperationException(mensaje);
-        }
+        // Regla única de período cerrado (la misma que aplica el servicio central de stock).
+        await Cepheus.Application.Features.Logistica.Maestros.ControlCierres.Common.ControlCierreRules
+            .EnsurePeriodOpenAsync(uow, plantaCode, fechaEntrega, mensaje, ct);
     }
 
     // ---------------------------------------------------------------- correlativo
@@ -122,10 +112,7 @@ public static class ValeRules
         Vale vale,
         CancellationToken ct)
     {
-        var control = await uow.Comunes.ControlesVentas
-            .Query()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(ct);
+        var igvPercentage = await PeriodoIgvRules.GetPorcentajeAsync(uow, vale.FechaEntrega, ct);
 
         var suma = vale.Detalles
             .Where(d => d.Estado == EstadoValeDetalle.Pendiente ||
@@ -135,7 +122,7 @@ public static class ValeRules
         suma = Math.Round(suma, 2, MidpointRounding.AwayFromZero);
 
         var igv = Math.Round(
-            suma * (control?.IgvPercentage ?? 0) / 100m,
+            suma * igvPercentage / 100m,
             2,
             MidpointRounding.AwayFromZero);
 
@@ -148,8 +135,8 @@ public static class ValeRules
 
     /// <summary>
     /// Reservado de un artículo en un almacén (Logi_sp_Consulta_Pendiente_Articulos): cantidad de las líneas
-    /// de vale en estado Pendiente. (El legacy suma además los ajustes de inventario pendientes; ese módulo
-    /// aún no existe en el repo.)
+    /// de vale en estado Pendiente MÁS los faltantes de ajustes de inventario pendientes (ambas son salidas que
+    /// todavía no restaron stock; el legacy suma las dos).
     /// </summary>
     public static async Task<decimal> GetReservedAsync(
         IUnitOfWork uow,
@@ -157,13 +144,24 @@ public static class ValeRules
         string articuloCode,
         CancellationToken ct)
     {
-        return await uow.Logistica.Transacciones.ValeDetalles
+        var enVales = await uow.Logistica.Transacciones.ValeDetalles
             .Query()
             .AsNoTracking()
             .Where(d => d.PlantaCode == plantaCode &&
                         d.ArticuloCode == articuloCode &&
                         d.Estado == EstadoValeDetalle.Pendiente)
             .SumAsync(d => (decimal?)d.Cantidad, ct) ?? 0m;
+
+        var enAjustes = await uow.Logistica.Transacciones.AjusteInventarioDetalles
+            .Query()
+            .AsNoTracking()
+            .Where(d => d.PlantaCode == plantaCode &&
+                        d.ArticuloCode == articuloCode &&
+                        d.Tipo == TipoAjusteInventario.Faltante &&
+                        d.Estado == EstadoAjusteInventarioDetalle.Pendiente)
+            .SumAsync(d => (decimal?)d.Cantidad, ct) ?? 0m;
+
+        return enVales + enAjustes;
     }
 
     // ---------------------------------------------------------------- estados

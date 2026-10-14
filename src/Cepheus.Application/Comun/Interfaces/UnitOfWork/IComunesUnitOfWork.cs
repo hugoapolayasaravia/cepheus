@@ -15,5 +15,6 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<MotivoDevolucion> MotivosDevolucion { get; }
         IRepository<Banco> Bancos { get; }
         IRepository<Negocio> Negocios { get; }
+        IRepository<PeriodoIgv> PeriodosIgv { get; }
     }
 }

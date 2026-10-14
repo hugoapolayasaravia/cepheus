@@ -1,5 +1,6 @@
 ﻿// Cepheus.Application/Features/Logistica/Transacciones/Pedidos/Common/PedidoTotalsCalculator.cs
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Enum;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,8 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Pedidos.Common
     {
         public static async Task RecalculateAsync(IUnitOfWork uow, Pedido pedido, CancellationToken cancellationToken)
         {
-            var igvPercentage = await uow.Comunes.ControlesVentas.Query()
-                .AsNoTracking()
-                .Select(c => c.IgvPercentage)
-                .FirstOrDefaultAsync(cancellationToken);
+            // IGV% del período vigente en la fecha de entrega del pedido.
+            var igvPercentage = await PeriodoIgvRules.GetPorcentajeAsync(uow, pedido.FechaEntrega, cancellationToken);
 
             var neto = pedido.Detalles
                 .Where(d => d.EstadoPedidoDetalle != EstadoPedidoDetalle.Anulado)

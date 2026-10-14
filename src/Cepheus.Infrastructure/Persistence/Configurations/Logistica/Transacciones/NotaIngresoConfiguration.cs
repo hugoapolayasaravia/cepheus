@@ -84,7 +84,21 @@ public sealed class NotaIngresoConfiguration : IEntityTypeConfiguration<NotaIngr
         builder.Property(x => x.NumeroGuia).HasMaxLength(15);
         builder.Property(x => x.NumeroReferencia).HasMaxLength(15);
         builder.Property(x => x.AsientoContable).HasMaxLength(13);
-        builder.Property(x => x.CodigoVale).HasMaxLength(6);
+        builder.Property(x => x.CodigoVale).HasMaxLength(7);
+
+        // Transferencia entre almacenes: el vale pertenece a la planta ORIGEN (otra planta que la de la nota).
+        builder.Property(x => x.PlantaOrigenCode).HasColumnType("char(2)");
+        builder.Property(x => x.ValeTransferenciaCode).HasColumnType("char(7)");
+        builder.HasOne(x => x.ValeTransferencia)
+            .WithMany()
+            .HasForeignKey(x => new { x.PlantaOrigenCode, x.ValeTransferenciaCode })
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Un vale de transferencia se recibe una sola vez MIENTRAS su nota no esté anulada. No es un índice único
+        // porque tras anular la transferencia el vale vuelve a Pendiente y se puede recibir de nuevo (el legacy lo
+        // permite). La regla se valida al recibir y la concurrencia la protege el RowVersion del vale.
+        builder.HasIndex(x => new { x.PlantaOrigenCode, x.ValeTransferenciaCode })
+            .HasDatabaseName("IX_NotaIngresos_ValeTransferencia");
 
         builder.Property(x => x.FechaRecepcion).IsRequired();
         builder.Property(x => x.FechaEmision).IsRequired();

@@ -5,7 +5,6 @@ using Cepheus.Domain.Logistica.Enum;
 using Cepheus.Domain.Logistica.Maestros;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Cepheus.Infrastructure.Services.StockArticulos;
 
@@ -189,12 +188,19 @@ public sealed class ArticuloStockMovementService : IArticuloStockMovementService
         return new StockMovementResult(stock, movimiento);
     }
 
-    public async Task<MovimientoArticulo?> RecordOpeningAsync(
+    public Task<MovimientoArticulo?> RecordOpeningAsync(
         ArticuloStock stock,
         DateTime fecha,
         CancellationToken cancellationToken = default)
+        => RecordOpeningAsync(stock, stock.Quantity, fecha, cancellationToken);
+
+    public async Task<MovimientoArticulo?> RecordOpeningAsync(
+        ArticuloStock stock,
+        decimal cantidad,
+        DateTime fecha,
+        CancellationToken cancellationToken = default)
     {
-        if (stock.Quantity <= 0)
+        if (cantidad <= 0)
             return null;
 
         var plantaCode = stock.PlantaCode.Trim().ToUpperInvariant();
@@ -213,7 +219,7 @@ public sealed class ArticuloStockMovementService : IArticuloStockMovementService
             Origen = OrigenMovimientoArticulo.Apertura,
             DocumentoCode = "APERTURA",
             ItemNumber = null,
-            Cantidad = stock.Quantity,
+            Cantidad = cantidad,
             CostoUnitario = CurrentAverage(stock),
             CostoUnitarioUsd = stock.UnitCostUsd,
             StockPosterior = stock.Quantity,

@@ -104,6 +104,23 @@ public class NotaIngreso : IAuditableEntity
     public string? AsientoContable { get; set; }
     public string? CodigoVale { get; set; }
 
+    // ---- Transferencia entre almacenes (Origen = Transferencia) ----
+    // El ingreso se genera en el almacén DESTINO a partir de un Vale de Salida tipo Transferencia (005) del almacén
+    // ORIGEN. En el legacy el código del vale se guardaba en Codigo_com (el campo "Orden de compra") y el origen
+    // iba dentro de Numero_doc ('TRANSFERENCIA' + planta origen). Aquí son campos propios con clave foránea al vale:
+    // OrdenCompraCode es una clave foránea a la orden de compra y no puede guardar un código de vale.
+
+    /// <summary>Planta que envía (dueña del vale). Null si la nota no es una transferencia.</summary>
+    public string? PlantaOrigenCode { get; set; }
+
+    /// <summary>
+    /// Código del vale de transferencia en la planta origen. Un vale se recibe una sola vez mientras su nota no esté
+    /// anulada; al anular la transferencia el vale vuelve a Pendiente.
+    /// </summary>
+    public string? ValeTransferenciaCode { get; set; }
+
+    public Vale? ValeTransferencia { get; set; }
+
     public ICollection<NotaIngresoDetalle> Detalles { get; set; } = new List<NotaIngresoDetalle>();
 
     public DateTime CreatedAt { get; set; }

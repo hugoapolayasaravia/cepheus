@@ -19,4 +19,6 @@ public sealed record CierreMensualResponse(
     decimal ImporteTotal,
     int DocumentosRevalorizados,
     int Incidencias,
-    decimal DiferenciaConStock);
+    decimal DiferenciaConStock,
+    // Artículos cuyo costo promedio vivo se alineó con el del cierre.
+    int CostosPromedioAlineados);

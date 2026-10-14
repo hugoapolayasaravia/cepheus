@@ -10,6 +10,7 @@ public static class KardexOrigen
         OrigenMovimientoArticulo.NotaIngreso => "NI",
         OrigenMovimientoArticulo.NotaCredito => "NI",
         OrigenMovimientoArticulo.Importacion => "NI",
+        OrigenMovimientoArticulo.TransferenciaIngreso => "NI",
         OrigenMovimientoArticulo.OrdenServicio => "OS",
         OrigenMovimientoArticulo.ValeSalida => "VS",
         OrigenMovimientoArticulo.AjusteIngreso => "AI",

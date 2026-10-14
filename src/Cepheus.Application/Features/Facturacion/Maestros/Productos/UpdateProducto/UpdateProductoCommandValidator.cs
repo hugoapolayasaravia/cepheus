@@ -38,10 +38,6 @@ namespace Cepheus.Application.Features.Facturacion.Maestros.Productos.UpdateProd
                 .MaximumLength(5).WithMessage("La unidad no puede exceder los 5 caracteres.")
                 .MustAsync(UnitExists).WithMessage("La unidad de medida indicada no existe.");
 
-            RuleFor(x => x.AccountingAccountCode).MaximumLength(8).WithMessage("La cuenta contable no puede exceder los 8 caracteres.");
-            RuleFor(x => x.TransportAccountCode).MaximumLength(8).WithMessage("La cuenta de transporte no puede exceder los 8 caracteres.");
-            RuleFor(x => x.CreditNoteAccountCode).MaximumLength(8).WithMessage("La cuenta de nota de crédito no puede exceder los 8 caracteres.");
-
             RuleFor(x => x.LengthLimit)
                 .InclusiveBetween(0m, MaxDecimal).WithMessage("La longitud tope debe ser un valor positivo.");
 
@@ -94,6 +90,20 @@ namespace Cepheus.Application.Features.Facturacion.Maestros.Productos.UpdateProd
                 .When(x => x.CementValue.HasValue);
 
             RuleFor(x => x.RowVersion).NotEmpty().WithMessage("RowVersion es obligatorio para control de concurrencia.");
+
+            RuleFor(x => x.AccountingAccountCode).MaximumLength(8).WithMessage("La cuenta contable no puede exceder los 8 caracteres.");
+            RuleFor(x => x.TransportAccountCode).MaximumLength(8).WithMessage("La cuenta de transporte no puede exceder los 8 caracteres.");
+            RuleFor(x => x.CreditNoteAccountCode).MaximumLength(8).WithMessage("La cuenta de nota de crédito no puede exceder los 8 caracteres.");
+
+            RuleFor(x => x.AccountingAccountCode)
+                .MustAsync(AccountingAccountExists).WithMessage("La cuenta contable indicada no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.AccountingAccountCode));
+            RuleFor(x => x.TransportAccountCode)
+                .MustAsync(AccountingAccountExists).WithMessage("La cuenta de transporte indicada no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.TransportAccountCode));
+            RuleFor(x => x.CreditNoteAccountCode)
+                .MustAsync(AccountingAccountExists).WithMessage("La cuenta de nota de crédito indicada no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.CreditNoteAccountCode));
         }
 
         private void AddAttributeRule(Expression<Func<UpdateProductoCommand, string?>> selector, TipoAtributoConcreto type, string label)
@@ -137,5 +147,9 @@ namespace Cepheus.Application.Features.Facturacion.Maestros.Productos.UpdateProd
             return await _uow.Facturacion.Maestros.Productos.Query()
                 .AnyAsync(p => p.TipoProductoCode == tipo && p.Code == code, ct);
         }
+
+        private async Task<bool> AccountingAccountExists(string? code, CancellationToken ct)
+            => await _uow.Contabilidad.Maestros.CuentasContables.Query().AnyAsync(c => c.Code == code!.Trim(), ct);
+
     }
 }

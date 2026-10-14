@@ -64,16 +64,9 @@ public class MovimientoArticuloConfiguration : IEntityTypeConfiguration<Movimien
         builder.HasIndex(x => new { x.PlantaCode, x.Origen, x.DocumentoCode })
             .HasDatabaseName("IX_MovimientosArticulo_Documento");
 
-        // Un movimiento solo puede ser revertido una vez.
-        builder.HasIndex(x => x.ReversaDeMovimientoId)
-            .IsUnique()
-            .HasFilter("[ReversaDeMovimientoId] IS NOT NULL")
-            .HasDatabaseName("UX_MovimientosArticulo_Reversa");
-
-        builder.ToTable(t =>
-        {
-            t.HasCheckConstraint("CK_MovimientosArticulo_Cantidad_Positiva", "[Cantidad] > 0");
-            t.HasCheckConstraint("CK_MovimientosArticulo_Tipo", "[Tipo] IN (1, 2)");
-        });
+        // Un movimiento solo puede ser revertido una vez. Índice único sobre una columna que admite null:
+        // el proveedor de cada motor decide cómo tratar los nulos (SQL Server agrega solo el filtro IS NOT NULL;
+        // PostgreSQL ya admite varios nulos). Sin SQL propio del motor. La cantidad positiva y el tipo válido
+        // se validan en ArticuloStockMovementService.
     }
 }

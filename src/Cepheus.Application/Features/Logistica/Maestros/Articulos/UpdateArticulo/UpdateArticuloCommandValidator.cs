@@ -62,6 +62,14 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
                 .MustAsync(PlantaExists).WithMessage("La planta de origen indicada no existe.")
                 .When(x => !string.IsNullOrWhiteSpace(x.PlantOriginCode));
 
+            RuleFor(x => x.AccountingAccountCode)
+                .MustAsync(AccountingAccountExists).WithMessage("La cuenta contable indicada no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.AccountingAccountCode));
+            RuleFor(x => x.AccountingAttachmentTypeCode)
+                .MustAsync(AccountingAttachmentTypeExists).WithMessage("El tipo de anexo contable indicado no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.AccountingAttachmentTypeCode));
+
+
             RuleFor(x => x.RowVersion)
                 .NotEmpty().WithMessage("RowVersion es obligatorio para control de concurrencia.");
         }
@@ -85,5 +93,12 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Articulos.UpdateArticu
 
         private async Task<bool> PlantaExists(string? code, CancellationToken ct)
             => await _uow.Comunes.Plantas.Query().AnyAsync(p => p.Code == code!.Trim().ToUpper(), ct);
+
+        private async Task<bool> AccountingAccountExists(string? code, CancellationToken ct)
+            => await _uow.Contabilidad.Maestros.CuentasContables.Query().AnyAsync(c => c.Code == code!.Trim(), ct);
+
+        private async Task<bool> AccountingAttachmentTypeExists(string? code, CancellationToken ct)
+            => await _uow.Contabilidad.Catalogos.TiposAnexo.Query().AnyAsync(t => t.Code == code!.Trim(), ct);
+
     }
 }

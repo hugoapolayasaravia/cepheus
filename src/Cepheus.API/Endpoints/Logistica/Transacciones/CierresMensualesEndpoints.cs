@@ -1,3 +1,4 @@
+using Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.GenerarAperturaKardex;
 using Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.GetCierreIncidencias;
 using Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.GetCierreMensualEstado;
 using Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.ProcesarCierreMensual;
@@ -26,6 +27,13 @@ public static class CierresMensualesEndpoints
         .WithName("ProcesarCierreMensual")
         .RequireAuthorization("CIERREMENSUAL.CREATE");
 
+        // Apertura del Kardex (una vez, antes del primer cierre): reemplaza la carga de stock iniciales del legacy.
+        group.MapPost("/{plantaCode}/apertura-kardex",
+            async (string plantaCode, GenerarAperturaKardexRequest? body, ISender sender) =>
+                Results.Ok(await sender.Send(new GenerarAperturaKardexCommand(plantaCode, body?.FechaApertura))))
+        .WithName("GenerarAperturaKardex")
+        .RequireAuthorization("CIERREMENSUAL.CREATE");
+
         // Incidencias del cierre (reemplaza la tabla ERRORES del legacy).
         group.MapGet("/{plantaCode}/{periodCode}/incidencias",
             async (string plantaCode, string periodCode, string? tipo, ISender sender) =>
@@ -40,3 +48,4 @@ public static class CierresMensualesEndpoints
         .RequireAuthorization("CIERREMENSUAL.DELETE");
     }
 }
+public sealed record GenerarAperturaKardexRequest(DateTime? FechaApertura);

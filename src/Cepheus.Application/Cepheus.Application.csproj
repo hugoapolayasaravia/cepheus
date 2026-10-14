@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Contabilidad\Catalogos\" />
-    <Folder Include="Features\Contabilidad\Maestros\" />
     <Folder Include="Features\Contabilidad\Transacciones\" />
   </ItemGroup>
 

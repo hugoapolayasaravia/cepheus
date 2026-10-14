@@ -40,6 +40,14 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Update
                 .WithMessage("Un subcentro de costo no puede ser padre de sí mismo.")
                 .When(x => !string.IsNullOrWhiteSpace(x.ParentCode));
 
+            RuleFor(x => x.AccountingAccountCode)
+                .MustAsync(AccountingAccountExists).WithMessage("La cuenta contable indicada no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.AccountingAccountCode));
+            RuleFor(x => x.AccountingAttachmentTypeCode)
+                .MustAsync(AccountingAttachmentTypeExists).WithMessage("El tipo de anexo contable indicado no existe.")
+                .When(x => !string.IsNullOrWhiteSpace(x.AccountingAttachmentTypeCode));
+
+
             RuleFor(x => x.RowVersion)
                 .NotEmpty().WithMessage("RowVersion es obligatorio para control de concurrencia.");
         }
@@ -56,5 +64,12 @@ namespace Cepheus.Application.Features.Logistica.Maestros.SubCentrosCosto.Update
 
         private async Task<bool> ParentExists(string? parentCode, CancellationToken ct)
             => await _uow.Logistica.Maestros.SubCentrosCosto.Query().AnyAsync(s => s.Code == parentCode!.Trim().ToUpper(), ct);
+
+        private async Task<bool> AccountingAccountExists(string? code, CancellationToken ct)
+            => await _uow.Contabilidad.Maestros.CuentasContables.Query().AnyAsync(c => c.Code == code!.Trim(), ct);
+
+        private async Task<bool> AccountingAttachmentTypeExists(string? code, CancellationToken ct)
+            => await _uow.Contabilidad.Catalogos.TiposAnexo.Query().AnyAsync(t => t.Code == code!.Trim(), ct);
+
     }
 }

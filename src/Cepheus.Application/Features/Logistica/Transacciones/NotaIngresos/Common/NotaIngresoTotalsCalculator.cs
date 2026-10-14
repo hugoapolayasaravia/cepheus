@@ -1,4 +1,5 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,12 @@ public static class NotaIngresoTotalsCalculator
         IUnitOfWork uow, NotaIngreso note, ComprobantePago comprobante, CancellationToken ct)
     {
         var control = await uow.Comunes.ControlesVentas.Query().AsNoTracking().FirstOrDefaultAsync(ct);
+        var igvPct = comprobante.AffectsIgv
+            ? await PeriodoIgvRules.GetPorcentajeAsync(uow, note.FechaEmision, ct)
+            : 0m;
         var suma = Sum(note);
 
-        var igv = ComputedIgv(comprobante, control, suma);
+        var igv = ComputedIgv(comprobante, igvPct, suma);
         var renta = ComputedRenta(comprobante, control, suma);
         var fonavi = ComputedFonavi(comprobante, control, suma);
 
@@ -69,13 +73,16 @@ public static class NotaIngresoTotalsCalculator
         CancellationToken ct)
     {
         var control = await uow.Comunes.ControlesVentas.Query().AsNoTracking().FirstOrDefaultAsync(ct);
+        var igvPct = comprobante.AffectsIgv
+            ? await PeriodoIgvRules.GetPorcentajeAsync(uow, note.FechaEmision, ct)
+            : 0m;
         var suma = Sum(note);
 
         decimal igv, noGravable, renta, fonavi, servicio, igvExterior, monto;
 
         if (comprobante.Code == NotaIngresoRules.ComprobanteHonorarios && comprobanteChanged)
         {
-            igv = ComputedIgv(comprobante, control, suma);
+            igv = ComputedIgv(comprobante, igvPct, suma);
             renta = ComputedRenta(comprobante, control, suma);
             fonavi = ComputedFonavi(comprobante, control, suma);
             noGravable = 0;
@@ -117,9 +124,10 @@ public static class NotaIngresoTotalsCalculator
     private static decimal Sum(NotaIngreso note)
         => Math.Round(note.Detalles.Sum(d => d.Total), 2, MidpointRounding.AwayFromZero);
 
-    private static decimal ComputedIgv(ComprobantePago c, ControlVentas? control, decimal suma)
+    // El porcentaje sale de PeriodoIgv según la fecha de emisión (fg_igv(fecha) del legacy).
+    private static decimal ComputedIgv(ComprobantePago c, decimal igvPercentage, decimal suma)
         => c.AffectsIgv
-            ? Math.Round(suma * (control?.IgvPercentage ?? 0) / 100m, 2, MidpointRounding.AwayFromZero)
+            ? Math.Round(suma * igvPercentage / 100m, 2, MidpointRounding.AwayFromZero)
             : 0;
 
     private static decimal ComputedRenta(ComprobantePago c, ControlVentas? control, decimal suma)

@@ -48,9 +48,8 @@ public sealed class AnulateNotaIngresoCommandHandler
 
         if (note.Condicion != CondicionNotaIngreso.OrdenCompra)
             throw new InvalidOperationException("La anulación de notas con guías anexadas aún no está disponible.");
-        if (note.Origen is not (OrigenNotaIngreso.Compra or OrigenNotaIngreso.Importacion))
-            throw new InvalidOperationException(
-                "La anulación de notas de transferencia aún no está disponible.");
+        if (note.Origen is not (OrigenNotaIngreso.Compra or OrigenNotaIngreso.Importacion or OrigenNotaIngreso.Transferencia))
+            throw new InvalidOperationException("El origen de la Nota de Ingreso no admite anulación.");
 
         await NotaIngresoRules.EnsurePeriodOpenAsync(
             _uow, planta, note.FechaRecepcion,
@@ -58,7 +57,9 @@ public sealed class AnulateNotaIngresoCommandHandler
 
         var lineas = note.Detalles.Where(d => d.Estado == EstadoNotaIngresoDetalle.Procesado).ToList();
 
-        if (note.Origen == OrigenNotaIngreso.Importacion)
+        if (note.Origen == OrigenNotaIngreso.Transferencia)
+            await AnularTransferenciaAsync(note, lineas, planta, ct);
+        else if (note.Origen == OrigenNotaIngreso.Importacion)
             await AnularImportacionAsync(note, lineas, planta, ct);
         else if (note.ComprobantePago.Code == NotaIngresoRules.ComprobanteNotaCredito)
             await AnularNotaCreditoAsync(note, lineas, planta, ct);
@@ -72,6 +73,66 @@ public sealed class AnulateNotaIngresoCommandHandler
         await _uow.SaveChangesAsync(ct);
 
         return await NotaIngresoReader.GetAsync(_uow, planta, code, ct);
+    }
+
+    /// <summary>
+    /// Nota de Ingreso de una transferencia entre almacenes (Logi_sp_Anula_NotaIngreso, origen 'T'):
+    ///   - resta del DESTINO lo que ingresó (el servicio central rechaza si el stock ya no alcanza: es el
+    ///     "dejan saldos negativos" de la ventana del legacy);
+    ///   - devuelve al ORIGEN lo que había salido (deshace la salida del vale al costo con que salió);
+    ///   - las líneas y la cabecera del vale vuelven a Pendiente, para poder recibirlo de nuevo.
+    /// Ambos movimientos se registran como reversión de los originales en el Kardex y respetan el período cerrado de
+    /// cada planta (con la fecha de recepción de la nota). El costo promedio del destino no se revierte, igual que en
+    /// el legacy. Los asientos contables quedan fuera de esta fase.
+    /// </summary>
+    private async Task AnularTransferenciaAsync(
+        NotaIngreso note,
+        List<NotaIngresoDetalle> lineas,
+        string destino,
+        CancellationToken ct)
+    {
+        var origen = note.PlantaOrigenCode
+            ?? throw new InvalidOperationException("La Nota de Ingreso de transferencia no tiene planta origen.");
+        var valeCode = note.ValeTransferenciaCode
+            ?? throw new InvalidOperationException("La Nota de Ingreso de transferencia no tiene vale asociado.");
+
+        var vale = await _uow.Logistica.Transacciones.Vales.Query()
+            .Include(v => v.Detalles)
+            .FirstOrDefaultAsync(v => v.PlantaCode == origen && v.Code == valeCode, ct)
+            ?? throw new KeyNotFoundException($"El vale {origen}/{valeCode} de la transferencia no existe.");
+
+        if (vale.Estado != EstadoVale.Procesado)
+            throw new InvalidOperationException(
+                $"El vale {origen}/{valeCode} se encuentra {vale.Estado}: no se puede anular la transferencia.");
+
+        foreach (var linea in lineas)
+        {
+            // Destino: resta lo ingresado.
+            await _stock.ApplyAsync(
+                destino, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
+                increment: false, recalculateAverage: false,
+                context: Reversion(OrigenMovimientoArticulo.TransferenciaIngreso, note, linea),
+                cancellationToken: ct);
+
+            // Origen: devuelve lo que salió (la salida se registró con el código del vale y el mismo ítem).
+            await _stock.ApplyAsync(
+                origen, linea.ArticuloCode, linea.Cantidad, 0m, 0m, 0m,
+                increment: true, recalculateAverage: false,
+                context: new StockMovementContext(
+                    OrigenMovimientoArticulo.ValeSalida, valeCode, linea.ItemNumber, note.FechaRecepcion,
+                    EsReversion: true),
+                cancellationToken: ct);
+
+            var lineaVale = vale.Detalles.FirstOrDefault(d =>
+                d.ItemNumber == linea.ItemNumber && d.Estado == EstadoValeDetalle.Procesado);
+
+            if (lineaVale is not null)
+                lineaVale.Estado = EstadoValeDetalle.Pendiente;
+        }
+
+        vale.Estado = EstadoVale.Pendiente;
+        vale.ProcesadoPor = null;
+        vale.FechaProcesado = null;
     }
 
     /// <summary>

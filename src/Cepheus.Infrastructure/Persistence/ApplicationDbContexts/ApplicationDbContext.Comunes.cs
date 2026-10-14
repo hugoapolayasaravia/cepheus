@@ -26,4 +26,6 @@ public partial class ApplicationDbContext
 
     public DbSet<Banco> Bancos => Set<Banco>();
     public DbSet<Negocio> Negocios => Set<Negocio>();
+
+    public DbSet<PeriodoIgv> PeriodosIgv => Set<PeriodoIgv>();
 }

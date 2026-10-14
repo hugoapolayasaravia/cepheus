@@ -38,7 +38,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Rec
                     $"La Importación está en estado '{importacion.Estado}' y ya no admite recalcular el prorrateo.");
             }
 
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, importacion.FechaPoliza, cancellationToken);
 
             // Totales de cabecera + prorrateo a líneas y gastos.
             ImportacionTotalsCalculator.Recalculate(importacion, igvPercentage);

@@ -1,4 +1,5 @@
-﻿using Cepheus.Domain.Facturacion.Catalogos;
+﻿using Cepheus.Domain.Contabilidad.Maestros;
+using Cepheus.Domain.Facturacion.Catalogos;
 using Cepheus.Domain.Facturacion.Maestros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -146,6 +147,25 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Facturacion.Catalogo
                 .HasForeignKey(x => x.MixProportionCode)
                 .HasPrincipalKey(a => a.Code)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<CuentaContable>()
+                .WithMany()
+                .HasForeignKey(x => x.AccountingAccountCode)
+                .HasPrincipalKey(c => c.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<CuentaContable>()
+                .WithMany()
+                .HasForeignKey(x => x.TransportAccountCode)
+                .HasPrincipalKey(c => c.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<CuentaContable>()
+                .WithMany()
+                .HasForeignKey(x => x.CreditNoteAccountCode)
+                .HasPrincipalKey(c => c.Code)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
         }
     }

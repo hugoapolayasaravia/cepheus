@@ -58,7 +58,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Upd
             gasto.NetoGastoInafecto = request.NetoGastoInafecto;
             gasto.RowVersion = request.RowVersion;
 
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, request.FechaEmision, cancellationToken);
             ImportacionGastoCalculator.Apply(gasto, comprobante, igvPercentage, request.Igv);
 
             try

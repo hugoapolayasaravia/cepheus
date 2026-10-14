@@ -25,7 +25,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Cre
             var plantaCode = request.PlantaCode.Trim().ToUpperInvariant();
 
             var tipoCambio = await ImportacionTotalsCalculator.ResolveTipoCambioAsync(_uow, request.FechaPoliza, cancellationToken);
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, request.FechaPoliza, cancellationToken);
 
             for (var attempt = 1; attempt <= MaxConcurrencyRetries; attempt++)
             {

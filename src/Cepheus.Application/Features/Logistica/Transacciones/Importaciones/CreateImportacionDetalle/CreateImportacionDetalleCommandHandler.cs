@@ -69,7 +69,7 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Importaciones.Cre
 
             importacion.Detalles.Add(detalle);
 
-            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, cancellationToken);
+            var igvPercentage = await ImportacionTotalsCalculator.GetIgvPercentageAsync(_uow, importacion.FechaPoliza, cancellationToken);
             ImportacionTotalsCalculator.Recalculate(importacion, igvPercentage);
 
             try

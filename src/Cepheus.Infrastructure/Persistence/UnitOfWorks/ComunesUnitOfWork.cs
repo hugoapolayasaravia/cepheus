@@ -45,5 +45,8 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         private IRepository<Negocio>? _negocios;
         public IRepository<Negocio> Negocios => _negocios ??= new Repository<Negocio>(_context);
+
+        private IRepository<PeriodoIgv>? _periodosIgv;
+        public IRepository<PeriodoIgv> PeriodosIgv => _periodosIgv ??= new Repository<PeriodoIgv>(_context);
     }
 }

@@ -96,21 +96,22 @@ public sealed class ProcesarValeCommandHandler
 
         foreach (var linea in seleccion.OrderBy(l => l.ItemNumber))
         {
-            var contexto = new StockMovementContext(
-                Origen: OrigenMovimientoArticulo.ValeSalida,
-                DocumentoCode: code,
-                ItemNumber: linea.ItemNumber,
-                FechaMovimiento: vale.FechaEntrega);
-
+            // Kardex: salida del vale al costo promedio vigente (el cierre la revaloriza si corresponde).
             await _stock.ApplyAsync(
-                planta, linea.ArticuloCode, linea.Cantidad,
-                0m, 0m, 0m,
+                planta,
+                linea.ArticuloCode,
+                linea.Cantidad,
+                0m,
+                0m,
+                0m,
                 increment: false,
                 recalculateAverage: false,
-                context: contexto,
+                context: new StockMovementContext(
+                    OrigenMovimientoArticulo.ValeSalida, vale.Code, linea.ItemNumber, vale.FechaEntrega),
                 cancellationToken: ct);
 
             linea.Estado = EstadoValeDetalle.Procesado;
+
             await ValeOrdenTrabajo.ConsumeAsync(_uow, vale, linea, ct);
         }
 

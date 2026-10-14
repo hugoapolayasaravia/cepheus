@@ -52,7 +52,8 @@ public static class CierreMensualCalculator
     {
         OrigenMovimientoArticulo.NotaIngreso,
         OrigenMovimientoArticulo.Importacion,
-        OrigenMovimientoArticulo.OrdenServicio
+        OrigenMovimientoArticulo.OrdenServicio,
+        OrigenMovimientoArticulo.TransferenciaIngreso
     };
 
     private static readonly OrigenMovimientoArticulo[] OrigenesRevaluables =

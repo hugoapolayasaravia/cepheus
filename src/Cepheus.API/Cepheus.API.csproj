@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Contabilidad\Catalogos\" />
-    <Folder Include="Endpoints\Contabilidad\Maestros\" />
     <Folder Include="Endpoints\Contabilidad\Transacciones\" />
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 ﻿// Cepheus.Application/Features/Logistica/Transacciones/Cotizaciones/Common/CotizacionCalculators.cs
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.PeriodosIgv.Common;
 using Cepheus.Domain.Logistica.Transacciones;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +13,13 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.Cotizaciones.Comm
 
         /// <summary>
         /// Neto/Igv/Total de la oferta de un proveedor, desde sus líneas +
-        /// Comunes.ControlVentas.IgvPercentage. Mismo criterio que
-        /// PedidoTotalsCalculator.
+        /// el IGV% del período vigente (Comunes.PeriodoIgv).
         /// </summary>
         public static async Task RecalculateProveedorAsync(
             IUnitOfWork uow, CotizacionProveedor proveedor, CancellationToken cancellationToken)
         {
-            var igvPercentage = await uow.Comunes.ControlesVentas.Query()
-                .AsNoTracking()
-                .Select(c => c.IgvPercentage)
-                .FirstOrDefaultAsync(cancellationToken);
+            // La cotización no tiene fecha de documento: se usa el porcentaje vigente hoy.
+            var igvPercentage = await PeriodoIgvRules.GetPorcentajeAsync(uow, DateTime.Today, cancellationToken);
 
             var neto = proveedor.Detalles.Sum(d => d.TotalLinea);
             neto = Math.Round(neto, 2, MidpointRounding.AwayFromZero);

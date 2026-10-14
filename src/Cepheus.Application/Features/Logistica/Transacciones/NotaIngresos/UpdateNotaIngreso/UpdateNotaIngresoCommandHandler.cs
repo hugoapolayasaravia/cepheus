@@ -26,6 +26,10 @@ public sealed class UpdateNotaIngresoCommandHandler
         if (note.Estado == EstadoNotaIngreso.Anulado)
             throw new InvalidOperationException("La Nota de Ingreso está anulada y no se puede modificar.");
 
+        if (note.Origen == OrigenNotaIngreso.Transferencia)
+            throw new InvalidOperationException(
+                "Una Nota de Ingreso generada por una transferencia no se puede modificar: su costo lo fija el cierre del almacén origen.");
+
         if (!string.IsNullOrWhiteSpace(note.AsientoContable))
             throw new InvalidOperationException(
                 "La Nota de Ingreso ya tiene asiento contable y no se puede modificar.");

@@ -21,9 +21,6 @@ public class SaldoMensualArticuloConfiguration : IEntityTypeConfiguration<SaldoM
         builder.Property(x => x.IncomingQuantity).IsRequired().HasColumnType("decimal(14,2)").HasDefaultValue(0m);
         builder.Property(x => x.OutgoingQuantity).IsRequired().HasColumnType("decimal(14,2)").HasDefaultValue(0m);
 
-        builder.Property(x => x.Amount)
-            .HasColumnType("decimal(18,2)")
-            .HasComputedColumnSql("ROUND([Quantity] * [AverageCost], 2)", stored: true);
 
         builder.Property(x => x.CreatedBy).HasMaxLength(250);
         builder.Property(x => x.UpdatedBy).HasMaxLength(250);

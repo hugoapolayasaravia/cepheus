@@ -10,12 +10,11 @@ namespace Cepheus.Application.Features.Logistica.Transacciones.CierreMensual.Rea
 /// Deshace el último cierre: restaura los precios que el cierre había corregido en los documentos, elimina los saldos,
 /// incidencias y auditoría del período y borra su ControlCierre. Todo en una transacción y bajo el mismo bloqueo por
 /// planta que el cierre. Solo se puede reabrir el último período cerrado.
+/// El costo promedio vivo del stock NO se revierte: queda con el valor que dejó el cierre hasta el próximo cierre.
 /// </summary>
 public sealed class ReabrirCierreMensualCommandHandler
     : IRequestHandler<ReabrirCierreMensualCommand, ReabrirCierreMensualResponse>
 {
-    private const int TimeoutBloqueoMs = 15000;
-
     private readonly IUnitOfWork _uow;
     private readonly IReadOnlyList<ICierreRevaluador> _revaluadores;
 
@@ -25,19 +24,29 @@ public sealed class ReabrirCierreMensualCommandHandler
         _revaluadores = revaluadores.ToList();
     }
 
-    public Task<ReabrirCierreMensualResponse> Handle(ReabrirCierreMensualCommand request, CancellationToken ct)
+    public async Task<ReabrirCierreMensualResponse> Handle(ReabrirCierreMensualCommand request, CancellationToken ct)
     {
         var planta = request.PlantaCode.Trim().ToUpperInvariant();
 
-        return _uow.ExecuteInTransactionAsync(
-            token => EjecutarAsync(planta, token),
-            IsolationLevel.Serializable,
-            ct);
+        await CierreMensualLock.EnsureAsync(_uow, planta, ct);
+
+        try
+        {
+            return await _uow.ExecuteInTransactionAsync(
+                token => EjecutarAsync(planta, token),
+                IsolationLevel.ReadCommitted,
+                ct);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new InvalidOperationException(
+                "Un documento cambió mientras se reabría el período. Intente nuevamente.");
+        }
     }
 
     private async Task<ReabrirCierreMensualResponse> EjecutarAsync(string planta, CancellationToken ct)
     {
-        await _uow.AcquireAppLockAsync($"CierreMensual:{planta}", TimeoutBloqueoMs, ct);
+        await CierreMensualLock.AcquireAsync(_uow, planta, ct);
 
         var ultimo = await _uow.Logistica.Maestros.ControlCierres.Query()
             .Where(c => c.PlantaCode == planta)

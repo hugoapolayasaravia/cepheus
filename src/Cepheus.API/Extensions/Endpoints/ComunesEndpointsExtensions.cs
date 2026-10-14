@@ -18,6 +18,7 @@ public static class ComunesEndpointsExtensions
         app.MapMotivosDevolucionEndpoints();
         app.MapBancosEndpoints();
         app.MapNegociosEndpoints();
+        app.MapPeriodosIgvEndpoints();
 
         return app;
     }

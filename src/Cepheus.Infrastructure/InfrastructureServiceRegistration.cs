@@ -8,6 +8,7 @@ using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
 using Cepheus.Infrastructure.Persistence.UnitOfWorks;
 using Cepheus.Infrastructure.Services;
 using Cepheus.Infrastructure.Services.StockArticulos;
+using Cepheus.Infrastructure.Services.Transferencias;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,9 +49,17 @@ namespace Cepheus.Infrastructure
             services.AddScoped<IArticuloStockMovementService, ArticuloStockMovementService>();
 
             // Revaluadores del cierre mensual: uno por tipo de documento de salida.
-            // Al migrar Vales de Salida y Ajustes de Inventario, agregar aquí su ICierreRevaluador.
             services.AddScoped<ICierreRevaluador, OrdenServicioSalidaRevaluador>();
+            services.AddScoped<ICierreRevaluador, ValeSalidaRevaluador>();
+            services.AddScoped<ICierreRevaluador, AjusteInventarioSalidaRevaluador>();
 
+            // Transferencias entre almacenes: el costo final del origen se lleva al ingreso del destino.
+            services.AddScoped<TransferenciaIngresoRevaluador>();
+            services.AddScoped<ICierreRevaluador>(sp => sp.GetRequiredService<TransferenciaIngresoRevaluador>());
+            services.AddScoped<IPropagadorRevaluacion>(sp => sp.GetRequiredService<TransferenciaIngresoRevaluador>());
+            services.AddSingleton<ITransferenciaSettings, TransferenciaSettings>();
+
+            
 
             return services;
         }

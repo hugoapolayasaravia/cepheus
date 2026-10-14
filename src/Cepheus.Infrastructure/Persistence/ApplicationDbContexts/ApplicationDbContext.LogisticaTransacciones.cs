@@ -45,4 +45,5 @@ public partial class ApplicationDbContext
     public DbSet<SaldoMensualArticulo> SaldosMensualesArticulo => Set<SaldoMensualArticulo>();
     public DbSet<CierreIncidencia> CierreIncidencias => Set<CierreIncidencia>();
     public DbSet<CierreRevaluacion> CierreRevaluaciones => Set<CierreRevaluacion>();
+    public DbSet<CierreBloqueo> CierreBloqueos => Set<CierreBloqueo>();
 }
