@@ -46,4 +46,7 @@ public partial class ApplicationDbContext
     public DbSet<CierreIncidencia> CierreIncidencias => Set<CierreIncidencia>();
     public DbSet<CierreRevaluacion> CierreRevaluaciones => Set<CierreRevaluacion>();
     public DbSet<CierreBloqueo> CierreBloqueos => Set<CierreBloqueo>();
+
+    public DbSet<OrdenCompraAdministracion> OrdenesCompraAdministracion => Set<OrdenCompraAdministracion>();
+    public DbSet<OrdenCompraAdministracionDetalle> OrdenCompraAdministracionDetalles => Set<OrdenCompraAdministracionDetalle>();
 }

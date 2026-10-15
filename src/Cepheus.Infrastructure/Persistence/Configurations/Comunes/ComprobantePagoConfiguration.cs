@@ -14,13 +14,16 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
 
             builder.Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(2);
+                .HasColumnType("char(2)")
+                .IsFixedLength();
+
 
             builder.HasIndex(x => x.Code).IsUnique();
 
             builder.Property(x => x.SunatCode)
                 .IsRequired()
-                .HasMaxLength(2);
+                .HasColumnType("char(2)")
+                .IsFixedLength();
 
             builder.HasIndex(x => x.SunatCode).IsUnique();
 

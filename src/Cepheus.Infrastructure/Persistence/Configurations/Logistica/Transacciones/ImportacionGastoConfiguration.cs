@@ -27,7 +27,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Transaccio
 
             builder.Property(x => x.NumeroDocumento).IsRequired().HasMaxLength(15);
 
-            builder.Property(x => x.ComprobantePagoCode).IsRequired().HasMaxLength(2);
+            builder.Property(x => x.ComprobantePagoCode).IsRequired().HasColumnType("char(2)").IsFixedLength();
             builder.HasOne(x => x.ComprobantePago).WithMany().HasForeignKey(x => x.ComprobantePagoCode)
                 .OnDelete(DeleteBehavior.Restrict);
 

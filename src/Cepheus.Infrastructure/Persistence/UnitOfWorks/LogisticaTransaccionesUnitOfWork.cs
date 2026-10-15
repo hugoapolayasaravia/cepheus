@@ -106,5 +106,10 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<CierreBloqueo>? _cierreBloqueos;
         public IRepository<CierreBloqueo> CierreBloqueos => _cierreBloqueos ??= new Repository<CierreBloqueo>(_context);
 
+        private IRepository<OrdenCompraAdministracion>? _ordenesCompraAdministracion;
+        public IRepository<OrdenCompraAdministracion> OrdenesCompraAdministracion => _ordenesCompraAdministracion ??= new Repository<OrdenCompraAdministracion>(_context);
+
+        private IRepository<OrdenCompraAdministracionDetalle>? _ordenCompraAdministracionDetalles;
+        public IRepository<OrdenCompraAdministracionDetalle> OrdenCompraAdministracionDetalles => _ordenCompraAdministracionDetalles ??= new Repository<OrdenCompraAdministracionDetalle>(_context);
     }
 }

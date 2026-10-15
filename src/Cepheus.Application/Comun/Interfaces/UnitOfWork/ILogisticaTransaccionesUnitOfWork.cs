@@ -38,6 +38,9 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<CierreRevaluacion> CierreRevaluaciones { get; }
         IRepository<CierreBloqueo> CierreBloqueos { get; }
 
+        IRepository<OrdenCompraAdministracion> OrdenesCompraAdministracion { get; }
+        IRepository<OrdenCompraAdministracionDetalle> OrdenCompraAdministracionDetalles { get; }
+
 
 
     }

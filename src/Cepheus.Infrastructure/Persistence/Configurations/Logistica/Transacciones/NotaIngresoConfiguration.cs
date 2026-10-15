@@ -45,8 +45,9 @@ public sealed class NotaIngresoConfiguration : IEntityTypeConfiguration<NotaIngr
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.ComprobantePagoReferenciaCode)
-            .HasMaxLength(2)
-            .IsRequired(false);
+                .HasColumnType("char(2)")
+                .IsFixedLength()
+                .IsRequired(false);
 
         builder.HasOne(x => x.ComprobantePagoReferencia)
             .WithMany()

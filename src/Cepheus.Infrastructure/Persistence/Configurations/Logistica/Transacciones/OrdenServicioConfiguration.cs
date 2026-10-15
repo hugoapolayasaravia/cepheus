@@ -23,6 +23,7 @@ public sealed class OrdenServicioConfiguration : IEntityTypeConfiguration<OrdenS
         // Enum persistido como int con el valor del código legacy (mismo criterio que NotaIngreso).
         builder.Property(x => x.Estado).HasConversion<int>().IsRequired();
 
+        builder.Property(x => x.ComprobantePagoCode).IsRequired().HasColumnType("char(2)").IsFixedLength();
         builder.HasOne(x => x.ComprobantePago)
             .WithMany()
             .HasForeignKey(x => x.ComprobantePagoCode)
