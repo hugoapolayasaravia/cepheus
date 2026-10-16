@@ -11,14 +11,11 @@
         // Administracion
         IAdministracionUnitOfWork Administracion { get; }
 
-
         //Comunes
         IComunesUnitOfWork Comunes { get; }
 
-
         // Logistica
         ILogisticaUnitOfWork Logistica { get; }
-
 
         // Mantenimiento
         IMantenimientoUnitOfWork Mantenimiento { get; }
@@ -34,7 +31,6 @@
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
-
         void ClearTracking();
 
         /// <summary>
@@ -48,11 +44,6 @@
             System.Data.IsolationLevel isolationLevel,
             CancellationToken cancellationToken = default);
 
-        /// <summary>
-        /// Toma un bloqueo exclusivo de aplicación (SQL Server sp_getapplock) ligado a la transacción actual.
-        /// Se libera solo al confirmar o revertir. Lanza InvalidOperationException si no se obtiene a tiempo.
-        /// </summary>
-        Task AcquireAppLockAsync(string resource, int timeoutMilliseconds, CancellationToken cancellationToken = default);
     }
 
 

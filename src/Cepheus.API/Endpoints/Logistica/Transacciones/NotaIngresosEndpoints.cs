@@ -1,7 +1,9 @@
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.AnulateNotaIngreso;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.CreateNotaIngreso;
+using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GenerarValeDesdeNotaIngreso;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GetNotaIngresoByCode;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GetNotaIngresoReferencia;
+using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GetNotaIngresoValeStock;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GetNotaIngresosPaginated;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.GetOrdenCompraPendiente;
 using Cepheus.Application.Features.Logistica.Transacciones.NotaIngresos.UpdateNotaIngreso;
@@ -67,6 +69,25 @@ public static class NotaIngresosEndpoints
         .WithName("UpdateNotaIngreso")
         .RequireAuthorization("NOTASINGRESO.UPDATE");
 
+        // Botón "Vales": líneas de la nota que dejarían saldo negativo al generar el vale (lista vacía = se puede generar).
+        group.MapGet("/{codigoPlanta}/{codigo}/vale/stock-insuficiente", async (string codigoPlanta, string codigo, ISender sender) =>
+            Results.Ok(await sender.Send(new GetNotaIngresoValeStockQuery(codigoPlanta, codigo))))
+        .WithName("GetNotaIngresoValeStock")
+        .RequireAuthorization("NOTASINGRESO.VIEW");
+
+        // Botón "Vales": genera un Vale de Salida tipo Transferencia con las líneas de la nota (el stock no se mueve aquí).
+        group.MapPost("/{codigoPlanta}/{codigo}/vale", async (
+            string codigoPlanta, string codigo, GenerarValeDesdeNotaIngresoRequest body, ISender sender) =>
+        {
+            var vale = await sender.Send(new GenerarValeDesdeNotaIngresoCommand(
+                codigoPlanta, codigo, body.FechaEntrega, body.SubCentroCostoCode,
+                body.TrabajadorCode, body.UnidadNegocioCode, body.PlantaAfectadaCode));
+
+            return Results.Created($"/api/logistica/transacciones/vales/{vale.PlantaCode}/{vale.Code}", vale);
+        })
+        .WithName("GenerarValeDesdeNotaIngreso")
+        .RequireAuthorization("NOTASINGRESO.UPDATE");
+
         // Anulación (revierte stock y lo entregado en la OC). Mismo permiso UPDATE que OC / Pedidos.
         group.MapDelete("/{codigoPlanta}/{codigo}", async (string codigoPlanta, string codigo, ISender sender) =>
             Results.Ok(await sender.Send(new AnulateNotaIngresoCommand(codigoPlanta, codigo))))
@@ -74,3 +95,9 @@ public static class NotaIngresosEndpoints
         .RequireAuthorization("NOTASINGRESO.UPDATE");
     }
 }
+public sealed record GenerarValeDesdeNotaIngresoRequest(
+    DateTime FechaEntrega,
+    string SubCentroCostoCode,
+    string TrabajadorCode,
+    string UnidadNegocioCode,
+    string PlantaAfectadaCode);

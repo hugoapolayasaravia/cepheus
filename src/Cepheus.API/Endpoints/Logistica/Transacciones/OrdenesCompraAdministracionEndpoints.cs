@@ -25,22 +25,22 @@ namespace Cepheus.API.Endpoints.Logistica.Transacciones
                 return Results.Created($"/api/logistica/transacciones/ordenes-compra-administracion/{result.Code}", result);
             })
             .WithName("CreateOrdenCompraAdministracion")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.CREATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.CREATE");
 
             group.MapGet("/paged", async ([AsParameters] GetOrdenesCompraAdmPaginatedQuery query, ISender sender) =>
                 Results.Ok(await sender.Send(query)))
             .WithName("GetOrdenesCompraAdministracionPagedQueryString")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.VIEW");
+            .RequireAuthorization("ORDENESCOMPRAADM.VIEW");
 
             group.MapPost("/paged/body", async (GetOrdenesCompraAdmPaginatedQuery query, ISender sender) =>
                 Results.Ok(await sender.Send(query)))
             .WithName("GetOrdenesCompraAdministracionPagedBody")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.VIEW");
+            .RequireAuthorization("ORDENESCOMPRAADM.VIEW");
 
             group.MapGet("/{codigo}", async (string codigo, ISender sender) =>
                 Results.Ok(await sender.Send(new GetOrdenCompraAdmByCodeQuery(codigo))))
             .WithName("GetOrdenCompraAdministracionByCode")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.VIEW");
+            .RequireAuthorization("ORDENESCOMPRAADM.VIEW");
 
             group.MapPut("/{codigo}", async (
                 string codigo, UpdateOrdenCompraAdmCommand command, ISender sender) =>
@@ -52,13 +52,13 @@ namespace Cepheus.API.Endpoints.Logistica.Transacciones
                 return Results.Ok(await sender.Send(command));
             })
             .WithName("UpdateOrdenCompraAdministracion")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.UPDATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.UPDATE");
 
             group.MapPatch("/{codigo}/estado", async (
                 string codigo, ChangeEstadoBody body, ISender sender) =>
                 Results.Ok(await sender.Send(new ChangeEstadoOrdenCompraAdmCommand(codigo, body.NuevoEstado))))
             .WithName("ChangeEstadoOrdenCompraAdministracion")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.UPDATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.UPDATE");
 
             group.MapPost("/{codigo}/detalles", async (
                 string codigo, CreateOrdenCompraAdmDetalleCommand command, ISender sender) =>
@@ -70,7 +70,7 @@ namespace Cepheus.API.Endpoints.Logistica.Transacciones
                 return Results.Ok(await sender.Send(command));
             })
             .WithName("CreateOrdenCompraAdministracionDetalle")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.UPDATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.UPDATE");
 
             group.MapPut("/{codigo}/detalles/{item:int}", async (
                 string codigo, int item, UpdateOrdenCompraAdmDetalleCommand command, ISender sender) =>
@@ -83,13 +83,13 @@ namespace Cepheus.API.Endpoints.Logistica.Transacciones
                 return Results.Ok(await sender.Send(command));
             })
             .WithName("UpdateOrdenCompraAdministracionDetalle")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.UPDATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.UPDATE");
 
             group.MapDelete("/{codigo}/detalles/{item:int}", async (
                 string codigo, int item, ISender sender) =>
                 Results.Ok(await sender.Send(new DeleteOrdenCompraAdmDetalleCommand(codigo, item))))
             .WithName("DeleteOrdenCompraAdministracionDetalle")
-            .RequireAuthorization("ORDENESCOMPRAADMINISTRACION.UPDATE");
+            .RequireAuthorization("ORDENESCOMPRAADM.UPDATE");
         }
 
         public record ChangeEstadoBody(string NuevoEstado);

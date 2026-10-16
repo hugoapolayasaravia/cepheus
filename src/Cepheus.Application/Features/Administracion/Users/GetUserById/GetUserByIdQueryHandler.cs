@@ -28,6 +28,9 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUserById
                     IsActive = u.IsActive,
                     CreatedAt = u.CreatedAt,
                     UpdatedAt = u.UpdatedAt,
+                    CreatedBy = u.CreatedBy,
+                    UpdatedBy = u.UpdatedBy,
+                    TrabajadorCode = u.TrabajadorCode,
                     RowVersion = u.RowVersion,
                     Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
                 })
