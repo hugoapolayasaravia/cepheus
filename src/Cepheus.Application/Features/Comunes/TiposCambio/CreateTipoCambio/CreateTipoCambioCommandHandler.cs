@@ -2,6 +2,7 @@
 using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Cepheus.Domain.Comunes;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
 {
@@ -18,6 +19,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
         {
             var tipoCambio = new TipoCambio
             {
+                MonedaCode = TipoCambioRules.Normalizar(request.MonedaCode),
                 Date = request.Date,
                 SellRate = request.SellRate,
                 BuyRate = request.BuyRate
@@ -26,18 +28,22 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
             await _uow.Comunes.TiposCambio.AddAsync(tipoCambio, cancellationToken);
             await _uow.SaveChangesAsync(cancellationToken);
 
-            return Map(tipoCambio);
+            return await _uow.Comunes.TiposCambio.Query()
+                .AsNoTracking()
+                .Where(t => t.Id == tipoCambio.Id)
+                .Select(t => new TipoCambioResponse
+                {
+                    Id = t.Id,
+                    MonedaCode = t.MonedaCode,
+                    MonedaName = t.Moneda.Name,
+                    Date = t.Date,
+                    SellRate = t.SellRate,
+                    BuyRate = t.BuyRate,
+                    CreatedAt = t.CreatedAt,
+                    UpdatedAt = t.UpdatedAt,
+                    RowVersion = t.RowVersion
+                })
+                .FirstAsync(cancellationToken);
         }
-
-        internal static TipoCambioResponse Map(TipoCambio tipoCambio) => new()
-        {
-            Id = tipoCambio.Id,
-            Date = tipoCambio.Date,
-            SellRate = tipoCambio.SellRate,
-            BuyRate = tipoCambio.BuyRate,
-            CreatedAt = tipoCambio.CreatedAt,
-            UpdatedAt = tipoCambio.UpdatedAt,
-            RowVersion = tipoCambio.RowVersion
-        };
     }
 }

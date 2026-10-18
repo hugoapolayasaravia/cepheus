@@ -6,6 +6,8 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTiposCambioPaginat
 {
     public class GetTiposCambioPaginatedQuery : PagedRequest, IRequest<PagedResult<TipoCambioResponse>>
     {
+        /// <summary>Filtra por moneda (ej. USD). Sin valor trae todas.</summary>
+        public string? MonedaCode { get; set; }
         public DateOnly? FromDate { get; set; }
         public DateOnly? ToDate { get; set; }
     }

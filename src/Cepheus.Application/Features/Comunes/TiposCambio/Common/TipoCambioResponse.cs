@@ -3,6 +3,8 @@
     public class TipoCambioResponse
     {
         public int Id { get; set; }
+        public string MonedaCode { get; set; } = default!;
+        public string? MonedaName { get; set; }
         public DateOnly Date { get; set; }
         public decimal SellRate { get; set; }
         public decimal BuyRate { get; set; }

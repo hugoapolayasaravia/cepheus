@@ -39,4 +39,6 @@ public partial class ApplicationDbContext
 
     public DbSet<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones => Set<ArticuloPlantaUbicacion>();
 
+    public DbSet<SubFamiliaAnexo> SubFamiliaAnexos => Set<SubFamiliaAnexo>();
+
 }

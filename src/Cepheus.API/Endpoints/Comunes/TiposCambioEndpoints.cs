@@ -51,9 +51,10 @@ namespace Cepheus.API.Endpoints.Comunes
             .WithName("GetTipoCambioById")
             .RequireAuthorization("TIPOSCAMBIO.VIEW");
 
-            group.MapGet("/by-date/{date}", async (DateOnly date, ISender sender) =>
+            // GET /api/comunes/tipos-cambio/by-date/2026-10-18?monedaCode=USD
+            group.MapGet("/by-date/{date}", async (DateOnly date, string monedaCode, ISender sender) =>
             {
-                var result = await sender.Send(new GetTipoCambioByDateQuery(date));
+                var result = await sender.Send(new GetTipoCambioByDateQuery(monedaCode, date));
                 return Results.Ok(result);
             })
             .WithName("GetTipoCambioByDate")

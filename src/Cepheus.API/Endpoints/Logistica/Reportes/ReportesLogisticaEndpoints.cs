@@ -1,12 +1,13 @@
 using Cepheus.Application.Features.Logistica.Reportes.Ajustes.GetReporteAjustesInventario;
 using Cepheus.Application.Features.Logistica.Reportes.Compras.GetReporteCompras;
 using Cepheus.Application.Features.Logistica.Reportes.ComprasAdm.GetReporteComprasAdm;
+using Cepheus.Application.Features.Logistica.Reportes.Consumos.GetReporteConsumosProcesados;
+using Cepheus.Application.Features.Logistica.Reportes.ConsumosAnexos.GetReporteConsumosAnexos;
+using Cepheus.Application.Features.Logistica.Reportes.ConsumosCentroCostoArticulos.GetReporteConsumosCentroCostoArticulos;
 using Cepheus.Application.Features.Logistica.Reportes.ConsumosFrecuencia.GetReporteConsumosFrecuencia;
 using Cepheus.Application.Features.Logistica.Reportes.InventarioPermanente.GetReporteInventarioPermanenteValorizado;
-using Cepheus.Application.Features.Logistica.Reportes.SeguimientoOrdenCompra.GetReporteSeguimientoOrdenCompra;
-using Cepheus.Application.Features.Logistica.Reportes.Consumos.GetReporteConsumosProcesados;
-using Cepheus.Application.Features.Logistica.Reportes.ConsumosCentroCostoArticulos.GetReporteConsumosCentroCostoArticulos;
 using Cepheus.Application.Features.Logistica.Reportes.Pedidos.GetReportePedidosDetalle;
+using Cepheus.Application.Features.Logistica.Reportes.SeguimientoOrdenCompra.GetReporteSeguimientoOrdenCompra;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Logistica.Reportes;
@@ -110,5 +111,17 @@ public static class ReportesLogisticaEndpoints
                     subFamiliaCode, subFamilia2Code, resumen ?? false))))
         .WithName("GetReporteInventarioPermanenteValorizado")
         .RequireAuthorization("REPORTEINVENTARIOPER.VIEW");
+
+        // Consumos x Anexos (consumo gerencial): cuenta contable y anexo por subcentro + subfamilia.
+        group.MapGet("/consumos-anexos", async (
+            string plantaCode, DateTime fechaDesde, DateTime fechaHasta, string? accountingAccountCode,
+            string? accountingAttachmentTypeCode, string? accountingAttachmentCode, string? centroCostoCode,
+            string? subCentroCostoCode, string? plantaAfectadaCode, ISender sender) =>
+                Results.Ok(await sender.Send(new GetReporteConsumosAnexosQuery(
+                    plantaCode, fechaDesde, fechaHasta, accountingAccountCode, accountingAttachmentTypeCode,
+                    accountingAttachmentCode, centroCostoCode, subCentroCostoCode, plantaAfectadaCode))))
+        .WithName("GetReporteConsumosAnexos")
+        .RequireAuthorization("REPORTECONSUMOSANE.VIEW");
+
     }
 }

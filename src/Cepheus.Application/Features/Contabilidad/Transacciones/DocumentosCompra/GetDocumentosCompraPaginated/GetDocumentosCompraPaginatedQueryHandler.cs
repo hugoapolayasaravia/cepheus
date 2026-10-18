@@ -69,12 +69,19 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                 .Distinct()
                 .ToList();
 
+            var monedas = paged.Items
+                .Where(d => d.TipoCambioFecha.HasValue)
+                .Select(d => d.MonedaCode.Trim().ToUpper())
+                .Distinct()
+                .ToList();
+
+            // El tipo de cambio es por moneda: la clave es (moneda, fecha).
             var tiposCambio = fechas.Count == 0
-                ? new Dictionary<DateOnly, decimal>()
+                ? new Dictionary<(string Moneda, DateOnly Fecha), decimal>()
                 : await _uow.Comunes.TiposCambio.Query()
                     .AsNoTracking()
-                    .Where(t => fechas.Contains(t.Date))
-                    .ToDictionaryAsync(t => t.Date, t => t.SellRate, cancellationToken);
+                    .Where(t => fechas.Contains(t.Date) && monedas.Contains(t.MonedaCode))
+                    .ToDictionaryAsync(t => (t.MonedaCode, t.Date), t => t.SellRate, cancellationToken);
 
             return new PagedResult<DocumentoCompraListItemResponse>
             {
@@ -86,7 +93,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                         {
                             item.TipoCambioVenta = 1m;
                         }
-                        else if (d.TipoCambioFecha.HasValue && tiposCambio.TryGetValue(d.TipoCambioFecha.Value, out var venta))
+                        else if (d.TipoCambioFecha.HasValue && tiposCambio.TryGetValue((d.MonedaCode.Trim().ToUpper(), d.TipoCambioFecha.Value), out var venta))
                         {
                             item.TipoCambioVenta = venta;
                         }

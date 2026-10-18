@@ -99,5 +99,9 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         public IRepository<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones => _articuloPlantaUbicaciones ??= new Repository<ArticuloPlantaUbicacion>(_context);
 
+        private IRepository<SubFamiliaAnexo>? _subFamiliaAnexos;
+
+        public IRepository<SubFamiliaAnexo> SubFamiliaAnexos =>
+            _subFamiliaAnexos ??= new Repository<SubFamiliaAnexo>(_context);
     }
 }

@@ -29,6 +29,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.UpdateTipoCambio
             var tipoCambio = new TipoCambio
             {
                 Id = request.Id,
+                MonedaCode = TipoCambioRules.Normalizar(request.MonedaCode),
                 Date = request.Date,
                 SellRate = request.SellRate,
                 BuyRate = request.BuyRate,
@@ -51,16 +52,22 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.UpdateTipoCambio
                     "El tipo de cambio fue modificado por otro proceso. Recargue los datos e intente nuevamente.");
             }
 
-            return new TipoCambioResponse
-            {
-                Id = tipoCambio.Id,
-                Date = tipoCambio.Date,
-                SellRate = tipoCambio.SellRate,
-                BuyRate = tipoCambio.BuyRate,
-                CreatedAt = tipoCambio.CreatedAt,
-                UpdatedAt = tipoCambio.UpdatedAt,
-                RowVersion = tipoCambio.RowVersion
-            };
+            return await _uow.Comunes.TiposCambio.Query()
+                .AsNoTracking()
+                .Where(t => t.Id == tipoCambio.Id)
+                .Select(t => new TipoCambioResponse
+                {
+                    Id = t.Id,
+                    MonedaCode = t.MonedaCode,
+                    MonedaName = t.Moneda.Name,
+                    Date = t.Date,
+                    SellRate = t.SellRate,
+                    BuyRate = t.BuyRate,
+                    CreatedAt = t.CreatedAt,
+                    UpdatedAt = t.UpdatedAt,
+                    RowVersion = t.RowVersion
+                })
+                .FirstAsync(cancellationToken);
         }
     }
 }

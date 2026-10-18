@@ -38,6 +38,10 @@ namespace Cepheus.Domain.Comunes
     {
         public int Id { get; set; }
 
+        /// <summary>Moneda extranjera a la que corresponde el tipo de cambio (ISO 4217: USD, EUR...). Expresa cuántos soles vale una unidad de esa moneda.</summary>
+        public string MonedaCode { get; set; } = default!;
+        public Moneda Moneda { get; set; } = default!;
+
         public DateOnly Date { get; set; }
         public decimal SellRate { get; set; }
         public decimal BuyRate { get; set; }

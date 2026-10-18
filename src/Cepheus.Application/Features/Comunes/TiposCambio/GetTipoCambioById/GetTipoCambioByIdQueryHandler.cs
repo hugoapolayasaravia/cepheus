@@ -22,6 +22,8 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTipoCambioById
                 .Select(t => new TipoCambioResponse
                 {
                     Id = t.Id,
+                    MonedaCode = t.MonedaCode,
+                    MonedaName = t.Moneda.Name,
                     Date = t.Date,
                     SellRate = t.SellRate,
                     BuyRate = t.BuyRate,

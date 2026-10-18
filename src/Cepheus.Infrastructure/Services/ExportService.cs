@@ -1,6 +1,8 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
+using Cepheus.Application.Comun.Models;
 using ClosedXML.Excel;
 using MigraDoc.DocumentObjectModel;
+using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using PdfSharp.Fonts;
 
@@ -58,10 +60,12 @@ namespace Cepheus.Infrastructure.Services
             return stream.ToArray();
         }
 
-        public byte[] ToPdf(string title, string? subtitle, IReadOnlyList<string> headers, IReadOnlyList<object?[]> rows)
+        public byte[] ToPdf(ReporteInfo info, IReadOnlyList<string> headers, IReadOnlyList<object?[]> rows)
         {
+            const double anchoUtil = 26.7; // A4 apaisada (29.7 cm) con márgenes laterales de 1.5 cm
+
             var document = new Document();
-            document.Info.Title = title;
+            document.Info.Title = info.Titulo;
 
             var normal = document.Styles[StyleNames.Normal]!;
             normal.Font.Name = "Arial";
@@ -72,20 +76,66 @@ namespace Cepheus.Infrastructure.Services
             section.PageSetup.Orientation = Orientation.Landscape;
             section.PageSetup.LeftMargin = Unit.FromCentimeter(1.5);
             section.PageSetup.RightMargin = Unit.FromCentimeter(1.5);
-            section.PageSetup.TopMargin = Unit.FromCentimeter(1.5);
-            section.PageSetup.BottomMargin = Unit.FromCentimeter(1.5);
+            section.PageSetup.TopMargin = Unit.FromCentimeter(2.4);
+            section.PageSetup.BottomMargin = Unit.FromCentimeter(2.0);
+            section.PageSetup.HeaderDistance = Unit.FromCentimeter(0.9);
+            section.PageSetup.FooterDistance = Unit.FromCentimeter(0.9);
 
-            var encabezadoDoc = section.AddParagraph(title);
-            encabezadoDoc.Format.Font.Size = 14;
-            encabezadoDoc.Format.Font.Bold = true;
-            encabezadoDoc.Format.SpaceAfter = Unit.FromCentimeter(0.1);
+            // ---- Encabezado de cada hoja: empresa (izq.) | título en negrita (centro) | página X de Y (der.) ----
+            var cabecera = section.Headers.Primary.AddTable();
+            var tercio = Unit.FromCentimeter(anchoUtil / 3);
+            cabecera.AddColumn(tercio);
+            cabecera.AddColumn(tercio);
+            cabecera.AddColumn(tercio);
 
-            if (!string.IsNullOrWhiteSpace(subtitle))
+            var filaCabecera = cabecera.AddRow();
+            filaCabecera.VerticalAlignment = VerticalAlignment.Center;
+            filaCabecera.Borders.Bottom.Width = 0.5;
+            filaCabecera.Borders.Bottom.Color = Colors.Gray;
+
+            var empresa = filaCabecera.Cells[0].AddParagraph(info.Empresa);
+            empresa.Format.Font.Size = 9;
+            empresa.Format.Font.Bold = true;
+
+            var titulo = filaCabecera.Cells[1].AddParagraph(info.Titulo);
+            titulo.Format.Alignment = ParagraphAlignment.Center;
+            titulo.Format.Font.Size = 13;
+            titulo.Format.Font.Bold = true;
+
+            var paginacion = filaCabecera.Cells[2].AddParagraph();
+            paginacion.Format.Alignment = ParagraphAlignment.Right;
+            paginacion.Format.Font.Size = 8;
+            paginacion.AddText("Página ");
+            paginacion.AddPageField();
+            paginacion.AddText(" de ");
+            paginacion.AddNumPagesField();
+
+            // ---- Pie de cada hoja: usuario (centro) | fecha actual (der.) ----
+            var pie = section.Footers.Primary.AddTable();
+            pie.AddColumn(tercio);
+            pie.AddColumn(tercio);
+            pie.AddColumn(tercio);
+
+            var filaPie = pie.AddRow();
+            filaPie.VerticalAlignment = VerticalAlignment.Center;
+            filaPie.Borders.Top.Width = 0.5;
+            filaPie.Borders.Top.Color = Colors.Gray;
+
+            var usuario = filaPie.Cells[1].AddParagraph($"Generado por: {info.GeneradoPor}");
+            usuario.Format.Alignment = ParagraphAlignment.Center;
+            usuario.Format.Font.Size = 7;
+
+            var fecha = filaPie.Cells[2].AddParagraph(info.GeneradoEn.ToString(FormatoFecha));
+            fecha.Format.Alignment = ParagraphAlignment.Right;
+            fecha.Format.Font.Size = 7;
+
+            // ---- Cuerpo ----
+            if (!string.IsNullOrWhiteSpace(info.Subtitulo))
             {
-                var sub = section.AddParagraph(subtitle);
+                var sub = section.AddParagraph(info.Subtitulo);
                 sub.Format.Font.Size = 8;
                 sub.Format.Font.Color = Colors.Gray;
-                sub.Format.SpaceAfter = Unit.FromCentimeter(0.4);
+                sub.Format.SpaceAfter = Unit.FromCentimeter(0.3);
             }
 
             var table = section.AddTable();
@@ -97,9 +147,8 @@ namespace Cepheus.Infrastructure.Services
             table.TopPadding = 2;
             table.BottomPadding = 2;
 
-            // Ancho útil de una hoja A4 apaisada con márgenes de 1.5 cm: 26.7 cm, repartidos
-            // según el largo del contenido de cada columna.
-            var anchos = CalcularAnchos(headers, rows, 26.7);
+            // El ancho útil se reparte según el largo del contenido de cada columna.
+            var anchos = CalcularAnchos(headers, rows, anchoUtil);
             foreach (var ancho in anchos)
             {
                 table.AddColumn(Unit.FromCentimeter(ancho));
@@ -122,14 +171,6 @@ namespace Cepheus.Infrastructure.Services
                     fPdf.Cells[c].AddParagraph(ATexto(fila[c]));
                 }
             }
-
-            var pie = section.Footers.Primary.AddParagraph();
-            pie.Format.Alignment = ParagraphAlignment.Right;
-            pie.Format.Font.Size = 7;
-            pie.AddText("Página ");
-            pie.AddPageField();
-            pie.AddText(" de ");
-            pie.AddNumPagesField();
 
             var renderer = new PdfDocumentRenderer { Document = document };
             renderer.RenderDocument();

@@ -35,11 +35,19 @@ namespace Cepheus.Application.Features.Administracion.Users.ExportUsers
 
         private readonly IUnitOfWork _uow;
         private readonly IExportService _exportService;
+        private readonly IReportSettings _reportSettings;
+        private readonly ICurrentUserService _currentUser;
 
-        public ExportUsersQueryHandler(IUnitOfWork uow, IExportService exportService)
+        public ExportUsersQueryHandler(
+            IUnitOfWork uow,
+            IExportService exportService,
+            IReportSettings reportSettings,
+            ICurrentUserService currentUser)
         {
             _uow = uow;
             _exportService = exportService;
+            _reportSettings = reportSettings;
+            _currentUser = currentUser;
         }
 
         public async Task<ExportFileResponse> Handle(ExportUsersQuery request, CancellationToken cancellationToken)
@@ -122,11 +130,12 @@ namespace Cepheus.Application.Features.Administracion.Users.ExportUsers
                     filtros.Add(request.IsActive.Value ? "Estado: Activos" : "Estado: Inactivos");
                 }
 
-                var subtitulo = $"Generado el {ahora:dd/MM/yyyy HH:mm}"
-                    + (filtros.Count > 0 ? " · " + string.Join(" · ", filtros) : string.Empty)
-                    + $" · {filas.Count} registro(s)";
+                var subtitulo = (filtros.Count > 0 ? string.Join(" · ", filtros) + " · " : string.Empty)
+                    + $"{filas.Count} registro(s)";
 
-                var pdf = _exportService.ToPdf("Usuarios", subtitulo, encabezados, filas);
+                var generadoPor = _currentUser.FullName ?? _currentUser.Email ?? "—";
+                var info = new ReporteInfo(_reportSettings.CompanyName, "Usuarios", subtitulo, generadoPor, ahora);
+                var pdf = _exportService.ToPdf(info, encabezados, filas);
                 return new ExportFileResponse(pdf, "application/pdf", $"usuarios_{ahora:yyyyMMdd_HHmm}.pdf");
             }
 

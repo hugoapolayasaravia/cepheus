@@ -1,4 +1,5 @@
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Cepheus.Application.Features.Logistica.Reportes.Common;
 using Cepheus.Domain.Logistica.Enum;
 using MediatR;
@@ -52,13 +53,16 @@ public sealed class GetReporteComprasAdmQueryHandler : IRequestHandler<GetReport
         }).ToListAsync(ct);
 
         var tipoCambio = await CargarTiposCambioAsync(
-            datos.Where(x => ReporteRules.EsDolar(x.o.MonedaCode)).Select(x => x.o.FechaRecepcion.Date).Distinct().ToList(), ct);
+            datos.Where(x => !TipoCambioRules.EsMonedaBase(x.o.MonedaCode))
+                 .Select(x => (Moneda: x.o.MonedaCode.Trim().ToUpperInvariant(), Fecha: x.o.FechaRecepcion.Date))
+                 .Distinct().ToList(), ct);
 
         var filas = datos
             .Select(x =>
             {
-                var dolar = ReporteRules.EsDolar(x.o.MonedaCode);
-                var tc = dolar ? Resolver(tipoCambio, x.o.FechaRecepcion.Date) : 1m;
+                // Moneda distinta de soles: tipo de cambio venta de la propia moneda del documento.
+                var dolar = !TipoCambioRules.EsMonedaBase(x.o.MonedaCode);
+                var tc = dolar ? Resolver(tipoCambio, x.o.MonedaCode.Trim().ToUpperInvariant(), x.o.FechaRecepcion.Date) : 1m;
                 var anulada = x.o.Estado == EstadoOrdenServicio.Anulado;
                 decimal Monto(decimal v) => anulada ? 0m : ReporteRules.ASoles(v, dolar, tc);
 
@@ -79,28 +83,39 @@ public sealed class GetReporteComprasAdmQueryHandler : IRequestHandler<GetReport
             planta, desde, hastaExcl.AddDays(-1), filas.Count, filas.Sum(f => f.Total), filas);
     }
 
-    /// <summary>Tipo de cambio venta por día; si un día no tiene, se usa el último anterior registrado.</summary>
-    private async Task<SortedList<DateTime, decimal>> CargarTiposCambioAsync(IReadOnlyList<DateTime> fechas, CancellationToken ct)
+    /// <summary>Tipo de cambio venta por moneda y día; si un día no tiene, se usa el último anterior registrado.</summary>
+    private async Task<Dictionary<string, SortedList<DateTime, decimal>>> CargarTiposCambioAsync(
+        IReadOnlyList<(string Moneda, DateTime Fecha)> pares, CancellationToken ct)
     {
-        var lista = new SortedList<DateTime, decimal>();
-        if (fechas.Count == 0) return lista;
+        var resultado = new Dictionary<string, SortedList<DateTime, decimal>>();
+        if (pares.Count == 0) return resultado;
 
-        var min = DateOnly.FromDateTime(fechas.Min().AddDays(-15));
-        var max = DateOnly.FromDateTime(fechas.Max());
+        var monedas = pares.Select(p => p.Moneda).Distinct().ToList();
+        var min = DateOnly.FromDateTime(pares.Min(p => p.Fecha).AddDays(-15));
+        var max = DateOnly.FromDateTime(pares.Max(p => p.Fecha));
 
         var tasas = await _uow.Comunes.TiposCambio.Query().AsNoTracking()
-            .Where(t => t.Date >= min && t.Date <= max)
-            .Select(t => new { t.Date, t.SellRate })
+            .Where(t => monedas.Contains(t.MonedaCode) && t.Date >= min && t.Date <= max)
+            .Select(t => new { t.MonedaCode, t.Date, t.SellRate })
             .ToListAsync(ct);
 
-        foreach (var t in tasas) lista[t.Date.ToDateTime(TimeOnly.MinValue)] = t.SellRate;
-        return lista;
+        foreach (var t in tasas)
+        {
+            if (!resultado.TryGetValue(t.MonedaCode, out var lista))
+                resultado[t.MonedaCode] = lista = new SortedList<DateTime, decimal>();
+
+            lista[t.Date.ToDateTime(TimeOnly.MinValue)] = t.SellRate;
+        }
+
+        return resultado;
     }
 
-    private static decimal Resolver(SortedList<DateTime, decimal> tasas, DateTime fecha)
+    private static decimal Resolver(Dictionary<string, SortedList<DateTime, decimal>> tasas, string moneda, DateTime fecha)
     {
+        if (!tasas.TryGetValue(moneda, out var lista)) return 0m;
+
         decimal valor = 0m;
-        foreach (var kv in tasas)
+        foreach (var kv in lista)
         {
             if (kv.Key > fecha) break;
             valor = kv.Value;

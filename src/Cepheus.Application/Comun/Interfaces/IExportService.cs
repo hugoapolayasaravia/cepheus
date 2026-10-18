@@ -1,4 +1,6 @@
-﻿namespace Cepheus.Application.Comun.Interfaces
+﻿using Cepheus.Application.Comun.Models;
+
+namespace Cepheus.Application.Comun.Interfaces
 {
     /// <summary>
     /// Genera archivos de exportación a partir de encabezados y filas ya preparadas.
@@ -9,6 +11,7 @@
     {
         byte[] ToExcel(string title, IReadOnlyList<string> headers, IReadOnlyList<object?[]> rows);
 
-        byte[] ToPdf(string title, string? subtitle, IReadOnlyList<string> headers, IReadOnlyList<object?[]> rows);
+        /// <summary>PDF horizontal con encabezado y pie estándar (ver ReporteInfo).</summary>
+        byte[] ToPdf(ReporteInfo info, IReadOnlyList<string> headers, IReadOnlyList<object?[]> rows);
     }
 }

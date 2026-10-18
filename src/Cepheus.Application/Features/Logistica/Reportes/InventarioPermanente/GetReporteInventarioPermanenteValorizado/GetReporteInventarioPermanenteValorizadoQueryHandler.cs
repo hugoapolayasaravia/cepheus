@@ -92,15 +92,18 @@ public sealed class GetReporteInventarioPermanenteValorizadoQueryHandler
         var codigos = saldos.Keys.Union(movimientos.Keys).OrderBy(c => c, StringComparer.Ordinal).ToList();
 
 
-        var info = codigos.Count == 0
-            ? new Dictionary<string, (string Nombre, string Unidad)>()
-            : (await _uow.Logistica.Maestros.Articulos.Query().AsNoTracking()
+        var info = new Dictionary<string, (string Nombre, string Unidad)>();
+
+        if (codigos.Count > 0)
+        {
+            var articulosInfo = await _uow.Logistica.Maestros.Articulos.Query().AsNoTracking()
                 .Where(a => codigos.Contains(a.Code))
                 .Select(a => new { a.Code, a.Name, a.UnidadMedidaCode })
-                .ToListAsync(ct))
-                .ToDictionary(
-                    a => a.Code,
-                    a => (Nombre: a.Name, Unidad: a.UnidadMedidaCode));
+                .ToListAsync(ct);
+
+            foreach (var a in articulosInfo)
+                info[a.Code] = (a.Name, a.UnidadMedidaCode);
+        }
 
 
         var articulos = new List<InventarioArticuloResponse>();

@@ -1,10 +1,11 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosCompra.Common
 {
     /// <summary>
-    /// El documento guarda solo la FECHA del tipo de cambio; el valor se consulta en Comunes.TipoCambio.
+    /// El documento guarda solo la FECHA del tipo de cambio; el valor se consulta en Comunes.TipoCambio para la moneda del documento.
     /// Soles -> 1. Sin tipo de cambio registrado en esa fecha -> null.
     /// </summary>
     public static class DocumentoCompraTipoCambioResolver
@@ -22,11 +23,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                 return null;
             }
 
-            return await uow.Comunes.TiposCambio.Query()
-                .AsNoTracking()
-                .Where(t => t.Date == fecha.Value)
-                .Select(t => (decimal?)t.SellRate)
-                .FirstOrDefaultAsync(ct);
+            return await TipoCambioRules.GetVentaAsync(uow, monedaCode!, fecha.Value, ct);
         }
     }
 }

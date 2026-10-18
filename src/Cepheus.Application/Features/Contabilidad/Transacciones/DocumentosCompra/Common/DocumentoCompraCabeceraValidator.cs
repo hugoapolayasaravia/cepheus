@@ -55,9 +55,13 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                 .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .WithMessage("La fecha del tipo de cambio es obligatoria para moneda extranjera.")
-                .MustAsync(async (f, ct) =>
-                    await uow.Comunes.TiposCambio.Query().AnyAsync(t => t.Date == f!.Value, ct))
-                .WithMessage("No existe tipo de cambio registrado para la fecha indicada.")
+                .MustAsync(async (x, f, ct) =>
+                {
+                    var moneda = x.MonedaCode.Trim().ToUpper();
+                    return await uow.Comunes.TiposCambio.Query()
+                        .AnyAsync(t => t.MonedaCode == moneda && t.Date == f!.Value, ct);
+                })
+                .WithMessage("No existe tipo de cambio registrado para la moneda y la fecha indicadas.")
                 .When(x => !string.Equals(x.MonedaCode?.Trim(), DocumentoCompraRules.MonedaSoles, StringComparison.OrdinalIgnoreCase));
 
             RuleFor(x => x.NoGravableSol).GreaterThanOrEqualTo(0);

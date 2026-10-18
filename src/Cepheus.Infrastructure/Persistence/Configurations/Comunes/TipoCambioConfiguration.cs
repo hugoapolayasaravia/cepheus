@@ -16,7 +16,18 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Comunes
                 .IsRequired()
                 .HasColumnType("date");
 
-            builder.HasIndex(x => x.Date).IsUnique();
+            builder.Property(x => x.MonedaCode)
+                .IsRequired()
+                .HasColumnType("char(3)");
+
+            // Un tipo de cambio por moneda y fecha.
+            builder.HasIndex(x => new { x.MonedaCode, x.Date }).IsUnique();
+
+            builder.HasOne(x => x.Moneda)
+                .WithMany()
+                .HasForeignKey(x => x.MonedaCode)
+                .HasPrincipalKey(x => x.Code)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.SellRate)
                 .IsRequired()

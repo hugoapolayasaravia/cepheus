@@ -22,6 +22,12 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTiposCambioPaginat
         {
             var query = _uow.Comunes.TiposCambio.Query().AsNoTracking();
 
+            if (!string.IsNullOrWhiteSpace(request.MonedaCode))
+            {
+                var moneda = TipoCambioRules.Normalizar(request.MonedaCode);
+                query = query.Where(t => t.MonedaCode == moneda);
+            }
+
             if (request.FromDate.HasValue)
             {
                 query = query.Where(t => t.Date >= request.FromDate.Value);
@@ -37,12 +43,14 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTiposCambioPaginat
             var pageSize = request.PageSize ?? 10;
 
             var sortedQuery = string.IsNullOrWhiteSpace(request.SortBy)
-                ? query.OrderByDescending(t => t.Date)
+                ? query.OrderByDescending(t => t.Date).ThenBy(t => t.MonedaCode)
                 : query.ApplySort(request.SortBy, sortDesc);
 
             var projected = sortedQuery.Select(t => new TipoCambioResponse
             {
                 Id = t.Id,
+                MonedaCode = t.MonedaCode,
+                MonedaName = t.Moneda.Name,
                 Date = t.Date,
                 SellRate = t.SellRate,
                 BuyRate = t.BuyRate,

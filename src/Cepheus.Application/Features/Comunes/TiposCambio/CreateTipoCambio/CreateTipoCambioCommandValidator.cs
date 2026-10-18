@@ -1,4 +1,5 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,22 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
         {
             _uow = uow;
 
-            RuleFor(x => x.Date)
+            RuleFor(x => x.MonedaCode)
                 .Cascade(CascadeMode.Stop)
-                .NotEqual(default(DateOnly)).WithMessage("La fecha es obligatoria.")
-                .MustAsync(BeUniqueDate).WithMessage("Ya existe un tipo de cambio registrado para esa fecha.");
+                .NotEmpty().WithMessage("La moneda es obligatoria.")
+                .MaximumLength(3).WithMessage("La moneda no puede exceder los 3 caracteres.")
+                .Must(m => !TipoCambioRules.EsMonedaBase(m))
+                    .WithMessage($"La moneda base ({TipoCambioRules.MonedaBase}) no tiene tipo de cambio.")
+                .MustAsync(MonedaExists).WithMessage("La moneda indicada no existe o no está activa.");
+
+            RuleFor(x => x.Date)
+                .NotEqual(default(DateOnly)).WithMessage("La fecha es obligatoria.");
+
+            RuleFor(x => x)
+                .MustAsync(BeUnique)
+                .WithMessage("Ya existe un tipo de cambio registrado para esa moneda y fecha.")
+                .OverridePropertyName("Date")
+                .When(x => !string.IsNullOrWhiteSpace(x.MonedaCode) && x.Date != default);
 
             RuleFor(x => x.SellRate)
                 .GreaterThan(0).WithMessage("El tipo de cambio venta debe ser mayor a 0.");
@@ -29,8 +42,18 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.CreateTipoCambio
                 .OverridePropertyName("BuyRate");
         }
 
-        private async Task<bool> BeUniqueDate(DateOnly date, CancellationToken cancellationToken)
-            => !await _uow.Comunes.TiposCambio.Query()
-                .AnyAsync(t => t.Date == date, cancellationToken);
+        private async Task<bool> MonedaExists(string code, CancellationToken cancellationToken)
+        {
+            var moneda = TipoCambioRules.Normalizar(code);
+            return await _uow.Comunes.Monedas.Query()
+                .AnyAsync(m => m.Code == moneda && m.IsActive, cancellationToken);
+        }
+
+        private async Task<bool> BeUnique(CreateTipoCambioCommand command, CancellationToken cancellationToken)
+        {
+            var moneda = TipoCambioRules.Normalizar(command.MonedaCode);
+            return !await _uow.Comunes.TiposCambio.Query()
+                .AnyAsync(t => t.MonedaCode == moneda && t.Date == command.Date, cancellationToken);
+        }
     }
 }

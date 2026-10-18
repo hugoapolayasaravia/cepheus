@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using Cepheus.Application.Features.Comunes.TiposCambio.Common;
 using Cepheus.Application.Features.Contabilidad.Maestros.PeriodosContables.Common;
 using Cepheus.Application.Features.Contabilidad.Transacciones.AsientosContables.Common;
 using Cepheus.Domain.Contabilidad.Enum;
@@ -35,14 +36,18 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
                 cancellationToken);
         }
 
-        private static async Task<decimal?> GetVentaAsync(IUnitOfWork uow, DateTime fecha, CancellationToken ct)
+        /// <summary>
+        /// Tipo de cambio venta del día para el asiento. Si la nota de ingreso es en soles el asiento igual se expresa
+        /// con el tipo de cambio del dólar (moneda de referencia); si es en moneda extranjera, el de su propia moneda.
+        /// </summary>
+        private static Task<decimal?> GetVentaAsync(
+            IUnitOfWork uow, string monedaNotaIngreso, DateTime fecha, CancellationToken ct)
         {
-            var date = DateOnly.FromDateTime(fecha);
-            return await uow.Comunes.TiposCambio.Query()
-                .AsNoTracking()
-                .Where(t => t.Date == date)
-                .Select(t => (decimal?)t.SellRate)
-                .FirstOrDefaultAsync(ct);
+            var moneda = TipoCambioRules.EsMonedaBase(monedaNotaIngreso)
+                ? TipoCambioRules.MonedaReferencia
+                : monedaNotaIngreso;
+
+            return TipoCambioRules.GetVentaAsync(uow, moneda, fecha, ct);
         }
 
         private static async Task<AsientoNotaIngresoResultResponse> GenerateCoreAsync(
@@ -103,7 +108,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
 
             if (esTransferencia)
             {
-                var venta = await GetVentaAsync(uow, ni.FechaEmision, ct) ?? 0m;
+                var venta = await GetVentaAsync(uow, ni.MonedaCode, ni.FechaEmision, ct) ?? 0m;
                 if (venta <= 0)
                 {
                     throw new InvalidOperationException($"Tipo de Cambio es cero {etiqueta} ... Verifique ...");
@@ -133,7 +138,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
                     return resultadoVinculo;
                 }
 
-                var venta = await GetVentaAsync(uow, ni.FechaEmision, ct);
+                var venta = await GetVentaAsync(uow, ni.MonedaCode, ni.FechaEmision, ct);
                 var tca = esSoles ? (venta ?? ni.TipoCambio) : ni.TipoCambio;
                 if (tca <= 0)
                 {

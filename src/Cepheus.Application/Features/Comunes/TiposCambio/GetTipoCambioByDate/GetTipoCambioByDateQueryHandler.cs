@@ -16,12 +16,16 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTipoCambioByDate
 
         public async Task<TipoCambioResponse> Handle(GetTipoCambioByDateQuery request, CancellationToken cancellationToken)
         {
+            var moneda = TipoCambioRules.Normalizar(request.MonedaCode);
+
             var tipoCambio = await _uow.Comunes.TiposCambio.Query()
                 .AsNoTracking()
-                .Where(t => t.Date == request.Date)
+                .Where(t => t.MonedaCode == moneda && t.Date == request.Date)
                 .Select(t => new TipoCambioResponse
                 {
                     Id = t.Id,
+                    MonedaCode = t.MonedaCode,
+                    MonedaName = t.Moneda.Name,
                     Date = t.Date,
                     SellRate = t.SellRate,
                     BuyRate = t.BuyRate,
@@ -33,7 +37,7 @@ namespace Cepheus.Application.Features.Comunes.TiposCambio.GetTipoCambioByDate
 
             if (tipoCambio is null)
             {
-                throw new KeyNotFoundException($"No existe tipo de cambio registrado para la fecha {request.Date:yyyy-MM-dd}.");
+                throw new KeyNotFoundException($"No existe tipo de cambio de {moneda} registrado para la fecha {request.Date:yyyy-MM-dd}.");
             }
 
             return tipoCambio;
