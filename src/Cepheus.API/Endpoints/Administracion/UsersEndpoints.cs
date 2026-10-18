@@ -6,6 +6,8 @@ using Cepheus.Application.Features.Administracion.Users.GetUserRoles;
 using Cepheus.Application.Features.Administracion.Users.GetUsersPaginated;
 using Cepheus.Application.Features.Administracion.Users.ToggleUserStatus;
 using Cepheus.Application.Features.Administracion.Users.UpdateUser;
+using Cepheus.Application.Comun.Models;
+using Cepheus.Application.Features.Administracion.Users.ExportUsers;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion
@@ -48,6 +50,30 @@ namespace Cepheus.API.Endpoints.Administracion
             })
             .WithName("GetUsersPagedBody")
             .RequireAuthorization("USERS.VIEW");
+
+            // GET /api/users/export/excel  (mismos filtros que /paged, sin paginar)
+            group.MapGet("/export/excel", async (
+                [AsParameters] ExportUsersQuery query,
+                ISender sender) =>
+            {
+                query.Format = ExportFormat.Excel;
+                var file = await sender.Send(query);
+                return Results.File(file.Content, file.ContentType, file.FileName);
+            })
+            .WithName("ExportUsersExcel")
+            .RequireAuthorization("USERS.EXPORT_EXCEL");
+
+            // GET /api/users/export/pdf
+            group.MapGet("/export/pdf", async (
+                [AsParameters] ExportUsersQuery query,
+                ISender sender) =>
+            {
+                query.Format = ExportFormat.Pdf;
+                var file = await sender.Send(query);
+                return Results.File(file.Content, file.ContentType, file.FileName);
+            })
+            .WithName("ExportUsersPdf")
+            .RequireAuthorization("USERS.EXPORT_PDF");
 
             // GET /api/users/{id}
             group.MapGet("/{id:int}", async (int id, ISender sender) =>

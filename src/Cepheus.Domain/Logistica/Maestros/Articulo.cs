@@ -58,7 +58,6 @@ namespace Cepheus.Domain.Logistica.Maestros
     public class Articulo : IAuditableEntity
     {
         public string Code { get; set; } = default!;
-
         public string Name { get; set; } = default!;
 
         public string UnidadMedidaCode { get; set; } = default!;
@@ -84,16 +83,12 @@ namespace Cepheus.Domain.Logistica.Maestros
 
         public string Observations { get; set; } = string.Empty;
 
-        // Reservados para el módulo de Ventas (sin FK/lógica todavía)
         public string? SalesTypeCode { get; set; }
         public string? SalesProductCode { get; set; }
 
         public bool IsAgreement { get; set; }
-
-        /// <summary>Exige el dato de horómetro al entregarlo en un Vale de Salida (legacy: MArticulos.Propiedad01 = 'S').</summary>
         public bool RequiresHorometro { get; set; }
 
-        // Reservados para el módulo de Contabilidad (sin FK/lógica todavía)
         public string? AccountingAccountCode { get; set; }
         public string? AccountingAttachmentTypeCode { get; set; }
 
@@ -102,13 +97,11 @@ namespace Cepheus.Domain.Logistica.Maestros
 
         public bool IsActive { get; set; } = true;
 
-        // Auditoría (IAuditableEntity)
         public DateTime CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
 
-        // Concurrencia optimista
         public byte[] RowVersion { get; set; } = default!;
     }
 }

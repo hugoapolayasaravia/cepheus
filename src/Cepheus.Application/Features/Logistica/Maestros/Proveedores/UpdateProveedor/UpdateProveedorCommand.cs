@@ -15,6 +15,8 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.UpdateProv
         SunatCondition? SunatCondition,
         SunatTaxpayerStatus? SunatStatus,
         string? Observations,
-        byte[] RowVersion
+        byte[] RowVersion,
+        string? PayableAccountLocalCode = null,
+        string? PayableAccountForeignCode = null
     ) : IRequest<ProveedorResponse>;
 }

@@ -1,8 +1,8 @@
 ﻿using Cepheus.Domain.Comun;
 using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Contabilidad.Maestros;
-using Cepheus.Domain.Facturacion.Catalogos;
 using Cepheus.Domain.Facturacion.Maestros;
+using Cepheus.Domain.Logistica.Catalogos;
 
 namespace Cepheus.Domain.Contabilidad.Transacciones
 {
@@ -18,7 +18,8 @@ namespace Cepheus.Domain.Contabilidad.Transacciones
     ///   Codigo_tip + Codigo_ane -> AnexoTipoCode + AnexoCode (FK compuesta a Anexo; opcional)
     ///   Detalle_dco  -> Detalle (nvarchar(50))
     ///   Cantidad_dco -> Cantidad
-    ///   Codigo_uni   -> UnidadMedidaCode (FK Facturacion.UnidadMedidaVenta, char(5))
+    ///   Codigo_uni   -> UnidadMedidaCode (FK Logistica.UnidadMedida, char(2): la unidad de medida de COMPRAS,
+    ///                   la misma del artículo de la nota de ingreso; no es la unidad de venta de Facturación)
     ///   PrecioS_dco  -> PrecioSol
     ///   ParcialS_dco -> ParcialSol = Cantidad x PrecioSol
     ///   Numero_gve   -> NumeroGuiaVenta (sin FK: no existe aún la guía de venta en Cepheus)
@@ -49,7 +50,7 @@ namespace Cepheus.Domain.Contabilidad.Transacciones
         public decimal Cantidad { get; set; }
 
         public string UnidadMedidaCode { get; set; } = default!;
-        public UnidadMedidaVenta UnidadMedida { get; set; } = default!;
+        public UnidadMedida UnidadMedida { get; set; } = default!;
 
         public decimal PrecioSol { get; set; }
         public decimal ParcialSol { get; set; }

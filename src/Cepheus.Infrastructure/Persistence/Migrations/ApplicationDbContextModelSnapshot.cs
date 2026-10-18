@@ -5741,6 +5741,48 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.ToTable("Articulos", "logistica");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloPlantaUbicacion", b =>
+                {
+                    b.Property<string>("ArticuloCode")
+                        .HasColumnType("char(7)");
+
+                    b.Property<string>("PlantaCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("ArticuloUbicacionCode")
+                        .IsRequired()
+                        .HasColumnType("char(4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("ArticuloCode", "PlantaCode");
+
+                    b.HasIndex("ArticuloUbicacionCode");
+
+                    b.HasIndex("PlantaCode");
+
+                    b.ToTable("ArticuloPlantaUbicaciones", "logistica");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloProveedor", b =>
                 {
                     b.Property<string>("PlantaCode")
@@ -5847,6 +5889,69 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         {
                             t.HasCheckConstraint("CK_StockArticulos_Quantity_NonNegative", "[Quantity] >= 0");
                         });
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloUbicacion", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("char(4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Locker")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("PlantaCode")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Rack")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Shelf")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Zone")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("PlantaCode");
+
+                    b.ToTable("ArticuloUbicaciones", "logistica");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.CentroCosto", b =>
@@ -14308,6 +14413,33 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.Navigation("UnidadMedida");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloPlantaUbicacion", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Logistica.Maestros.Articulo", "Articulo")
+                        .WithMany()
+                        .HasForeignKey("ArticuloCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Logistica.Maestros.ArticuloUbicacion", "ArticuloUbicacion")
+                        .WithMany()
+                        .HasForeignKey("ArticuloUbicacionCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Planta", "Planta")
+                        .WithMany()
+                        .HasForeignKey("PlantaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Articulo");
+
+                    b.Navigation("ArticuloUbicacion");
+
+                    b.Navigation("Planta");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloProveedor", b =>
                 {
                     b.HasOne("Cepheus.Domain.Logistica.Maestros.Articulo", "Articulo")
@@ -14350,6 +14482,17 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Articulo");
+
+                    b.Navigation("Planta");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ArticuloUbicacion", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Comunes.Planta", "Planta")
+                        .WithMany()
+                        .HasForeignKey("PlantaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Planta");
                 });

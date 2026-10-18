@@ -8,6 +8,8 @@ public static class ContabilidadTransaccionesEndpointsExtensions
         this WebApplication app)
     {
         app.MapDocumentosCompraEndpoints();
+        app.MapAsientosContablesEndpoints();
+        app.MapAsientosNotaIngresoEndpoints();
 
         return app;
     }

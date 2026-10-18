@@ -25,6 +25,8 @@ public static class LogisticaMaestrosEndpointsExtensions
         app.MapConductoresEndpoints();
 
         app.MapControlCierresEndpoints();
+        app.MapArticuloUbicacionesEndpoints();
+        app.MapArticuloPlantaUbicacionesEndpoints();
 
         return app;
     }

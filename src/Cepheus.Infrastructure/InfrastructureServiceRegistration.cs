@@ -39,6 +39,7 @@ namespace Cepheus.Infrastructure
 
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
             services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IExportService, ExportService>();
 
             services.Configure<PasswordResetSettings>(configuration.GetSection("PasswordReset"));
             services.AddScoped<IPasswordResetSettings>(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<PasswordResetSettings>>().Value);

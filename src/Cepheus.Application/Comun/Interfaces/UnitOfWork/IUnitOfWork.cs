@@ -44,6 +44,14 @@
             System.Data.IsolationLevel isolationLevel,
             CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Adquiere un bloqueo exclusivo de aplicación en SQL Server.
+        /// El bloqueo pertenece a la transacción actual.
+        /// </summary>
+        Task AcquireAppLockAsync(
+            string resource,
+            int timeoutMilliseconds,
+            CancellationToken cancellationToken = default);
     }
 
 

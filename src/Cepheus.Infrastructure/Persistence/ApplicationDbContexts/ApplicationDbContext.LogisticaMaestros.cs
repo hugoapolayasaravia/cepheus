@@ -34,4 +34,9 @@ public partial class ApplicationDbContext
     public DbSet<Conductor> Conductores => Set<Conductor>();
 
     public DbSet<ControlCierre> ControlCierres => Set<ControlCierre>();
+
+    public DbSet<ArticuloUbicacion> ArticuloUbicaciones => Set<ArticuloUbicacion>();
+
+    public DbSet<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones => Set<ArticuloPlantaUbicacion>();
+
 }

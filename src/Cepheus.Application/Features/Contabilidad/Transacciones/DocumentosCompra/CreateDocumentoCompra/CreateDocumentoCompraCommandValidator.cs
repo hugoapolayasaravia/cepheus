@@ -57,7 +57,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                         .Cascade(CascadeMode.Stop)
                         .NotEmpty()
                         .MustAsync(async (c, ct) =>
-                            await uow.Facturacion.Catalogos.UnidadesMedidaVenta.Query()
+                            await uow.Logistica.Catalogos.UnidadesMedida.Query()
                                 .AnyAsync(u => u.Code == c.Trim().ToUpper(), ct))
                         .WithMessage("La unidad de medida indicada no existe.");
 

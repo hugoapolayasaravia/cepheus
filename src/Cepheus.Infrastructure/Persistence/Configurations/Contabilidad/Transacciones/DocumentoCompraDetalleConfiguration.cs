@@ -36,7 +36,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Contabilidad.Transac
 
             builder.Property(x => x.Cantidad).IsRequired().HasColumnType("decimal(24,4)").HasDefaultValue(0);
 
-            builder.Property(x => x.UnidadMedidaCode).IsRequired().HasMaxLength(5);
+            builder.Property(x => x.UnidadMedidaCode).IsRequired().HasColumnType("char(2)");
             builder.HasOne(x => x.UnidadMedida).WithMany().HasForeignKey(x => x.UnidadMedidaCode)
                 .OnDelete(DeleteBehavior.Restrict);
 

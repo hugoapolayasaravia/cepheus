@@ -9,6 +9,8 @@ public partial class ApplicationDbContext
     public DbSet<CuentaContable> CuentasContables => Set<CuentaContable>();
     public DbSet<Anexo> Anexos => Set<Anexo>();
     public DbSet<CuentaBancaria> CuentasBancarias => Set<CuentaBancaria>();
-
+    public DbSet<PeriodoContable> PeriodosContables => Set<PeriodoContable>();
+    public DbSet<PlantillaAsiento> PlantillasAsiento => Set<PlantillaAsiento>();
+    public DbSet<PlantillaAsientoLinea> PlantillaAsientoLineas => Set<PlantillaAsientoLinea>();
 
 }

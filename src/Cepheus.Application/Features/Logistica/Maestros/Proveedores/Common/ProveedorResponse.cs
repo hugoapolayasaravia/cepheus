@@ -14,6 +14,8 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.Common
         public SunatCondition? SunatCondition { get; set; }
         public SunatTaxpayerStatus? SunatStatus { get; set; }
         public string? Observations { get; set; }
+        public string? PayableAccountLocalCode { get; set; }
+        public string? PayableAccountForeignCode { get; set; }
         public bool IsActive { get; set; }
         public DateTime? DeactivatedAt { get; set; }
         public DateTime CreatedAt { get; set; }

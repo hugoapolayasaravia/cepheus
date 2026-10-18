@@ -67,6 +67,8 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.GetProveed
                 SunatCondition = p.SunatCondition,
                 SunatStatus = p.SunatStatus,
                 Observations = p.Observations,
+                PayableAccountLocalCode = p.PayableAccountLocalCode,
+                PayableAccountForeignCode = p.PayableAccountForeignCode,
                 IsActive = p.IsActive,
                 DeactivatedAt = p.DeactivatedAt,
                 CreatedAt = p.CreatedAt,

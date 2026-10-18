@@ -22,5 +22,9 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<Conductor> Conductores { get; }
 
         IRepository<ControlCierre> ControlCierres { get; }
+
+        IRepository<ArticuloUbicacion> ArticuloUbicaciones { get; }
+
+        IRepository<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones { get; }
     }
 }

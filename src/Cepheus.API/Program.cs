@@ -186,6 +186,7 @@ app.MapComunesEndpoints();
 app.MapLogisticaCatalogosEndpoints();
 app.MapLogisticaMaestrosEndpoints();
 app.MapLogisticaTransaccionesEndpoints();
+app.MapLogisticaReportesEndpoints();
 
 // Mantenimiento
 app.MapMantenimientoCatalogosEndpoints();

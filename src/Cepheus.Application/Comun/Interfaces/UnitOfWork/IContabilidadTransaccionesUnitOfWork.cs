@@ -6,6 +6,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
     {
         IRepository<DocumentoCompra> DocumentosCompra { get; }
         IRepository<DocumentoCompraDetalle> DocumentoCompraDetalles { get; }
+        IRepository<AsientoContable> AsientosContables { get; }
+        IRepository<AsientoContableDetalle> AsientoContableDetalles { get; }
 
     }
 }

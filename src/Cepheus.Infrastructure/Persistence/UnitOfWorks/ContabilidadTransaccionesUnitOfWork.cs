@@ -22,5 +22,11 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<DocumentoCompraDetalle>? _documentoCompraDetalles;
         public IRepository<DocumentoCompraDetalle> DocumentoCompraDetalles => _documentoCompraDetalles ??= new Repository<DocumentoCompraDetalle>(_context);
 
+        private IRepository<AsientoContable>? _asientosContables;
+        public IRepository<AsientoContable> AsientosContables => _asientosContables ??= new Repository<AsientoContable>(_context);
+
+        private IRepository<AsientoContableDetalle>? _asientoContableDetalles;
+        public IRepository<AsientoContableDetalle> AsientoContableDetalles => _asientoContableDetalles ??= new Repository<AsientoContableDetalle>(_context);
+
     }
 }

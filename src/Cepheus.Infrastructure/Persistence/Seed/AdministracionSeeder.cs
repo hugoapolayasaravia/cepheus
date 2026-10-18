@@ -39,7 +39,9 @@ namespace Cepheus.Infrastructure.Persistence.Seed
         ("VIEW", "Consultar"),
         ("CREATE", "Crear"),
         ("UPDATE", "Modificar"),
-        ("DELETE", "Eliminar")
+        ("DELETE", "Eliminar"),
+        ("EXPORT_PDF", "Exportar a PDF"),
+        ("EXPORT_EXCEL", "Exportar a Excel")
     };
 
         public static async Task SeedAsync(ApplicationDbContext context, CancellationToken cancellationToken = default)

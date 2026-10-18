@@ -89,5 +89,15 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 
         public IRepository<ControlCierre> ControlCierres =>
             _controlCierres ??= new Repository<ControlCierre>(_context);
+
+
+        private IRepository<ArticuloUbicacion>? _articuloUbicaciones;
+
+        public IRepository<ArticuloUbicacion> ArticuloUbicaciones => _articuloUbicaciones ??= new Repository<ArticuloUbicacion>(_context);
+
+        private IRepository<ArticuloPlantaUbicacion>? _articuloPlantaUbicaciones;
+
+        public IRepository<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones => _articuloPlantaUbicaciones ??= new Repository<ArticuloPlantaUbicacion>(_context);
+
     }
 }
