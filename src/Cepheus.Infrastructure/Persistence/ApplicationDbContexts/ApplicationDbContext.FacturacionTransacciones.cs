@@ -15,4 +15,13 @@ public partial class ApplicationDbContext
 
     public DbSet<HojaCorte> HojasCorte => Set<HojaCorte>();
     public DbSet<HojaCorteDetalle> HojasCorteDetalle => Set<HojaCorteDetalle>();
+
+    public DbSet<SolicitudNotaCredito> SolicitudesNotaCredito => Set<SolicitudNotaCredito>();
+    public DbSet<SolicitudNotaCreditoDetalle> SolicitudesNotaCreditoDetalle => Set<SolicitudNotaCreditoDetalle>();
+    public DbSet<SolicitudNotaCreditoGuia> SolicitudesNotaCreditoGuias => Set<SolicitudNotaCreditoGuia>();
+    public DbSet<SolicitudNotaCreditoArchivo> SolicitudesNotaCreditoArchivos => Set<SolicitudNotaCreditoArchivo>();
+    public DbSet<SolicitudNotaCreditoAprobacion> SolicitudesNotaCreditoAprobaciones => Set<SolicitudNotaCreditoAprobacion>();
+
+    public DbSet<NotaCreditoVenta> NotasCreditoVenta => Set<NotaCreditoVenta>();
+    public DbSet<NotaCreditoVentaDetalle> NotasCreditoVentaDetalle => Set<NotaCreditoVentaDetalle>();
 }

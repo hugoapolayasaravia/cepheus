@@ -9,5 +9,6 @@ namespace Cepheus.Infrastructure.Services
     {
         public string FrontendBaseUrl { get; set; } = "http://localhost:4200";
         public int TokenExpirationMinutes { get; set; } = 30;
+        public int InvitationExpirationHours { get; set; } = 72;
     }
 }

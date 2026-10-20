@@ -27,6 +27,7 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<ResponsableObra> ResponsablesObra { get; }
 
         IRepository<TipoHojaCorte> TiposHojaCorte { get; }
+        IRepository<MotivoSolicitudNotaCredito> MotivosSolicitudNotaCredito { get; }
 
     }
 }

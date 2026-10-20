@@ -1,5 +1,11 @@
 using Cepheus.API.Authorization;
-using Cepheus.API.Extensions.Endpoints;
+using Cepheus.API.Extensions.Endpoints.Administracion;
+using Cepheus.API.Extensions.Endpoints.Comunes;
+using Cepheus.API.Extensions.Endpoints.Contabilidad;
+using Cepheus.API.Extensions.Endpoints.Facturacion;
+using Cepheus.API.Extensions.Endpoints.Logistica;
+using Cepheus.API.Extensions.Endpoints.Mantenimiento;
+using Cepheus.API.Extensions.Endpoints.Rrhh;
 using Cepheus.API.Middleware;
 using Cepheus.Infrastructure;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;

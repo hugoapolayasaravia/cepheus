@@ -48,5 +48,7 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<Tecnico>? _tecnicos;
         public IRepository<Tecnico> Tecnicos => _tecnicos ??= new Repository<Tecnico>(_context);
 
+        private IRepository<UsuarioSolicitudNotaCredito>? _usuariosSolicitudNotaCredito;
+        public IRepository<UsuarioSolicitudNotaCredito> UsuariosSolicitudNotaCredito => _usuariosSolicitudNotaCredito ??= new Repository<UsuarioSolicitudNotaCredito>(_context);
     }
 }

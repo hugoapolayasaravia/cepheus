@@ -2638,6 +2638,70 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.ToTable("ListasPrecios", "facturacion");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Catalogos.MotivoSolicitudNotaCredito", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("char(2)");
+
+                    b.Property<bool>("AffectsStock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("MotivoDevolucionCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("ParentCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Code");
+
+                    b.HasIndex("MotivoDevolucionCode");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("ParentCode");
+
+                    b.ToTable("MotivosSolicitudNotaCredito", "facturacion");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Catalogos.NotaCotizacionPlantilla", b =>
                 {
                     b.Property<string>("NegocioCode")
@@ -3922,6 +3986,77 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.ToTable("TransportistasVentas", "facturacion");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Maestros.UsuarioSolicitudNotaCredito", b =>
+                {
+                    b.Property<string>("NegocioCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CanApprove")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("CanEnter")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("CanManage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsPrincipal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("NegocioCode", "Stage", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("NegocioCode", "Stage");
+
+                    b.ToTable("UsuariosSolicitudNotaCredito", "facturacion");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Maestros.VehiculoVenta", b =>
                 {
                     b.Property<string>("TransportistaCode")
@@ -5157,6 +5292,504 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProductoTipoCode", "ProductoCode");
 
                     b.ToTable("HojaCorteDetalles", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVenta", b =>
+                {
+                    b.Property<string>("PlantaCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CancelReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CancellationEntryNumber")
+                        .HasColumnType("char(13)");
+
+                    b.Property<string>("CashDocument")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("ClienteCode")
+                        .IsRequired()
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DeliveryAddress")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DeliveryUbigeoCode")
+                        .IsRequired()
+                        .HasColumnType("char(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DocumentTypeCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<decimal>("ExchangeRate")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ExecutingPlantaCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("FormaPagoVentaCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<decimal>("IgvAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<bool>("IsPrinted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MonedaCode")
+                        .IsRequired()
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("MotivoDevolucionCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("ObraCode")
+                        .IsRequired()
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("char(8)");
+
+                    b.Property<decimal>("PendingAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime?>("PrintedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProvisionEntryNumber")
+                        .HasColumnType("char(13)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SolicitudCode")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("SolicitudMonth")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("SolicitudYear")
+                        .HasColumnType("char(4)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<decimal>("SubTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(1)")
+                        .HasDefaultValue("N");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("VendedorCode")
+                        .HasColumnType("char(4)");
+
+                    b.HasKey("PlantaCode", "Number");
+
+                    b.HasIndex("ClienteCode");
+
+                    b.HasIndex("DeliveryUbigeoCode");
+
+                    b.HasIndex("DocumentTypeCode");
+
+                    b.HasIndex("ExecutingPlantaCode");
+
+                    b.HasIndex("FormaPagoVentaCode");
+
+                    b.HasIndex("IssueDate");
+
+                    b.HasIndex("MonedaCode");
+
+                    b.HasIndex("MotivoDevolucionCode");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("VendedorCode");
+
+                    b.HasIndex("ClienteCode", "ObraCode");
+
+                    b.HasIndex("SolicitudCode", "SolicitudYear", "SolicitudMonth");
+
+                    b.ToTable("NotasCreditoVenta", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVentaDetalle", b =>
+                {
+                    b.Property<string>("PlantaCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Line")
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal>("DispatchedQuantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(12,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("GuideNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("LineKey")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("ProductoCode")
+                        .IsRequired()
+                        .HasColumnType("char(4)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TipoProductoCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("PlantaCode", "Number", "Line");
+
+                    b.HasIndex("TipoProductoCode", "ProductoCode");
+
+                    b.ToTable("NotasCreditoVentaDetalle", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", b =>
+                {
+                    b.Property<string>("Year")
+                        .HasColumnType("char(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("ClienteCode")
+                        .IsRequired()
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DocumentTypeCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<decimal>("IgvAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<bool>("IsEditable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool?>("IsProcedent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MonedaCode")
+                        .IsRequired()
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("MotivoCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("NegocioCode")
+                        .IsRequired()
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Observation")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool?>("RequesterAccepts")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("RequesterUserId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<decimal>("SubTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Year", "Month", "Code");
+
+                    b.HasIndex("ClienteCode");
+
+                    b.HasIndex("DocumentTypeCode");
+
+                    b.HasIndex("IssueDate");
+
+                    b.HasIndex("MonedaCode");
+
+                    b.HasIndex("MotivoCode");
+
+                    b.HasIndex("NegocioCode");
+
+                    b.HasIndex("RequesterUserId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("SolicitudesNotaCredito", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoAprobacion", b =>
+                {
+                    b.Property<string>("Year")
+                        .HasColumnType("char(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("char(8)");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ActedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ActedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("ActedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observation")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("Year", "Month", "Code", "Stage");
+
+                    b.HasIndex("Code", "Year", "Month");
+
+                    b.ToTable("SolicitudesNotaCreditoAprobaciones", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoArchivo", b =>
+                {
+                    b.Property<string>("Year")
+                        .HasColumnType("char(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Year", "Month", "Code", "FileName");
+
+                    b.HasIndex("Code", "Year", "Month");
+
+                    b.ToTable("SolicitudesNotaCreditoArchivos", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoDetalle", b =>
+                {
+                    b.Property<string>("Year")
+                        .HasColumnType("char(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("TipoProductoCode")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("ProductoCode")
+                        .HasColumnType("char(4)");
+
+                    b.Property<int>("LineKey")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Line")
+                        .IsRequired()
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("OrderCode")
+                        .HasColumnType("char(8)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("Year", "Month", "Code", "TipoProductoCode", "ProductoCode", "LineKey");
+
+                    b.HasIndex("TipoProductoCode", "ProductoCode");
+
+                    b.HasIndex("Code", "Year", "Month", "Line");
+
+                    b.ToTable("SolicitudesNotaCreditoDetalle", "facturacion");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoGuia", b =>
+                {
+                    b.Property<string>("Year")
+                        .HasColumnType("char(4)");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("char(8)");
+
+                    b.Property<string>("GuideNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<decimal>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.HasKey("Year", "Month", "Code", "GuideNumber");
+
+                    b.HasIndex("Code", "Year", "Month");
+
+                    b.ToTable("SolicitudesNotaCreditoGuias", "facturacion");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Catalogos.Comprador", b =>
@@ -14231,6 +14864,23 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.Navigation("Producto");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Catalogos.MotivoSolicitudNotaCredito", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Logistica.Catalogos.MotivoDevolucionArticulo", "MotivoDevolucion")
+                        .WithMany()
+                        .HasForeignKey("MotivoDevolucionCode")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Catalogos.MotivoSolicitudNotaCredito", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentCode")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("MotivoDevolucion");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Catalogos.NotaCotizacionPlantilla", b =>
                 {
                     b.HasOne("Cepheus.Domain.Comun.Negocio", "Negocio")
@@ -14564,6 +15214,25 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.Navigation("Ubigeo");
                 });
 
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Maestros.UsuarioSolicitudNotaCredito", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Comun.Negocio", "Negocio")
+                        .WithMany()
+                        .HasForeignKey("NegocioCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Administracion.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Negocio");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Maestros.VehiculoVenta", b =>
                 {
                     b.HasOne("Cepheus.Domain.Facturacion.Maestros.TransportistaVenta", "TransportistaVenta")
@@ -14828,6 +15497,221 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.Navigation("Producto");
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVenta", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Ubigeo", "DeliveryUbigeo")
+                        .WithMany()
+                        .HasForeignKey("DeliveryUbigeoCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.ComprobantePago", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Planta", "ExecutingPlanta")
+                        .WithMany()
+                        .HasForeignKey("ExecutingPlantaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Catalogos.FormaPagoVenta", "FormaPagoVenta")
+                        .WithMany()
+                        .HasForeignKey("FormaPagoVentaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Moneda", "Moneda")
+                        .WithMany()
+                        .HasForeignKey("MonedaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Logistica.Catalogos.MotivoDevolucionArticulo", "MotivoDevolucion")
+                        .WithMany()
+                        .HasForeignKey("MotivoDevolucionCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Planta", "Planta")
+                        .WithMany()
+                        .HasForeignKey("PlantaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Vendedor", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorCode")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Obra", "Obra")
+                        .WithMany()
+                        .HasForeignKey("ClienteCode", "ObraCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", "Solicitud")
+                        .WithMany()
+                        .HasForeignKey("SolicitudCode", "SolicitudYear", "SolicitudMonth")
+                        .HasPrincipalKey("Code", "Year", "Month")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("DeliveryUbigeo");
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("ExecutingPlanta");
+
+                    b.Navigation("FormaPagoVenta");
+
+                    b.Navigation("Moneda");
+
+                    b.Navigation("MotivoDevolucion");
+
+                    b.Navigation("Obra");
+
+                    b.Navigation("Planta");
+
+                    b.Navigation("Solicitud");
+
+                    b.Navigation("Vendedor");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVentaDetalle", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVenta", "NotaCredito")
+                        .WithMany("Details")
+                        .HasForeignKey("PlantaCode", "Number")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("TipoProductoCode", "ProductoCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("NotaCredito");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.ComprobantePago", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Moneda", "Moneda")
+                        .WithMany()
+                        .HasForeignKey("MonedaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Catalogos.MotivoSolicitudNotaCredito", "Motivo")
+                        .WithMany()
+                        .HasForeignKey("MotivoCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comun.Negocio", "Negocio")
+                        .WithMany()
+                        .HasForeignKey("NegocioCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Administracion.User", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Moneda");
+
+                    b.Navigation("Motivo");
+
+                    b.Navigation("Negocio");
+
+                    b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoAprobacion", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", "Solicitud")
+                        .WithMany("Approvals")
+                        .HasForeignKey("Code", "Year", "Month")
+                        .HasPrincipalKey("Code", "Year", "Month")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoArchivo", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", "Solicitud")
+                        .WithMany("Files")
+                        .HasForeignKey("Code", "Year", "Month")
+                        .HasPrincipalKey("Code", "Year", "Month")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoDetalle", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Maestros.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("TipoProductoCode", "ProductoCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", "Solicitud")
+                        .WithMany("Details")
+                        .HasForeignKey("Code", "Year", "Month")
+                        .HasPrincipalKey("Code", "Year", "Month")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+
+                    b.Navigation("Solicitud");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCreditoGuia", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", "Solicitud")
+                        .WithMany("Guides")
+                        .HasForeignKey("Code", "Year", "Month")
+                        .HasPrincipalKey("Code", "Year", "Month")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Catalogos.SubFamilia", b =>
@@ -17206,6 +18090,22 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.HojaCorte", b =>
                 {
                     b.Navigation("Detalles");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.NotaCreditoVenta", b =>
+                {
+                    b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Facturacion.Transacciones.SolicitudNotaCredito", b =>
+                {
+                    b.Navigation("Approvals");
+
+                    b.Navigation("Details");
+
+                    b.Navigation("Files");
+
+                    b.Navigation("Guides");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Catalogos.Familia", b =>

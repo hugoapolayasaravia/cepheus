@@ -77,5 +77,8 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
         private IRepository<TipoHojaCorte>? _tiposHojaCorte;
         public IRepository<TipoHojaCorte> TiposHojaCorte => _tiposHojaCorte ??= new Repository<TipoHojaCorte>(_context);
 
+        private IRepository<MotivoSolicitudNotaCredito>? _motivosSolicitudNotaCredito;
+        public IRepository<MotivoSolicitudNotaCredito> MotivosSolicitudNotaCredito => _motivosSolicitudNotaCredito ??= new Repository<MotivoSolicitudNotaCredito>(_context);
+
     }
 }

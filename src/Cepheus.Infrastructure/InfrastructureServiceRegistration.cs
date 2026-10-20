@@ -40,6 +40,7 @@ namespace Cepheus.Infrastructure
             services.Configure<EmailSettings>(configuration.GetSection("Email"));
             services.AddScoped<IEmailSender, SmtpEmailSender>();
             services.AddScoped<IExportService, ExportService>();
+            services.AddScoped<IUserInvitationService, UserInvitationService>();
             services.Configure<ReportSettings>(configuration.GetSection("Reports"));
             services.AddScoped<IReportSettings>(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<ReportSettings>>().Value);
 

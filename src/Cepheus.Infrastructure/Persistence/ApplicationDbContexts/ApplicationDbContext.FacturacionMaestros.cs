@@ -21,5 +21,6 @@ public partial class ApplicationDbContext
     public DbSet<Producto> Productos => Set<Producto>();
 
     public DbSet<Tecnico> Tecnicos => Set<Tecnico>();
+    public DbSet<UsuarioSolicitudNotaCredito> UsuariosSolicitudNotaCredito => Set<UsuarioSolicitudNotaCredito>();
 
 }

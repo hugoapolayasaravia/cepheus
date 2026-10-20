@@ -41,6 +41,39 @@ namespace Cepheus.Application.Features.Administracion.Users.GetUserById
                 throw new KeyNotFoundException($"Usuario {request.Id} no encontrado.");
             }
 
+            // Datos del trabajador (RRHH): solo si el usuario tiene código de trabajador.
+            if (!string.IsNullOrWhiteSpace(user.TrabajadorCode))
+            {
+                var codigo = user.TrabajadorCode.Trim();
+
+                var trabajador = await _uow.Rrhh.Maestros.Trabajadores.Query()
+                    .AsNoTracking()
+                    .Where(t => t.Code == codigo)
+                    .Select(t => new { t.FirstNames, t.PaternalSurname, t.MaternalSurname })
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (trabajador is not null)
+                {
+                    user.TrabajadorNombre = string.Join(" ", new[] { trabajador.FirstNames, trabajador.PaternalSurname, trabajador.MaternalSurname }
+                        .Where(x => !string.IsNullOrWhiteSpace(x))).Trim();
+
+                    // Documento principal; si no hay, el primero registrado.
+                    var documento = await _uow.Rrhh.Maestros.TrabajadorDocumentos.Query()
+                        .AsNoTracking()
+                        .Where(d => d.TrabajadorCode == codigo)
+                        .OrderByDescending(d => d.IsPrimary)
+                        .ThenBy(d => d.DocumentNumber)
+                        .Select(d => new { Tipo = d.TipoDocumento.ShortName ?? d.TipoDocumento.Name, d.DocumentNumber })
+                        .FirstOrDefaultAsync(cancellationToken);
+
+                    if (documento is not null)
+                    {
+                        user.TrabajadorTipoDocumento = documento.Tipo;
+                        user.TrabajadorNumeroDocumento = documento.DocumentNumber;
+                    }
+                }
+            }
+
             return user;
         }
     }

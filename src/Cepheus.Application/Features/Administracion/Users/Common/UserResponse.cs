@@ -19,6 +19,10 @@
         public DateTime? UpdatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public string? UpdatedBy { get; set; }
+        public string? TrabajadorTipoDocumento { get; set; }
+        public string? TrabajadorNumeroDocumento { get; set; }
+        public string? TrabajadorNombre { get; set; }
+        public bool? InvitationSent { get; set; }
 
         /// <summary>
         /// Necesario para el body de UpdateUserCommand (control de concurrencia).

@@ -19,9 +19,10 @@ namespace Cepheus.Application.Features.Administracion.Users.CreateUser
                 .MaximumLength(150)
                 .MustAsync(BeUniqueEmail).WithMessage("El email ya está registrado.");
 
+            // La contraseña es opcional: sin ella, el usuario recibe una invitación por correo.
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("La contraseña es obligatoria.")
-                .MinimumLength(8).WithMessage("La contraseña debe tener al menos 8 caracteres.");
+                .MinimumLength(8).WithMessage("La contraseña debe tener al menos 8 caracteres.")
+                .When(x => !string.IsNullOrEmpty(x.Password));
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
@@ -46,7 +47,6 @@ namespace Cepheus.Application.Features.Administracion.Users.CreateUser
                     u.LastName == lastName.Trim(),
                     cancellationToken);
     }
-
 
 
 }

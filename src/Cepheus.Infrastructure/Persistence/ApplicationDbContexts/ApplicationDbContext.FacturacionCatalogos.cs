@@ -29,5 +29,5 @@ public partial class ApplicationDbContext
     public DbSet<ResponsableObra> ResponsablesObra => Set<ResponsableObra>();
 
     public DbSet<TipoHojaCorte> TiposHojaCorte => Set<TipoHojaCorte>();
-
+    public DbSet<MotivoSolicitudNotaCredito> MotivosSolicitudNotaCredito => Set<MotivoSolicitudNotaCredito>();
 }
