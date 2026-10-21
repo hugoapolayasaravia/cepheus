@@ -14,6 +14,7 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         public bool InvertsOnCreditNote { get; set; }
         public bool IsDestination { get; set; }
         public TipoContabilidad AccountingType { get; set; }
+        public string? ValeTypeCode { get; set; }
     }
 
     public class PlantillaAsientoResponse
@@ -23,6 +24,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         public ProcesoAsiento Process { get; set; }
         public string TipoAsientoCode { get; set; } = default!;
         public string? PurchaseAccountCode { get; set; }
+        public string? ComprobantePagoCode { get; set; }
+        public string? DescriptionText { get; set; }
         public bool IsActive { get; set; }
         public List<PlantillaAsientoLineaResponse> Lines { get; set; } = new();
         public DateTime CreatedAt { get; set; }

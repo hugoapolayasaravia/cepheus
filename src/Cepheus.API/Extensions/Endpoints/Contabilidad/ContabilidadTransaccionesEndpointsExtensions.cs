@@ -10,6 +10,9 @@ public static class ContabilidadTransaccionesEndpointsExtensions
         app.MapDocumentosCompraEndpoints();
         app.MapAsientosContablesEndpoints();
         app.MapAsientosNotaIngresoEndpoints();
+        app.MapAsientosOrdenServicioEndpoints();
+        app.MapAsientosConsumoEndpoints();
+
 
         return app;
     }

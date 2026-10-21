@@ -12,7 +12,8 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosContab
     ///   - No se anula el tipo 04 (apertura).
     ///   - El período contable debe existir y estar Abierto.
     ///   - Se elimina el detalle, el asiento queda Anulado con totales en cero.
-    ///   - Se libera la referencia en la Nota de Ingreso y en el Documento de Compra que lo tuvieran.
+    ///   - Se libera la referencia al asiento en la Nota de Ingreso, la Orden de Servicio (con su salida y las
+    ///     líneas de la salida), el Vale (con sus líneas) y el Documento de Compra que lo tuvieran.
     /// </summary>
     public static class AsientoAnulacionService
     {
@@ -56,22 +57,46 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosContab
             asiento.TotalCargosSol = 0;
             asiento.TotalAbonosSol = 0;
 
-            var notasIngreso = await uow.Logistica.Transacciones.NotaIngresos.Query()
-                .Where(n => n.AsientoContable == codigo)
-                .ToListAsync(cancellationToken);
-
-            foreach (var notaIngreso in notasIngreso)
+            foreach (var n in await uow.Logistica.Transacciones.NotaIngresos.Query()
+                         .Where(n => n.AsientoContable == codigo).ToListAsync(cancellationToken))
             {
-                notaIngreso.AsientoContable = null;
+                n.AsientoContable = null;
             }
 
-            var documentos = await uow.Contabilidad.Transacciones.DocumentosCompra.Query()
-                .Where(d => d.AsientoProvisionCode == codigo)
-                .ToListAsync(cancellationToken);
-
-            foreach (var documento in documentos)
+            foreach (var o in await uow.Logistica.Transacciones.OrdenesServicio.Query()
+                         .Where(o => o.AsientoContable == codigo).ToListAsync(cancellationToken))
             {
-                documento.AsientoProvisionCode = null;
+                o.AsientoContable = null;
+            }
+
+            foreach (var s in await uow.Logistica.Transacciones.OrdenesServicioSalida.Query()
+                         .Where(s => s.AsientoContable == codigo).ToListAsync(cancellationToken))
+            {
+                s.AsientoContable = null;
+            }
+
+            foreach (var sd in await uow.Logistica.Transacciones.OrdenServicioSalidaDetalles.Query()
+                         .Where(sd => sd.AsientoContable == codigo).ToListAsync(cancellationToken))
+            {
+                sd.AsientoContable = null;
+            }
+
+            foreach (var v in await uow.Logistica.Transacciones.Vales.Query()
+                         .Where(v => v.AsientoContable == codigo).ToListAsync(cancellationToken))
+            {
+                v.AsientoContable = null;
+            }
+
+            foreach (var vd in await uow.Logistica.Transacciones.ValeDetalles.Query()
+                         .Where(vd => vd.AsientoContable == codigo).ToListAsync(cancellationToken))
+            {
+                vd.AsientoContable = null;
+            }
+
+            foreach (var d in await uow.Contabilidad.Transacciones.DocumentosCompra.Query()
+                         .Where(d => d.AsientoProvisionCode == codigo).ToListAsync(cancellationToken))
+            {
+                d.AsientoProvisionCode = null;
             }
 
             return asiento;

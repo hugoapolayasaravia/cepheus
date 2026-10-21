@@ -31,7 +31,8 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
         string? DocumentoOrigenComprobantePagoCode,
         string? DocumentoOrigenNumero,
         string? OrdenCompraAdministracionCode,
-        List<CreateDocumentoCompraDetalleInput> Detalles
+        List<CreateDocumentoCompraDetalleInput> Detalles,
+        DateTime? FechaDocumento = null
     ) : IRequest<DocumentoCompraResponse>, IDocumentoCompraCabecera;
 
     public record CreateDocumentoCompraDetalleInput(

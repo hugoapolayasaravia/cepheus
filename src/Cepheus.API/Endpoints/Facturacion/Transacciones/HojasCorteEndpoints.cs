@@ -7,6 +7,7 @@ using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.GetHojas
 using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.HojaCorteDetalles.CreateHojaCorteDetalle;
 using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.HojaCorteDetalles.DeleteHojaCorteDetalle;
 using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.HojaCorteDetalles.UpdateHojaCorteDetalle;
+using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.ReporteHojaCorte;
 using Cepheus.Application.Features.Facturacion.Transacciones.HojasCorte.UpdateHojaCorte;
 using MediatR;
 
@@ -40,6 +41,12 @@ public static class HojasCorteEndpoints
         group.MapPost("/paged/body", async (GetHojasCortePaginatedQuery query, ISender sender) =>
             Results.Ok(await sender.Send(query)))
         .WithName("GetHojasCortePagedBody")
+        .RequireAuthorization("HOJASCORTE.VIEW");
+
+        // Reporte de Hoja de Corte: parámetros literales de ges_sp_rpt_hoja_corte (sin paginar; una fila por línea de detalle).
+        group.MapGet("/reporte", async ([AsParameters] ReporteHojaCorteQuery query, ISender sender) =>
+            Results.Ok(await sender.Send(query)))
+        .WithName("ReporteHojaCorte")
         .RequireAuthorization("HOJASCORTE.VIEW");
 
         group.MapGet("/{year}/{code}", async (string year, string code, ISender sender) =>

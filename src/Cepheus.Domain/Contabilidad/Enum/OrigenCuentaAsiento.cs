@@ -11,6 +11,9 @@
     {
         Fija = 1,
         CuentaPorPagarProveedor = 2,
-        LineaDocumento = 3
+        LineaDocumento = 3,
+
+        /// <summary>La cuenta contable del subcentro de costo de la línea del vale (solo DetalleVale).</summary>
+        SubCentroCosto = 4
     }
 }

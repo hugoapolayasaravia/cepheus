@@ -8,6 +8,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         ProcesoAsiento Process { get; }
         string TipoAsientoCode { get; }
         string? PurchaseAccountCode { get; }
+        string? ComprobantePagoCode { get; }
+        string? DescriptionText { get; }
         List<PlantillaAsientoLineaInput> Lines { get; }
     }
 }

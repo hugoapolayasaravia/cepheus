@@ -12,6 +12,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
             ProveedorName = d.Proveedor?.LegalName,
             FechaEmision = d.FechaEmision,
             FechaRecepcion = d.FechaRecepcion,
+            FechaDocumento = d.FechaDocumento,
             FechaVencimiento = d.FechaVencimiento,
             FormaPagoCode = d.FormaPagoCode,
             MonedaCode = d.MonedaCode,

@@ -26,6 +26,12 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Contabilidad.Maestro
             builder.HasOne(x => x.PurchaseAccount).WithMany().HasForeignKey(x => x.PurchaseAccountCode)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Property(x => x.ComprobantePagoCode).HasMaxLength(2);
+            builder.HasOne(x => x.ComprobantePago).WithMany().HasForeignKey(x => x.ComprobantePagoCode)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(x => x.DescriptionText).HasMaxLength(500);
+
             builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.Property(x => x.CreatedBy).HasMaxLength(250);

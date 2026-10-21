@@ -12,6 +12,9 @@
         GlosaDocumento = 1,
         NombreProveedor = 2,
         NumeroDocumento = 3,
-        DetalleLinea = 4
+        DetalleLinea = 4,
+
+        /// <summary>Texto fijo de la plantilla (PlantillaAsiento.DescriptionText).</summary>
+        TextoPlantilla = 5
     }
 }

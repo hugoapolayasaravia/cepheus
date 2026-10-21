@@ -27,6 +27,12 @@
         NoGravable = 7,
         Servicio = 8,
         MontoNotaIngreso = 9,
-        NetoNotaIngreso = 10
+        NetoNotaIngreso = 10,
+
+        /// <summary>Una línea del asiento por cada línea de vale de salida (importe = total de la línea). Solo ConsumoVales.</summary>
+        DetalleVale = 11,
+
+        /// <summary>Suma de los importes de las líneas de vale (se asienta una sola vez). Solo ConsumoVales.</summary>
+        TotalVales = 12
     }
 }

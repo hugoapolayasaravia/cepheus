@@ -1,5 +1,6 @@
 ﻿using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Rrhh;
 
 namespace Cepheus.Infrastructure.Persistence.UnitOfWorks
 {

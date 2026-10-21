@@ -21,6 +21,7 @@ namespace Cepheus.Domain.Contabilidad.Transacciones
     ///   Codigo_prv          -> ProveedorCode (FK Logistica.Proveedor)
     ///   FecEmision_dco      -> FechaEmision
     ///   FecRecepcion_dco    -> FechaRecepcion
+    ///   fecha_doc           -> FechaDocumento (fecha del comprobante del proveedor; opcional)
     ///   Codigo_pgc          -> FormaPagoCode (FK Logistica.FormaPago)
     ///   Moneda_dco          -> MonedaCode (FK Comunes.Moneda, 3 chars)
     ///   Venta_dco           -> TipoCambioFecha: se guarda solo la FECHA del tipo de cambio;
@@ -73,6 +74,9 @@ namespace Cepheus.Domain.Contabilidad.Transacciones
 
         public DateTime FechaEmision { get; set; }
         public DateTime FechaRecepcion { get; set; }
+
+        /// <summary>Fecha del comprobante del proveedor (legacy: RDocCompras.fecha_doc). Opcional.</summary>
+        public DateTime? FechaDocumento { get; set; }
 
         public string FormaPagoCode { get; set; } = default!;
         public FormaPago FormaPago { get; set; } = default!;

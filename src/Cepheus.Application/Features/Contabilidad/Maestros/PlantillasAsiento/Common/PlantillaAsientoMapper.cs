@@ -11,6 +11,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
             Process = e.Process,
             TipoAsientoCode = e.TipoAsientoCode,
             PurchaseAccountCode = e.PurchaseAccountCode,
+            ComprobantePagoCode = e.ComprobantePagoCode,
+            DescriptionText = e.DescriptionText,
             IsActive = e.IsActive,
             Lines = e.Lines
                 .OrderBy(l => l.Order)
@@ -25,7 +27,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
                     DescriptionSource = l.DescriptionSource,
                     InvertsOnCreditNote = l.InvertsOnCreditNote,
                     IsDestination = l.IsDestination,
-                    AccountingType = l.AccountingType
+                    AccountingType = l.AccountingType,
+                    ValeTypeCode = l.ValeTypeCode
                 }).ToList(),
             CreatedAt = e.CreatedAt,
             UpdatedAt = e.UpdatedAt,

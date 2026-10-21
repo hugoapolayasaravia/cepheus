@@ -43,6 +43,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
                 ProveedorCode = prv,
                 FechaEmision = request.FechaEmision.Date,
                 FechaRecepcion = request.FechaRecepcion.Date,
+                FechaDocumento = request.FechaDocumento?.Date,
                 FechaVencimiento = request.FechaVencimiento.Date,
                 FormaPagoCode = request.FormaPagoCode.Trim().ToUpperInvariant(),
                 MonedaCode = monedaCode,

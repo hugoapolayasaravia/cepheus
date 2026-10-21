@@ -1,5 +1,6 @@
 ﻿using Cepheus.Domain.Comun;
 using Cepheus.Domain.Contabilidad.Enum;
+using Cepheus.Domain.Logistica.Catalogos;
 
 namespace Cepheus.Domain.Contabilidad.Maestros
 {
@@ -38,6 +39,13 @@ namespace Cepheus.Domain.Contabilidad.Maestros
         public bool IsDestination { get; set; }
 
         public TipoContabilidad AccountingType { get; set; } = TipoContabilidad.Todos;
+
+        /// <summary>
+        /// Solo DetalleVale: tipo de vale al que aplica la línea (por ejemplo "TRA" = transferencia). Las líneas sin tipo
+        /// son las generales: se usan para los vales cuyo tipo no tiene una línea propia.
+        /// </summary>
+        public string? ValeTypeCode { get; set; }
+        public TipoVale? ValeType { get; set; }
 
         // Auditoría (IAuditableEntity)
         public DateTime CreatedAt { get; set; }

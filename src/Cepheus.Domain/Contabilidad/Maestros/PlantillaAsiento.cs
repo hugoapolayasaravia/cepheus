@@ -1,4 +1,5 @@
 ﻿using Cepheus.Domain.Comun;
+using Cepheus.Domain.Comunes;
 using Cepheus.Domain.Contabilidad.Catalogos;
 using Cepheus.Domain.Contabilidad.Enum;
 
@@ -32,6 +33,19 @@ namespace Cepheus.Domain.Contabilidad.Maestros
         /// </summary>
         public string? PurchaseAccountCode { get; set; }
         public CuentaContable? PurchaseAccount { get; set; }
+
+        /// <summary>
+        /// Comprobante de pago con el que se registran las líneas del asiento cuando no proviene de un documento de
+        /// compra (consumo de vales: "00"). Obligatorio en ConsumoVales.
+        /// </summary>
+        public string? ComprobantePagoCode { get; set; }
+        public ComprobantePago? ComprobantePago { get; set; }
+
+        /// <summary>
+        /// Texto fijo de la descripción del asiento y de sus líneas (por ejemplo "ASIENTO DE CONSUMOS").
+        /// Obligatorio en ConsumoVales.
+        /// </summary>
+        public string? DescriptionText { get; set; }
 
         public bool IsActive { get; set; } = true;
 

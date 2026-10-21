@@ -24,6 +24,7 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Contabilidad.Transac
 
             builder.Property(x => x.FechaEmision).IsRequired().HasColumnType("date");
             builder.Property(x => x.FechaRecepcion).IsRequired().HasColumnType("date");
+            builder.Property(x => x.FechaDocumento).HasColumnType("date");
             builder.Property(x => x.FechaVencimiento).IsRequired().HasColumnType("date");
 
             builder.Property(x => x.FormaPagoCode).IsRequired().HasMaxLength(2);

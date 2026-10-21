@@ -31,6 +31,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
         string? DocumentoOrigenComprobantePagoCode,
         string? DocumentoOrigenNumero,
         string? OrdenCompraAdministracionCode,
-        byte[] RowVersion
+        byte[] RowVersion,
+        DateTime? FechaDocumento = null
     ) : IRequest<DocumentoCompraResponse>, IDocumentoCompraCabecera;
 }

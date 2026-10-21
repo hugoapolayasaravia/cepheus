@@ -11,6 +11,12 @@
     {
         Ninguno = 1,
         Proveedor = 2,
-        LineaDocumento = 3
+        LineaDocumento = 3,
+
+        /// <summary>
+        /// Anexo del enlace contable del artículo en el subcentro de la línea (ArticuloAnexo; si no hay, SubFamiliaAnexo),
+        /// solo si la cuenta de la línea exige tipo de anexo (solo DetalleVale).
+        /// </summary>
+        ArticuloSubCentro = 4
     }
 }

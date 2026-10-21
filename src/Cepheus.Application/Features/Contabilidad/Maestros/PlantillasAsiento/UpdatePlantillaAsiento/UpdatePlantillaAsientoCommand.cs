@@ -12,6 +12,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.U
         string TipoAsientoCode,
         string? PurchaseAccountCode,
         List<PlantillaAsientoLineaInput> Lines,
-        byte[] RowVersion
+        byte[] RowVersion,
+        string? ComprobantePagoCode = null,
+        string? DescriptionText = null
     ) : IRequest<PlantillaAsientoResponse>, IPlantillaAsientoCabecera;
 }

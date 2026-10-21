@@ -8,6 +8,7 @@ using Cepheus.Application.Features.Administracion.Users.ToggleUserStatus;
 using Cepheus.Application.Features.Administracion.Users.UpdateUser;
 using Cepheus.Application.Comun.Models;
 using Cepheus.Application.Features.Administracion.Users.ExportUsers;
+using Cepheus.Application.Features.Administracion.Users.SendPasswordLink;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion
@@ -50,6 +51,15 @@ namespace Cepheus.API.Endpoints.Administracion
             })
             .WithName("GetUsersPagedBody")
             .RequireAuthorization("USERS.VIEW");
+
+            // POST /api/users/{id}/send-password-link  (reenvía la invitación o ayuda a recuperar el acceso)
+            group.MapPost("/{id:int}/send-password-link", async (int id, ISender sender) =>
+            {
+                await sender.Send(new SendPasswordLinkCommand(id));
+                return Results.NoContent();
+            })
+            .WithName("SendUserPasswordLink")
+            .RequireAuthorization("USERS.UPDATE");
 
             // GET /api/users/export/excel  (mismos filtros que /paged, sin paginar)
             group.MapGet("/export/excel", async (

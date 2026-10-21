@@ -1,6 +1,9 @@
 ﻿using Cepheus.Application.Comun.Interfaces;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cepheus.Application.Features.Administracion.Users.ChangePassword
 {
@@ -36,14 +39,30 @@ namespace Cepheus.Application.Features.Administracion.Users.ChangePassword
 
             if (!_passwordHasher.Verify(request.CurrentPassword, user.PasswordHash))
             {
-                throw new UnauthorizedAccessException("La contraseña actual no es correcta.");
+                // 400 con el campo CurrentPassword. Antes era un 401, que el cliente interpreta como
+                // "sesión vencida" (intenta renovar el token) y no como un dato mal escrito.
+                throw new ValidationException(new[]
+                {
+                    new ValidationFailure("CurrentPassword", "La contraseña actual no es correcta.")
+                });
             }
 
             // Entidad ya trackeada (GetByIdAsync -> FindAsync); no hace falta llamar Update().
             user.PasswordHash = _passwordHasher.Hash(request.NewPassword);
 
+            // Al cambiar la contraseña se cierran todas las sesiones abiertas (también las de otros
+            // dispositivos): sus refresh tokens dejan de servir. Quien cambió la contraseña vuelve a entrar.
+            var ahora = DateTime.UtcNow;
+            var sesiones = await _uow.Administracion.RefreshTokens.Query()
+                .Where(rt => rt.UserId == user.Id && rt.RevokedAt == null)
+                .ToListAsync(cancellationToken);
+
+            foreach (var sesion in sesiones)
+            {
+                sesion.RevokedAt = ahora;
+            }
+
             await _uow.SaveChangesAsync(cancellationToken);
         }
     }
-
 }

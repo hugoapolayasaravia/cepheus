@@ -25,6 +25,7 @@
         public string? ProveedorName { get; set; }
         public DateTime FechaEmision { get; set; }
         public DateTime FechaRecepcion { get; set; }
+        public DateTime? FechaDocumento { get; set; }
         public DateTime FechaVencimiento { get; set; }
         public string FormaPagoCode { get; set; } = default!;
         public string MonedaCode { get; set; } = default!;

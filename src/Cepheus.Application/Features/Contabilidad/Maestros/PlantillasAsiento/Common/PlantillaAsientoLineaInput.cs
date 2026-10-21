@@ -12,6 +12,7 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         OrigenDescripcionAsiento DescriptionSource,
         bool InvertsOnCreditNote,
         bool IsDestination,
-        TipoContabilidad AccountingType
+        TipoContabilidad AccountingType,
+        string? ValeTypeCode = null
     );
 }

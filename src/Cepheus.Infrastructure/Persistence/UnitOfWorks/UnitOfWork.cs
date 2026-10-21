@@ -1,6 +1,12 @@
 ﻿using System.Data;
 using Cepheus.Application.Comun.Interfaces.UnitOfWork;
 using Cepheus.Infrastructure.Persistence.ApplicationDbContexts;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Administracion;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Comunes;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Contabilidad;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Facturacion;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Logistica;
+using Cepheus.Infrastructure.Persistence.UnitOfWorks.Mantenimiento;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 

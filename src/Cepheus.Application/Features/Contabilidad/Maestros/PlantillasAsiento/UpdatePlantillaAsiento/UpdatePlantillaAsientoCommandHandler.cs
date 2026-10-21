@@ -41,6 +41,10 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.U
             entity.PurchaseAccountCode = string.IsNullOrWhiteSpace(request.PurchaseAccountCode)
                 ? null
                 : request.PurchaseAccountCode.Trim().ToUpperInvariant();
+            entity.ComprobantePagoCode = string.IsNullOrWhiteSpace(request.ComprobantePagoCode)
+                ? null
+                : request.ComprobantePagoCode.Trim().ToUpperInvariant();
+            entity.DescriptionText = string.IsNullOrWhiteSpace(request.DescriptionText) ? null : request.DescriptionText.Trim();
             entity.RowVersion = request.RowVersion;
 
             // Sincroniza las líneas por Order: modifica las existentes, agrega las nuevas y elimina las que ya no vienen.
@@ -77,6 +81,9 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.U
                 target.InvertsOnCreditNote = line.InvertsOnCreditNote;
                 target.IsDestination = line.IsDestination;
                 target.AccountingType = line.AccountingType;
+                target.ValeTypeCode = string.IsNullOrWhiteSpace(line.ValeTypeCode)
+                    ? null
+                    : line.ValeTypeCode.Trim().ToUpperInvariant();
             }
 
             try

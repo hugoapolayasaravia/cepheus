@@ -55,6 +55,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.DocumentosComp
 
             doc.FechaEmision = request.FechaEmision.Date;
             doc.FechaRecepcion = request.FechaRecepcion.Date;
+            doc.FechaDocumento = request.FechaDocumento?.Date;
             doc.FechaVencimiento = request.FechaVencimiento.Date;
             doc.FormaPagoCode = request.FormaPagoCode.Trim().ToUpperInvariant();
             doc.MonedaCode = monedaCode;

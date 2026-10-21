@@ -28,5 +28,6 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<ArticuloPlantaUbicacion> ArticuloPlantaUbicaciones { get; }
 
         IRepository<SubFamiliaAnexo> SubFamiliaAnexos { get; }
+        IRepository<ArticuloAnexo> ArticuloAnexos { get; }
     }
 }

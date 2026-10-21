@@ -9,6 +9,8 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         ProcesoAsiento Process,
         string TipoAsientoCode,
         string? PurchaseAccountCode,
-        List<PlantillaAsientoLineaInput> Lines
+        List<PlantillaAsientoLineaInput> Lines,
+        string? ComprobantePagoCode = null,
+        string? DescriptionText = null
     ) : IRequest<PlantillaAsientoResponse>, IPlantillaAsientoCabecera;
 }

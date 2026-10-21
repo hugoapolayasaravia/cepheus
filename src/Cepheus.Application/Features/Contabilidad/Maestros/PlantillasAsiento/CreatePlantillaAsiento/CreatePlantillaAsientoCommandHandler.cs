@@ -36,6 +36,10 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
                 PurchaseAccountCode = string.IsNullOrWhiteSpace(request.PurchaseAccountCode)
                     ? null
                     : request.PurchaseAccountCode.Trim().ToUpperInvariant(),
+                ComprobantePagoCode = string.IsNullOrWhiteSpace(request.ComprobantePagoCode)
+                    ? null
+                    : request.ComprobantePagoCode.Trim().ToUpperInvariant(),
+                DescriptionText = string.IsNullOrWhiteSpace(request.DescriptionText) ? null : request.DescriptionText.Trim(),
                 IsActive = true
             };
 
@@ -55,7 +59,10 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
                     DescriptionSource = line.DescriptionSource,
                     InvertsOnCreditNote = line.InvertsOnCreditNote,
                     IsDestination = line.IsDestination,
-                    AccountingType = line.AccountingType
+                    AccountingType = line.AccountingType,
+                    ValeTypeCode = string.IsNullOrWhiteSpace(line.ValeTypeCode)
+                        ? null
+                        : line.ValeTypeCode.Trim().ToUpperInvariant()
                 });
             }
 
