@@ -15,6 +15,11 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
             ConceptoAsiento.NoGravable, ConceptoAsiento.Servicio
         };
 
+        private static readonly ConceptoAsiento[] ConceptosReversionCajaChica =
+{
+            ConceptoAsiento.TotalDocumento
+        };
+
         private static readonly ConceptoAsiento[] ConceptosTransferencia =
         {
             ConceptoAsiento.MontoNotaIngreso, ConceptoAsiento.NetoNotaIngreso
@@ -26,13 +31,15 @@ namespace Cepheus.Application.Features.Contabilidad.Maestros.PlantillasAsiento.C
         };
 
         private static bool EsProvision(ProcesoAsiento p) =>
-            p == ProcesoAsiento.ProvisionCompraNotaIngreso || p == ProcesoAsiento.ProvisionOrdenServicio;
+            p == ProcesoAsiento.ProvisionCompraNotaIngreso || p == ProcesoAsiento.ProvisionOrdenServicio
+            || p == ProcesoAsiento.ProvisionCajaChica;
 
         private static bool EsTransferencia(ProcesoAsiento p) =>
             p == ProcesoAsiento.TransferenciaNotaIngreso || p == ProcesoAsiento.TransferenciaOrdenServicio;
 
         private static ConceptoAsiento[] ConceptosPermitidos(ProcesoAsiento p) =>
-            EsProvision(p) ? ConceptosProvision : EsTransferencia(p) ? ConceptosTransferencia : ConceptosConsumo;
+            p == ProcesoAsiento.ReversionCajaChica ? ConceptosReversionCajaChica
+            : EsProvision(p) ? ConceptosProvision : EsTransferencia(p) ? ConceptosTransferencia : ConceptosConsumo;
 
         protected PlantillaAsientoValidator(IUnitOfWork uow)
         {

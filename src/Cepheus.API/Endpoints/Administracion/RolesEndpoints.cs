@@ -6,6 +6,7 @@ using Cepheus.Application.Features.Administracion.Roles.GetRoleById;
 using Cepheus.Application.Features.Administracion.Roles.GetRolesPaginated;
 using Cepheus.Application.Features.Administracion.Roles.ToggleRoleStatus;
 using Cepheus.Application.Features.Administracion.Roles.UpdateRole;
+using Cepheus.Application.Features.Administracion.Roles.GetPermissionCatalog;
 using MediatR;
 
 namespace Cepheus.API.Endpoints.Administracion
@@ -47,6 +48,15 @@ namespace Cepheus.API.Endpoints.Administracion
                 return Results.Ok(result);
             })
             .WithName("GetRolesPagedBody")
+            .RequireAuthorization("ROLES.VIEW");
+
+            // GET /api/roles/permission-catalog  (árbol completo de permisos asignables)
+            group.MapGet("/permission-catalog", async (ISender sender) =>
+            {
+                var result = await sender.Send(new GetPermissionCatalogQuery());
+                return Results.Ok(result);
+            })
+            .WithName("GetPermissionCatalog")
             .RequireAuthorization("ROLES.VIEW");
 
             // GET /api/roles/{id}

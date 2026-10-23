@@ -27,6 +27,12 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks.Contabilidad
 
         private IRepository<AsientoContableDetalle>? _asientoContableDetalles;
         public IRepository<AsientoContableDetalle> AsientoContableDetalles => _asientoContableDetalles ??= new Repository<AsientoContableDetalle>(_context);
+        
+        private IRepository<CajaChica>? _cajasChica;
+        public IRepository<CajaChica> CajasChica => _cajasChica ??= new Repository<CajaChica>(_context);
+
+        private IRepository<CajaChicaDetalle>? _cajasChicaDetalle;
+        public IRepository<CajaChicaDetalle> CajasChicaDetalle => _cajasChicaDetalle ??= new Repository<CajaChicaDetalle>(_context);
 
     }
 }

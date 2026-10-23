@@ -37,7 +37,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
             var cuentaCache = new Dictionary<string, Cepheus.Domain.Contabilidad.Maestros.CuentaContable?>(StringComparer.Ordinal);
             var anexoCache = new Dictionary<string, bool>(StringComparer.Ordinal);
             var tieneLineaServicio = plantilla.Lines.Any(l => l.Concept == ConceptoAsiento.Servicio);
-            var item = 0;
+            var item = asiento.Detalles.Count;
 
             async Task<Cepheus.Domain.Contabilidad.Maestros.CuentaContable> GetCuenta(string code)
             {

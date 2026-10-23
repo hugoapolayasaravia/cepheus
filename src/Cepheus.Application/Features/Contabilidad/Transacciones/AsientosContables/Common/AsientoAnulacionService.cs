@@ -93,6 +93,21 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosContab
                 vd.AsientoContable = null;
             }
 
+            foreach (var c in await uow.Contabilidad.Transacciones.CajasChica.Query()
+                         .Where(c => c.ProvisionAsientoCode == codigo || c.ReversionAsientoCode == codigo)
+                         .ToListAsync(cancellationToken))
+            {
+                if (c.ProvisionAsientoCode == codigo)
+                {
+                    c.ProvisionAsientoCode = null;
+                }
+
+                if (c.ReversionAsientoCode == codigo)
+                {
+                    c.ReversionAsientoCode = null;
+                }
+            }
+
             foreach (var d in await uow.Contabilidad.Transacciones.DocumentosCompra.Query()
                          .Where(d => d.AsientoProvisionCode == codigo).ToListAsync(cancellationToken))
             {

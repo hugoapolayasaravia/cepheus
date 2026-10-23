@@ -19,6 +19,18 @@
         TransferenciaOrdenServicio = 4,
 
         /// <summary>Consumo: un asiento por planta y rango de fechas con las líneas de vales de salida (legacy: w_con_asientosconsumo).</summary>
-        ConsumoVales = 5
+        ConsumoVales = 5,
+
+        /// <summary>
+        /// Provisión de caja chica: por cada comprobante de la caja se genera el asiento de provisión
+        /// (legacy: co_asipro_cajachica, asiento tipo 02) y su documento de compra.
+        /// </summary>
+        ProvisionCajaChica = 6,
+
+        /// <summary>
+        /// Reversión / cancelación de caja chica de tipo fondo fijo o por rendir
+        /// (legacy: co_asirev_cajachica, asiento tipo 05).
+        /// </summary>
+        ReversionCajaChica = 7
     }
 }

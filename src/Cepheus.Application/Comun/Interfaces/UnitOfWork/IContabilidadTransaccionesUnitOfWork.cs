@@ -9,5 +9,7 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
         IRepository<AsientoContable> AsientosContables { get; }
         IRepository<AsientoContableDetalle> AsientoContableDetalles { get; }
 
+        IRepository<CajaChica> CajasChica { get; }
+        IRepository<CajaChicaDetalle> CajasChicaDetalle { get; }
     }
 }

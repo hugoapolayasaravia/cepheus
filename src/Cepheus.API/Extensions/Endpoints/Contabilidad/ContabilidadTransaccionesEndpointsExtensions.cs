@@ -12,7 +12,7 @@ public static class ContabilidadTransaccionesEndpointsExtensions
         app.MapAsientosNotaIngresoEndpoints();
         app.MapAsientosOrdenServicioEndpoints();
         app.MapAsientosConsumoEndpoints();
-
+        app.MapCajasChicaEndpoints();
 
         return app;
     }

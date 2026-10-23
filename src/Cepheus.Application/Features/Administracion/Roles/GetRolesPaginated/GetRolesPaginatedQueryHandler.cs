@@ -51,6 +51,8 @@ namespace Cepheus.Application.Features.Administracion.Roles.GetRolesPaginated
                 IsActive = r.IsActive,
                 CreatedAt = r.CreatedAt,
                 UpdatedAt = r.UpdatedAt,
+                    CreatedBy = r.CreatedBy,
+                    UpdatedBy = r.UpdatedBy,
                 RowVersion = r.RowVersion
             });
 
