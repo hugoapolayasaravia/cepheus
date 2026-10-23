@@ -144,6 +144,10 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
 
                 documento = await BuildDocumentoAsync(uow, ni, plantilla.PurchaseAccountCode, glosa, esSoles, tca, ct);
 
+                var cuentaPorPagar = plantilla.Lines.Any(l => l.AccountSource == OrigenCuentaAsiento.CuentaPorPagarProveedor)
+                    ? await ProveedorCuentaPorPagarResolver.ResolverAsync(uow, ni.ProveedorCode, ni.MonedaCode, ct)
+                    : null;
+
                 fuente = new AsientoFuente
                 {
                     PlantaCode = ni.PlantaCode,
@@ -153,9 +157,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
                     EsNotaCredito = documento.ComprobantePagoCode == AsientoNotaIngresoRules.NotaCreditoComprobanteCode,
                     ProveedorCode = ni.ProveedorCode,
                     ProveedorNombre = ni.Proveedor?.LegalName,
-                    CuentaPorPagarCode = plantilla.Lines.Any(l => l.AccountSource == OrigenCuentaAsiento.CuentaPorPagarProveedor)
-                        ? ResolveCuentaPorPagar(ni, esSoles)
-                        : null,
+                    CuentaPorPagarCode = cuentaPorPagar,
                     Total = documento.TotalSol,
                     Igv = documento.IgvSol,
                     IgvExterior = documento.IgvExteriorSol,
@@ -277,30 +279,6 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosNotaIn
             throw new InvalidOperationException(
                 $"El documento {ni.ComprobantePagoCode} {numero} del proveedor {ni.ProveedorCode} ya está registrado en el " +
                 "registro de compras sin asiento de provisión. Elimínelo antes de generar el asiento desde la nota de ingreso.");
-        }
-
-        /// <summary>Cuenta por pagar del proveedor según moneda; exige las dos cuentas de enlace como el legacy.</summary>
-        private static string ResolveCuentaPorPagar(Cepheus.Domain.Logistica.Transacciones.NotaIngreso ni, bool esSoles)
-        {
-            var local = (ni.Proveedor?.PayableAccountLocalCode ?? string.Empty).Trim();
-            var foreign = (ni.Proveedor?.PayableAccountForeignCode ?? string.Empty).Trim();
-
-            if (local.Length != 8 || foreign.Length != 8)
-            {
-                throw new InvalidOperationException($"Proveedor {ni.ProveedorCode} no registra Cuentas de Enlace");
-            }
-
-            if (!(local.StartsWith("42") || local.StartsWith("46")))
-            {
-                throw new InvalidOperationException("Cta Enlace S/. Errada .. <42/46> ... Reintente ...");
-            }
-
-            if (!(foreign.StartsWith("42") || foreign.StartsWith("46")))
-            {
-                throw new InvalidOperationException("Cta Enlace US$  Errada .. <42/46> ... Reintente ...");
-            }
-
-            return esSoles ? local : foreign;
         }
 
         /// <summary>

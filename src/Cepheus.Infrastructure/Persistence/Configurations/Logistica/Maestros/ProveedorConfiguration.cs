@@ -56,24 +56,6 @@ namespace Cepheus.Infrastructure.Persistence.Configurations.Logistica.Maestros
             builder.Property(x => x.Observations)
                 .HasMaxLength(500);
 
-            builder.Property(x => x.PayableAccountLocalCode)
-                .HasColumnType("char(8)");
-
-            builder.HasOne(x => x.PayableAccountLocal)
-                .WithMany()
-                .HasForeignKey(x => x.PayableAccountLocalCode)
-                .HasPrincipalKey(c => c.Code)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(x => x.PayableAccountForeignCode)
-                .HasColumnType("char(8)");
-
-            builder.HasOne(x => x.PayableAccountForeign)
-                .WithMany()
-                .HasForeignKey(x => x.PayableAccountForeignCode)
-                .HasPrincipalKey(c => c.Code)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.Property(x => x.IsActive)
                 .IsRequired()
                 .HasDefaultValue(true);

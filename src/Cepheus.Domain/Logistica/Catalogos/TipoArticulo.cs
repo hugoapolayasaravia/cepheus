@@ -4,6 +4,7 @@ namespace Cepheus.Domain.Logistica.Catalogos
 {
     /// <summary>
     /// Tipo de artículo (catálogo simple). Usado en el módulo de Logística.
+    /// Tipo de administración o planificación
     ///
     /// Legacy: dbo.TTipoArticulo (SQL Server).
     /// Mapeo de columnas legacy -> propiedades profesionales:

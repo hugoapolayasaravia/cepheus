@@ -1,6 +1,5 @@
 ﻿using Cepheus.Domain.Comun;
 using Cepheus.Domain.Comunes;
-using Cepheus.Domain.Contabilidad.Maestros;
 using Cepheus.Domain.Logistica.Enum;
 
 namespace Cepheus.Domain.Logistica.Maestros
@@ -31,11 +30,8 @@ namespace Cepheus.Domain.Logistica.Maestros
     ///   CondicionSunat   -> SunatCondition (enum, nullable)
     ///   EstadoSunat      -> SunatTaxpayerStatus (enum, nullable)
     ///   Observaciones    -> Observations
-    ///   enlace1_cta      -> PayableAccountLocalCode (FK -> Contabilidad.CuentaContable.Code):
-    ///                        cuenta por pagar del proveedor en SOLES (debe empezar con 42 o 46)
-    ///   enlace2_cta      -> PayableAccountForeignCode (FK -> Contabilidad.CuentaContable.Code):
-    ///                        cuenta por pagar del proveedor en DÓLARES (debe empezar con 42 o 46).
-    ///                        Las usa la provisión contable de compras (asiento tipo 02).
+    ///   enlace1_cta / enlace2_cta -> tabla ProveedorCuentaContable (una cuenta por pagar 42/46 por proveedor y
+    ///                        moneda, sin límite de monedas). La usa la provisión contable de compras (asiento tipo 02).
     ///   FechaCreacion,
     ///   UsuarioCreacion,
     ///   FechaModificacion,
@@ -66,14 +62,6 @@ namespace Cepheus.Domain.Logistica.Maestros
         public SunatTaxpayerStatus? SunatStatus { get; set; }
 
         public string? Observations { get; set; }
-
-        /// <summary>Cuenta por pagar en soles (legacy enlace1_cta). Opcional; 42 o 46.</summary>
-        public string? PayableAccountLocalCode { get; set; }
-        public CuentaContable? PayableAccountLocal { get; set; }
-
-        /// <summary>Cuenta por pagar en dólares (legacy enlace2_cta). Opcional; 42 o 46.</summary>
-        public string? PayableAccountForeignCode { get; set; }
-        public CuentaContable? PayableAccountForeign { get; set; }
 
         public bool IsActive { get; set; } = true;
 

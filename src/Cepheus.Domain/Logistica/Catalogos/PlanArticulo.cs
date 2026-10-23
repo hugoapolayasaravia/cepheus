@@ -4,6 +4,7 @@ namespace Cepheus.Domain.Logistica.Catalogos
 {
     /// <summary>
     /// Plan de artículos (catálogo simple). Usado en el módulo de Logística.
+    /// Política de planificación
     ///
     /// Legacy: dbo.TPlan (SQL Server).
     /// Mapeo de columnas legacy -> propiedades profesionales:

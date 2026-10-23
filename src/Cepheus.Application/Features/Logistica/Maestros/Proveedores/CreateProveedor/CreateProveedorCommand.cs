@@ -13,8 +13,6 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
         ProviderOrigin Origin,
         SunatCondition? SunatCondition,
         SunatTaxpayerStatus? SunatStatus,
-        string? Observations,
-        string? PayableAccountLocalCode = null,
-        string? PayableAccountForeignCode = null
+        string? Observations
     ) : IRequest<ProveedorResponse>;
 }

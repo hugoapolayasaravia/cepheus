@@ -30,6 +30,7 @@ public static class LogisticaMaestrosEndpointsExtensions
 
         app.MapSubFamiliaAnexosEndpoints();
         app.MapArticuloAnexosEndpoints();
+        app.MapProveedorCuentasContablesEndpoints();
 
 
         return app;

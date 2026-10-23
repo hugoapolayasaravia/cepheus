@@ -106,5 +106,8 @@ namespace Cepheus.Infrastructure.Persistence.UnitOfWorks.Logistica
 
         private IRepository<ArticuloAnexo>? _articuloAnexos;
         public IRepository<ArticuloAnexo> ArticuloAnexos => _articuloAnexos ??= new Repository<ArticuloAnexo>(_context);
+
+        private IRepository<ProveedorCuentaContable>? _proveedorCuentasContables;
+        public IRepository<ProveedorCuentaContable> ProveedorCuentasContables => _proveedorCuentasContables ??= new Repository<ProveedorCuentaContable>(_context);
     }
 }

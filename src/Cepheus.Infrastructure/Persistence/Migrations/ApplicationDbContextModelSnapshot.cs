@@ -7229,12 +7229,6 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PayableAccountForeignCode")
-                        .HasColumnType("char(8)");
-
-                    b.Property<string>("PayableAccountLocalCode")
-                        .HasColumnType("char(8)");
-
                     b.Property<string>("ProviderType")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -7274,10 +7268,6 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("LegalName")
                         .IsUnique();
-
-                    b.HasIndex("PayableAccountForeignCode");
-
-                    b.HasIndex("PayableAccountLocalCode");
 
                     b.ToTable("Proveedores", "logistica");
                 });
@@ -7482,6 +7472,48 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProveedorCode");
 
                     b.ToTable("ProveedorCuentas", "logistica");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ProveedorCuentaContable", b =>
+                {
+                    b.Property<string>("ProveedorCode")
+                        .HasColumnType("char(5)");
+
+                    b.Property<string>("MonedaCode")
+                        .HasMaxLength(3)
+                        .HasColumnType("char(3)");
+
+                    b.Property<string>("AccountingAccountCode")
+                        .IsRequired()
+                        .HasColumnType("char(8)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("ProveedorCode", "MonedaCode");
+
+                    b.HasIndex("AccountingAccountCode");
+
+                    b.HasIndex("MonedaCode");
+
+                    b.ToTable("ProveedorCuentasContables", "logistica");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ProveedorDireccion", b =>
@@ -16072,21 +16104,7 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Cepheus.Domain.Contabilidad.Maestros.CuentaContable", "PayableAccountForeign")
-                        .WithMany()
-                        .HasForeignKey("PayableAccountForeignCode")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Cepheus.Domain.Contabilidad.Maestros.CuentaContable", "PayableAccountLocal")
-                        .WithMany()
-                        .HasForeignKey("PayableAccountLocalCode")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("DocumentType");
-
-                    b.Navigation("PayableAccountForeign");
-
-                    b.Navigation("PayableAccountLocal");
                 });
 
             modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ProveedorCondicion", b =>
@@ -16148,6 +16166,33 @@ namespace Cepheus.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Banco");
+
+                    b.Navigation("Moneda");
+
+                    b.Navigation("Proveedor");
+                });
+
+            modelBuilder.Entity("Cepheus.Domain.Logistica.Maestros.ProveedorCuentaContable", b =>
+                {
+                    b.HasOne("Cepheus.Domain.Contabilidad.Maestros.CuentaContable", "CuentaContable")
+                        .WithMany()
+                        .HasForeignKey("AccountingAccountCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Comunes.Moneda", "Moneda")
+                        .WithMany()
+                        .HasForeignKey("MonedaCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cepheus.Domain.Logistica.Maestros.Proveedor", "Proveedor")
+                        .WithMany()
+                        .HasForeignKey("ProveedorCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CuentaContable");
 
                     b.Navigation("Moneda");
 

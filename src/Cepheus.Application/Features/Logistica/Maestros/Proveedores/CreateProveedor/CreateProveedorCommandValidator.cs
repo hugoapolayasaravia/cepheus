@@ -49,29 +49,7 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
 
             RuleFor(x => x.Observations)
                 .MaximumLength(500).WithMessage("Las observaciones no pueden exceder los 500 caracteres.");
-
-            RuleFor(x => x.PayableAccountLocalCode)
-                .Cascade(CascadeMode.Stop)
-                .Must(IsPayableAccountPrefix).WithMessage("La cuenta por pagar en soles debe empezar con 42 o 46 y tener 8 caracteres.")
-                .MustAsync(PayableAccountExists).WithMessage("La cuenta por pagar en soles no existe o está inactiva.")
-                .When(x => !string.IsNullOrWhiteSpace(x.PayableAccountLocalCode));
-
-            RuleFor(x => x.PayableAccountForeignCode)
-                .Cascade(CascadeMode.Stop)
-                .Must(IsPayableAccountPrefix).WithMessage("La cuenta por pagar en dólares debe empezar con 42 o 46 y tener 8 caracteres.")
-                .MustAsync(PayableAccountExists).WithMessage("La cuenta por pagar en dólares no existe o está inactiva.")
-                .When(x => !string.IsNullOrWhiteSpace(x.PayableAccountForeignCode));
         }
-
-        private static bool IsPayableAccountPrefix(string? code)
-        {
-            var c = code?.Trim() ?? string.Empty;
-            return c.Length == 8 && (c.StartsWith("42") || c.StartsWith("46"));
-        }
-
-        private async Task<bool> PayableAccountExists(string? code, CancellationToken cancellationToken)
-            => await _uow.Contabilidad.Maestros.CuentasContables.Query()
-                .AnyAsync(c => c.Code == code!.Trim().ToUpper() && c.IsActive, cancellationToken);
 
         private async Task<bool> DocumentTypeExists(string documentTypeCode, CancellationToken cancellationToken)
             => await _uow.Comunes.TiposDocumento.Query()

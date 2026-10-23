@@ -24,8 +24,8 @@ namespace Cepheus.Domain.Logistica.Maestros
     ///   Stock_Min           -> MinStock
     ///   Stock_Max           -> MaxStock
     ///   Stock_Ent           -> IncomingStock
-    ///   L_Time              -> LeadTimeDays
-    ///   T_ABC               -> AbcClass (enum A/B/C)
+    ///   L_Time              -> LeadTimeDays. Estimar cuánto tardará en llegar un pedido.
+    ///   T_ABC               -> AbcClass (enum A/B/C). Priorizar el control según la importancia del artículo.
     ///   Codigo_Tar          -> TipoArticuloCode (FK -> TipoArticulo.Code)
     ///   Codigo_Pla          -> PlanCode (FK -> PlanArticulo.Code)
     ///   Cod_Fabrica         -> ManufacturerCode (texto libre, sin catálogo)

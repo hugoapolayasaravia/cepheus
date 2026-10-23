@@ -42,5 +42,8 @@ public partial class ApplicationDbContext
     public DbSet<SubFamiliaAnexo> SubFamiliaAnexos => Set<SubFamiliaAnexo>();
     public DbSet<ArticuloAnexo> ArticuloAnexos => Set<ArticuloAnexo>();
 
+    public DbSet<ProveedorCuentaContable> ProveedorCuentasContables => Set<ProveedorCuentaContable>();
+
+
 
 }

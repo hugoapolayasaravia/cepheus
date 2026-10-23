@@ -29,5 +29,8 @@ namespace Cepheus.Application.Comun.Interfaces.UnitOfWork
 
         IRepository<SubFamiliaAnexo> SubFamiliaAnexos { get; }
         IRepository<ArticuloAnexo> ArticuloAnexos { get; }
+
+        IRepository<ProveedorCuentaContable> ProveedorCuentasContables { get; }
+
     }
 }

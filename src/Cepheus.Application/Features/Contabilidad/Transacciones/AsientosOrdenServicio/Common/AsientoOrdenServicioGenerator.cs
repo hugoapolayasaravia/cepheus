@@ -167,6 +167,10 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosOrdenS
 
                 documento = await BuildDocumentoAsync(uow, os, glosa, numeroDoc, esSoles, tca, ct);
 
+                var cuentaPorPagar = plantilla.Lines.Any(l => l.AccountSource == OrigenCuentaAsiento.CuentaPorPagarProveedor)
+                    ? await ProveedorCuentaPorPagarResolver.ResolverAsync(uow, os.ProveedorCode, os.MonedaCode, ct)
+                    : null;
+
                 fuente = new AsientoFuente
                 {
                     PlantaCode = os.PlantaCode,
@@ -176,9 +180,7 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosOrdenS
                     EsNotaCredito = documento.ComprobantePagoCode == AsientoNotaIngresoRules.NotaCreditoComprobanteCode,
                     ProveedorCode = os.ProveedorCode,
                     ProveedorNombre = os.Proveedor?.LegalName,
-                    CuentaPorPagarCode = plantilla.Lines.Any(l => l.AccountSource == OrigenCuentaAsiento.CuentaPorPagarProveedor)
-                        ? ResolveCuentaPorPagar(os, esSoles)
-                        : null,
+                    CuentaPorPagarCode = cuentaPorPagar,
                     Total = documento.TotalSol,
                     Igv = documento.IgvSol,
                     IgvExterior = documento.IgvExteriorSol,
@@ -263,29 +265,6 @@ namespace Cepheus.Application.Features.Contabilidad.Transacciones.AsientosOrdenS
                 DocumentoNumero = documento?.NumeroDocumento,
                 Message = $"Asiento {asiento.Codigo} generado."
             };
-        }
-
-        private static string ResolveCuentaPorPagar(OrdenServicio os, bool esSoles)
-        {
-            var local = (os.Proveedor?.PayableAccountLocalCode ?? string.Empty).Trim();
-            var foreign = (os.Proveedor?.PayableAccountForeignCode ?? string.Empty).Trim();
-
-            if (local.Length != 8 || foreign.Length != 8)
-            {
-                throw new InvalidOperationException($"Proveedor {os.ProveedorCode} no registra Cuentas de Enlace");
-            }
-
-            if (!(local.StartsWith("42") || local.StartsWith("46")))
-            {
-                throw new InvalidOperationException("Cta Enlace S/. Errada .. <42/46> ... Reintente ...");
-            }
-
-            if (!(foreign.StartsWith("42") || foreign.StartsWith("46")))
-            {
-                throw new InvalidOperationException("Cta Enlace US$  Errada .. <42/46> ... Reintente ...");
-            }
-
-            return esSoles ? local : foreign;
         }
 
         /// <summary>

@@ -32,8 +32,6 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
                 SunatCondition = request.SunatCondition,
                 SunatStatus = request.SunatStatus,
                 Observations = string.IsNullOrWhiteSpace(request.Observations) ? null : request.Observations.Trim(),
-                PayableAccountLocalCode = string.IsNullOrWhiteSpace(request.PayableAccountLocalCode) ? null : request.PayableAccountLocalCode.Trim().ToUpperInvariant(),
-                PayableAccountForeignCode = string.IsNullOrWhiteSpace(request.PayableAccountForeignCode) ? null : request.PayableAccountForeignCode.Trim().ToUpperInvariant(),
                 IsActive = true
             };
 
@@ -55,8 +53,6 @@ namespace Cepheus.Application.Features.Logistica.Maestros.Proveedores.CreateProv
             SunatCondition = proveedor.SunatCondition,
             SunatStatus = proveedor.SunatStatus,
             Observations = proveedor.Observations,
-            PayableAccountLocalCode = proveedor.PayableAccountLocalCode,
-            PayableAccountForeignCode = proveedor.PayableAccountForeignCode,
             IsActive = proveedor.IsActive,
             DeactivatedAt = proveedor.DeactivatedAt,
             CreatedAt = proveedor.CreatedAt,
